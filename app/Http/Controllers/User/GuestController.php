@@ -75,7 +75,7 @@ class GuestController extends Controller
     public function deleteComment(FeedComment $feedcomment)
     {
         $feedcomment->delete();
-        FeedComment::where('parent_id', $feedcomment->id)->first()->delete();
+        FeedComment::where('parent_id', $feedcomment->id)->delete();
 
         return back()->with('msg', 'Berhasil Menghapus Artikel');
     }

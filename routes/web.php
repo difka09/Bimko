@@ -58,18 +58,24 @@ Route::post('/','HomeController@storeGuest')->name('guest.store');
 Route::get('/', 'HomeController@index')->name('guest.landing');
 
 Route::get('guest/createfeed', 'User\FeedController@create')->middleware('auth', 'role:Murid,guest')->name('guest.createfeed');
-Route::get('guest/profil', 'User\GuestController@showUser')->name('guest.showuser');
-Route::get('guest/showfeed','User\GuestController@showFeed')->name('guest.showfeed');
-Route::delete('hapus/feed/{feed}','User\GuestController@deleteFeed')->name('guest.deletefeed');
-Route::get('guest/showcomment','User\GuestController@showComment')->name('guest.showcomment');
-Route::delete('hapus/comment/{feedcomment}','User\GuestController@deleteComment')->name('guest.deletecomment');
-Route::get('guest/shownotification','User\GuestController@showNotification')->name('guest.shownotification');
+Route::get('guest/profil', 'User\GuestController@showUser')->middleware('auth', 'role:Murid,guest')->name('guest.showuser');
+Route::get('guest/showfeed','User\GuestController@showFeed')->middleware('auth', 'role:Murid,guest')->name('guest.showfeed');
+Route::delete('hapus/feed/{feed}','User\GuestController@deleteFeed')->middleware('auth', 'role:Murid,guest')->name('guest.deletefeed');
+Route::get('guest/showcomment','User\GuestController@showComment')->middleware('auth', 'role:Murid,guest')->name('guest.showcomment');
+Route::delete('hapus/comment/{feedcomment}','User\GuestController@deleteComment')->middleware('auth', 'role:Murid,guest')->name('guest.deletecomment');
+Route::get('guest/shownotification','User\GuestController@showNotification')->middleware('auth', 'role:Murid,guest')->name('guest.shownotification');
 
-Route::get('tes/123',function(){
-    return view('guru.notification');
-});
+Route::get('tes/123','User\GuruController@index')->middleware('auth')->name('guru.index');
+Route::post('tes/123','User\GuruController@loadDataAjax')->middleware('auth')->name('guru.loaddata');
+
+// Route::get('tes/12','User\GuruController@indexs')->name('guru.indexs');
+// Route::post('tes/12/load_data', 'User\GuruController@load_data')->name('loadmore.load_data');
 
 
+
+//guru
+
+Route::post('/test/123', 'User\GuruController@addPost')->name('guru.addpost');
 
 
 
