@@ -23,24 +23,23 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active inline-items" data-toggle="tab" href="#home-1" role="tab" aria-expanded="true">
+                    <a class="nav-link active inline-items" data-toggle="tab" href="#status" role="tab" aria-expanded="true">
                         <svg class="olymp-status-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-status-icon')}}"></use></svg>
                         <span>Status</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link inline-items" data-toggle="tab" href="#profile-1" role="tab" aria-expanded="false">
-                        <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
-                        <span>Multimedia</span>
+                    <a class="nav-link inline-items" data-toggle="tab" href="#upload" role="tab" aria-expanded="false">
+                        <svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg>
+                        <span>Upload File</span>
                     </a>
                 </li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div class="tab-pane active" id="home-1" role="tabpanel" aria-expanded="true">
-                    {{-- <form method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data"> --}}
-                    <form id="postForm" name="postForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+                <div class="tab-pane active" id="status" role="tabpanel" aria-expanded="true">
+                    <form id="uploadForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="author-thumb">
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
@@ -52,10 +51,10 @@
                         </div>
                         <div class="add-options-message">
                             <div class="image-upload">
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload File">
+                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
                                 <label for="file_1">
-                                <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
-                                <div id="filename_upload"></div>
+                                <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                                <div id="filename_upload_1"></div>
                                 </label>
                             </a>
                             <input type="file" name="file_1" id="file_1">
@@ -65,71 +64,44 @@
                     </form>
                 </div>
 
-                <div class="tab-pane" id="profile-1" role="tabpanel" aria-expanded="true">
-                    <form>
-                        <div class="author-thumb">
-                            <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
-                        </div>
-                        <div class="form-group with-icon label-floating is-empty">
-                            <label class="control-label">Share what you are thinking here...</label>
-                            <textarea class="form-control" placeholder=""  ></textarea>
-                        </div>
-                        <div class="add-options-message">
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                                <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-camera-icon')}}"></use></svg>
-                            </a>
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="TAG YOUR FRIENDS">
-                                <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
-                            </a>
+                <div class="tab-pane" id="upload" role="tabpanel" aria-expanded="true">
+                    <form id="postForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="author-thumb">
+                                <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                            </div>
+                            <div class="form-group with-icon label-floating is-empty">
+                                {{-- <label class="control-label">Share what you are thinking here...</label> --}}
+                                <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
+                                <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
+                                <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" required></textarea>
 
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD LOCATION">
-                                <svg class="olymp-small-pin-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-small-pin-icon')}}"></use></svg>
-                            </a>
 
-                            <button class="btn btn-primary btn-md-2">Post Status</button>
-                            <button   class="btn btn-md-2 btn-border-think btn-transparent c-grey">Preview</button>
-
-                        </div>
-
-                    </form>
-                </div>
-
-                <div class="tab-pane" id="blog" role="tabpanel" aria-expanded="true">
-                    <form>
-                        <div class="author-thumb">
-                            <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
-                        </div>
-                        <div class="form-group with-icon label-floating is-empty">
-                            <label class="control-label">Share what you are thinking here...</label>
-                            <textarea class="form-control" placeholder=""  ></textarea>
-                        </div>
-                        <div class="add-options-message">
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                                <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-camera-icon')}}"></use></svg>
-                            </a>
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="TAG YOUR FRIENDS">
-                                <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
-                            </a>
-
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD LOCATION">
-                                <svg class="olymp-small-pin-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-small-pin-icon')}}"></use></svg>
-                            </a>
-                            <button class="btn btn-primary btn-md-2">Post Status</button>
-                            <button   class="btn btn-md-2 btn-border-think btn-transparent c-grey">Preview</button>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+                            </div>
+                            <div class="add-options-message">
+                                <div class="image-upload">
+                                <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload File">
+                                    <label for="file_2">
+                                    <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
+                                    <div id="filename_upload"></div>
+                                    </label>
+                                </a>
+                                <input type="file" name="file_2" id="file_2" nonvalidate>
+                                <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post File</button>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+           </div>
         </div>
         <!-- ... end News Feed Form  -->
     </div>
     <div id="load-data">
+        <div id="data-post">
         @foreach ($posts as $post)
         <div id="newsfeed-items-grid">
             <div class="ui-block">
-                <article class="hentry post" >
+                <article class="hentry post"  id="post_id_{{$post->postid}}">
                     <div class="post__author author vcard inline-items">
                         <img src="{{asset('guru/img/avatar10-sm.jpg')}}" alt="author">
 
@@ -141,16 +113,24 @@
                                 </time>
                             </div>
                         </div>
+                        @if ($post->usersid == auth()->user()->id)
                         <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                             <ul class="more-dropdown">
+                                @if ($post->type == 1)
                                 <li>
-                                    <a href="#">Edit Post</a>
+                                    <a href="javascript:void(0)" id="edit-post1" data-id="{{$post->postid}}">Edit Status</a>
                                 </li>
+                                @else
                                 <li>
-                                    <a href="#">Delete Post</a>
+                                    <a href="javascript:void(0)" id="edit-post2" data-id="{{$post->postid}}">Edit File</a>
+                                </li>
+                                @endif
+                                <li>
+                                    <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->postid}}">Delete Post</a>
                                 </li>
                             </ul>
                         </div>
+                        @endif
                     </div>
                         <p>{{$post->content}}</p>
                     <div class="post-additional-info inline-items">
@@ -228,6 +208,7 @@
         <input type="hidden" value="{{$myid = $post->postid}}">
         @endforeach
     </div>
+    </div>
     <div id="remove-row">
         @if (empty($myid))
         <div title="Data tidak ditemukan">
@@ -241,16 +222,86 @@
 </main>
 
 @endsection
+<div class="modal fade" id="ajax-crud-modal" aria-hidden="true" style="display:none">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="postCrudModal"></h4>
+        </div>
+
+        <div class="modal-body">
+        <form id="updateForm1" name="updateForm1" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
+                <input type="hidden" name="id" id="postid">
+                <textarea class="form-control" name="content" id="content" placeholder="Tulis status di sini.." required></textarea>
+            </div>
+            <div class="add-options-message">
+                <div class="image-upload">
+                <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
+                    <label for="file_3">
+                    <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                    <div id="filename_upload_3"></div>
+                    </label>
+                </a>
+                <input type="file" name="file_1" id="file_3">
+                </div>
+                <button type="submit" id="btn-save1" class="btn btn-primary btn-md-2 btn-save1">Edit Post</button>
+            </div>
+        </form>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ajax-crud-modal2" aria-hidden="true" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="postCrudModal2"></h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="updateForm2" name="updateForm2" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <input type="hidden" name="user_id" id="user_id2" value="{{auth()->user()->id}}">
+                    <input type="hidden" name="id" id="postid2">
+                    <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none" required>
+                    <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file" required></textarea>
+                </div>
+                <div class="add-options-message">
+                    <div class="image-upload">
+                    <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
+                        <label for="file_4">
+                        <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                        <div id="filename_upload_4"></div>
+                        </label>
+                    </a>
+                    <input type="file" name="file_2" id="file_4">
+                    </div>
+                    <button type="submit" id="btn-save2" class="btn btn-primary btn-md-2 btn-save2">Edit Post</button>
+                </div>
+            </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 
-{{-- load more timeline post --}}
+
 <script>
+// load more timeline post
 $(document).ready(function(){
    $(document).on('click','#btn-more',function(){
        var id = $(this).data('id');
        $("#btn-more").html("...");
        $.ajax({
-           url : '{{ route('guru.loaddata') }}',
+           url : urls[0],
            method : "POST",
            data : {id:id, _token:"{{csrf_token()}}"},
            dataType : "text",
@@ -271,81 +322,6 @@ $(document).ready(function(){
 });
 </script>
 
-{{-- upload form and submit form --}}
-<script>
-$('form').submit(function(event) {
-    event.preventDefault();
-    var formData = new FormData($(this)[0]);
-    $.ajax({
-        url: '{{route('guru.addpost')}}',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(result)
-        {
-            location.reload();
-        },
-        error: function(data)
-        {
-            console.log(data);
-        }
-    });
 
-});
-</script>
 
-{{-- get filename --}}
-<script>
-var input = document.getElementById( 'file_1' );
-var infoArea = document.getElementById( 'filename_upload' );
-input.addEventListener( 'change', showFileName );
-function showFileName( event ) {
-  // the change event gives us the input it occurred in
-  var input = event.srcElement;
-
-  // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-  var fileName = input.files[0].name;
-
-  // use fileName however fits your app best, i.e. add it into a div
-  infoArea.textContent = 'File name : ' + fileName;
-}
-</script>
-
-{{-- spesial komen --}}
-{{-- <script>
-    if ($("#postForm").length > 0){
-        $("#postForm").validate({
-            submitHandler: function(form){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                $('#btn-save').html('posting..');
-                var formData = new FormData($(this)[0]);
-
-                $.ajax({
-                    // data:formData,
-                    data: $('#postForm').serialize(),
-                    url: "{{route('guru.addpost')}}",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function(data){
-                        $('#btn-save').html('Post Status');
-                        document.getElementById("postForm").reset();
-                        location.reload();
-
-                        //untuk komen $("#data-post").load(location.href + " #data-post");
-
-                    }
-                });
-                // setInterval(function(){
-                //     $('#post-data').html(data.html).fadeIn("slow");
-                // }, 1000);
-            }
-        })
-    }
-</script> --}}
 @endpush

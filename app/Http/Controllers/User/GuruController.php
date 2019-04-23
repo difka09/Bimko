@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use DB;
-use Image;
-use Intervention\Image\Exception\NotReadableException;
+use Illuminate\Support\Facades\Storage;
+
+// use Image;
+// use Intervention\Image\Exception\NotReadableException;
 
 class GuruController extends Controller
 {
@@ -36,7 +38,7 @@ class GuruController extends Controller
                                                 // dd($feedcomments);
         $data['posts'] = DB::table('posts')->join('users', 'users.id', '=', 'posts.user_id')->orderBy('posts.created_at','DESC')
                                 ->limit(2)
-                                ->get(['posts.id as postid','posts.content', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
+                                ->get(['posts.id as postid','posts.content', 'posts.type', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
 
         return view('guru.index', $data);
     }
@@ -50,7 +52,7 @@ class GuruController extends Controller
                                 ->join('users', 'users.id', '=', 'posts.user_id')->orderBy('posts.created_at','DESC')
                                 ->limit(2)
 
-                                ->get(['posts.id as postid','posts.content', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
+                                ->get(['posts.id as postid','posts.content','posts.type', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
 
 
         if(!$posts->isEmpty())
@@ -68,7 +70,10 @@ class GuruController extends Controller
                             9 hours ago
                         </time>
                     </div>
-                </div>
+                </div>';
+
+                if(($post->usersid == auth()->user()->id))
+                $output .= '
                 <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                     <ul class="more-dropdown">
                         <li>
@@ -78,7 +83,8 @@ class GuruController extends Controller
                             <a href="#">Delete Post</a>
                         </li>
                     </ul>
-                </div>
+                </div>';
+            $output .= '
             </div>
                 <p>'.$post->content.'</p>
             <div class="post-additional-info inline-items">
@@ -103,17 +109,38 @@ class GuruController extends Controller
 
     public function addPost(Request $request)
     {
-
-        $file_1 = $request->file('file_1')->store('posts');
-
+        $file_2 = $request->file('file_2')->store('posts');
         $data = Post::create([
+            'title' => $request->title,
             'content' => $request->content,
             'user_id' => $request->user_id,
-            'file_1' => $file_1,
-            'type' => 1
+            'file_2' => $file_2,
+            'type' => 2
         ]);
 
         return response()->json($data);
+    }
+
+    public function addStatus(Request $request)
+    {
+        if ($request->hasFile('file_1')) {
+        $upload = $request->file('file_1')->store('posts');
+        $file_1 = new Post;
+        $file_1->file_1 = $upload;
+        $file_1->content = $request->content;
+        $file_1->user_id = $request->user_id;
+        $file_1->type = 1;
+        $file_1->save();
+        }
+        else {
+        Post::create([
+            'content' => $request->content,
+            'user_id' => $request->user_id,
+            'type' => 1
+        ]);
+    }
+
+        return response()->json();
     }
 
     public function showPost(Post $post)
@@ -121,14 +148,66 @@ class GuruController extends Controller
 
     }
 
-    public function updatePost(Post $post)
+    public function editPost($id)
     {
+        $where = array ('id' => $id);
+        $post = Post::where($where)->first();
 
+        return response()->json($post);
     }
 
-    public function deletePost(Post $post)
+    public function updateStatus(Request $request, $id)
     {
+        $post = Post::find($id);
+        //get file_1
+        $file_1 = null;
+        if ($request->hasFile('file_1')) {
+            if($post->file_1){
+                Storage::delete($post->file_1);
+            }
+            $file_1 = $request->file('file_1')->store('posts');
+        }
+        if (!$request->hasFile('file_1') && $post->file_1) {
+            $file_1 = $post->file_1;
+        }
+        $data = Post::find($id)->update([
+            'content' => $request->content,
+            'file_1' => $file_1,
+        ]);
+        return response()->json($data);
+    }
 
+    public function updatePost(Request $request, $id)
+    {
+        $post = Post::find($id);
+        //get file_2
+        $file_2 = null;
+        if ($request->hasFile('file_2')) {
+            if($post->file_2){
+                Storage::delete($post->file_2);
+            }
+            $file_2 = $request->file('file_2')->store('posts');
+        }
+        if (!$request->hasFile('file_2') && $post->file_2) {
+            $file_2 = $post->file_2;
+        }
+
+        $data = Post::find($id)->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'file_2' => $file_2,
+        ]);
+        return response()->json($data);
+    }
+
+    public function deletePost($id)
+    {
+        Storage::delete(Post::find($id)->file_1);
+        Storage::delete(Post::find($id)->file_2);
+
+        $post = Post::find($id)->delete();
+
+        return response()->json($post);
     }
 
     public function addComment(Request $request)

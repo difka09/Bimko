@@ -8,7 +8,7 @@ class Post extends Model
 {
 
     protected $fillable = [
-        'content', 'user_id', 'file_1', 'type' ,
+        'title','content', 'user_id', 'file_1','file_2', 'type' ,
     ];
 
     public function getImage()

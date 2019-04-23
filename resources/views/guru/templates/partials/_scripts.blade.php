@@ -38,6 +38,12 @@
 <script defer src="{{asset('guru/fonts/fontawesome-all.js')}}"></script>
 <script src="{{asset('guru/Bootstrap/dist/js/bootstrap.bundle.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}"];
+</script>
+<script src="{{asset('js/ajaxCrud.js')}}"></script>
 
 @stack('scripts')
 

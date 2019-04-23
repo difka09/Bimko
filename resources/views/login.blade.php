@@ -72,20 +72,27 @@
 
             <div id="login-guru" style="display:none">
                 <h1>Login Untuk Guru</h1>
-                <form action="/" method="post">
-                <div class="field-wrap">
-                <label>
-                    NIP<span class="req">*</span>
-                </label>
-                <input type="number"required autocomplete="off"/>
-                </div>
-                <div class="field-wrap">
-                <label>
-                    Password<span class="req">*</span>
-                </label>
-                <input type="password"required autocomplete="off"/>
-                </div>
-                <button class="button button-block">Log In</button>
+                <form action="{{Route('login.users')}}" method="post">
+                    @csrf
+                    <div class="field-wrap">
+                    <label>
+                        NIP<span class="req">*</span>
+                    </label>
+                    <input type="number"required autocomplete="off" name="identity"/>
+                    </div>
+                    <div class="field-wrap">
+                    <label>
+                        Password<span class="req">*</span>
+                    </label>
+                    <input type="password"required autocomplete="off" name="password"/>
+                    </div>
+                    @if ($errors->has('identity'))
+                    <span style="color:azure" class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('identity') }}</strong>
+                    </span>
+                    @endif
+                    <p>
+                    <button type="submit" class="button button-block">Log In</button>
                 </form>
             </div>
 

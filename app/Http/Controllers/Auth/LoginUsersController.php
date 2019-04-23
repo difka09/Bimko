@@ -41,7 +41,7 @@ class LoginUsersController extends Controller
             return redirect()->route('guest.createfeed');
         }
         elseif($user->hasRole('Guru')) {
-            return redirect()->route('guest.createfeed');
+            return redirect()->route('guru.index');
         }
     }
 }

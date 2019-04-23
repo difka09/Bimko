@@ -23,7 +23,6 @@
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-grid.css')}}">
 
 
-
         <!-- Main Styles CSS -->
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/main.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/fonts.min.css')}}">

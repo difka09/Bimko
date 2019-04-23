@@ -75,7 +75,12 @@ Route::post('tes/123','User\GuruController@loadDataAjax')->middleware('auth')->n
 
 //guru
 
-Route::post('/test/123', 'User\GuruController@addPost')->name('guru.addpost');
+Route::post('tes/123/post', 'User\GuruController@addPost')->name('guru.addpost');
+Route::post('tes/123/status', 'User\GuruController@addStatus')->name('guru.addstatus');
+Route::delete('tes/123/{id}', 'User\GuruController@deletePost')->name('guru.deletepost');
+Route::put('tes/123/status/{id}', 'User\GuruController@updateStatus')->name('guru.updatestatus');
+Route::put('tes/123/post/{id}', 'User\GuruController@updatePost')->name('guru.updatepost');
+Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.editpost');
 
 
 
