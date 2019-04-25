@@ -82,6 +82,8 @@ Route::put('tes/123/status/{id}', 'User\GuruController@updateStatus')->name('gur
 Route::put('tes/123/post/{id}', 'User\GuruController@updatePost')->name('guru.updatepost');
 Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.editpost');
 Route::post('tes/123/comment', 'User\GuruController@addComment')->name('guru.addcomment');
+Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name('guru.deletecomment');
+
 
 
 

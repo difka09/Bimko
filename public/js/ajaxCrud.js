@@ -194,28 +194,59 @@ $(document).ready(function (e) {
 
     });
 
+    // addcomment
     $('.comment-form').on('submit',(function(e) {
-    e.preventDefault();
-    var data = new FormData($(this)[0]);
-    $.ajax({
-        type:'POST',
-        url: urls[3],
-        data: data,
-        cache:false,
-        contentType: false,
-        processData: false,
-        success:function(data){
-            // console.log(data);
-            post_id = data['post_id'];
-            comment_id = data['id'];
-            $("#comment"+post_id).load(location.href + " #comment"+post_id);
-            document.getElementById("comment-form"+post_id).reset();
-        },
-        error: function(data){
-            console.log(data);
-        }
+        e.preventDefault();
+        var data = new FormData($(this)[0]);
+        $.ajax({
+            type:'POST',
+            url: urls[3],
+            data: data,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                // console.log(data);
+                post_id = data['post_id'];
+                comment_id = data['id'];
+                $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                document.getElementById("comment-form"+post_id).reset();
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+    }));
+
+    // delete comment
+    $('body').on('click', '.delete-comment', function(){
+        var comment_id = $(this).data("id");
+        var post_id = $(this).data("post");
+        swal({
+            title: "Apakah kamu yakin akan hapus komentar ini ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+                if(willDelete){
+                    $.ajax({
+                        type: "DELETE",
+                        url: urls[3] + '/' + comment_id,
+                        success: function(){
+                            swal("Data telah terhapus", {
+                                icon: "success",
+                            });
+                            $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                        },
+                        error: function(data){
+                            console.log('Error:' ,data);
+                        }
+                    });
+                }
+            });
     });
-}));
+
 });
 
 

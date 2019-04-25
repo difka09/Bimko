@@ -161,7 +161,15 @@
                                     </time>
                                 </div>
                             </div>
-                            <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
+                            @if ($comment->user_id == auth()->user()->id)
+                            <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
+                            <ul class="more-dropdown">
+                                    <li>
+                                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                    </li>
+                            </ul>
+                            </div>
+                            @endif
                         </div>
                         <p>{{$comment->message}}</p>
                     </li>
