@@ -6,8 +6,10 @@ use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Comment;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -30,17 +32,8 @@ class GuruController extends Controller
 
     public function index()
     {
-        // $feedcomments = DB::table('feedcomments')
-        //                                         ->where('feedcomments.feed_id', $feed->id)
-        //                                         ->where('parent_id','==', '0')
-        //                                         ->join('users', 'users.id', '=', 'feedcomments.user_id')
-        //                                         ->orderBy('feedcomments.id', 'DESC')->get(['feedcomments.*', 'users.name', 'users.email', 'users.phone', 'users.agency', 'users.file as userphoto']);
-                                                // dd($feedcomments);
-        $data['posts'] = DB::table('posts')->join('users', 'users.id', '=', 'posts.user_id')->orderBy('posts.created_at','DESC')
-                                ->limit(2)
-                                ->get(['posts.id as postid','posts.content', 'posts.type', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
-
-        return view('guru.index', $data);
+        $posts = Post::latest()->limit(2)->get();
+        return view('guru.index', compact('posts'));
     }
 
     public function loadDataAjax(Request $request)
@@ -131,16 +124,18 @@ class GuruController extends Controller
         $file_1->user_id = $request->user_id;
         $file_1->type = 1;
         $file_1->save();
+        // echo $file_1->content;
         }
         else {
-        Post::create([
+        $data = Post::create([
             'content' => $request->content,
             'user_id' => $request->user_id,
             'type' => 1
         ]);
+
     }
 
-        return response()->json();
+    return response()->json();
     }
 
     public function showPost(Post $post)
@@ -205,14 +200,60 @@ class GuruController extends Controller
         Storage::delete(Post::find($id)->file_1);
         Storage::delete(Post::find($id)->file_2);
 
-        $post = Post::find($id)->delete();
+        $post = Post::find($id);
+        $post->delete();
+        $post->comments()->delete();
+
 
         return response()->json($post);
     }
 
     public function addComment(Request $request)
     {
+        // $comment = new Comment;
+        // $comment->post_id = $request->post_id;
+        // $comment->message = $request->message;
+        // $comment->parent_id = $request->parent_id;
+        // $comment->user_id = auth()->user()->id;
+        // $comment->save();
 
+        $data = Comment::create([
+            'post_id' => $request->post_id,
+            'message' => $request->message,
+            'parent_id' => $request->parent_id,
+            'user_id' => auth()->user()->id
+
+        ]);
+
+        return response()->json($data);
+        // return response();
+        // $tesparent = $comment->parent_id;
+        // $tesuser = $comment->user_id;
+        // $insertId = $comment->post_id;
+        // $notifyparent = Comment::where('parent_id', '=', $tesparent)->select('parent_id')->get();
+
+        // $notifycomment = Comment::where([
+        //     ['post_id','=',$insertId],
+        //     ['user_id', '!=', $tesuser]
+        // ])->select('user_id')->distinct('user_id')->get();
+
+        // $sendnotify1 = User::whereIn('id', $notifycomment)->get();
+        // $sendnotify2 = User::whereIn('id', $notifyparent)->get();
+
+        // if($tesuser != $tesparent){
+        //     \Notification::send($sendnotify1, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
+        //     \Notification::send($sendnotify2, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
+        // }
+        //     \Notification::send($sendnotify1, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
+            // dd($comment);
+        // return back();
+
+
+    }
+
+    public function deleteComment($id)
+    {
+        $comment = Comment::find($id)->delete();
     }
 
     //notifikasi

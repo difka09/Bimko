@@ -99,34 +99,37 @@
     <div id="load-data">
         <div id="data-post">
         @foreach ($posts as $post)
+        <?php
+        $comments = $post->comments
+        ?>
         <div id="newsfeed-items-grid">
             <div class="ui-block">
-                <article class="hentry post"  id="post_id_{{$post->postid}}">
+                <article class="hentry post"  id="post_id_{{$post->id}}">
                     <div class="post__author author vcard inline-items">
                         <img src="{{asset('guru/img/avatar10-sm.jpg')}}" alt="author">
 
                         <div class="author-date">
-                            <a class="h6 post__author-name fn" href="#">{{$post->username}}</a>
+                            <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
                             <div class="post__date">
                                 <time class="published" datetime="2004-07-24T18:18">
                                     9 hours ago
                                 </time>
                             </div>
                         </div>
-                        @if ($post->usersid == auth()->user()->id)
+                        @if ($post->user_id == auth()->user()->id)
                         <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                             <ul class="more-dropdown">
                                 @if ($post->type == 1)
                                 <li>
-                                    <a href="javascript:void(0)" id="edit-post1" data-id="{{$post->postid}}">Edit Status</a>
+                                    <a href="javascript:void(0)" id="edit-post1" data-id="{{$post->id}}">Edit Status</a>
                                 </li>
                                 @else
                                 <li>
-                                    <a href="javascript:void(0)" id="edit-post2" data-id="{{$post->postid}}">Edit File</a>
+                                    <a href="javascript:void(0)" id="edit-post2" data-id="{{$post->id}}">Edit File</a>
                                 </li>
                                 @endif
                                 <li>
-                                    <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->postid}}">Delete Post</a>
+                                    <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Delete Post</a>
                                 </li>
                             </ul>
                         </div>
@@ -144,12 +147,14 @@
                 </article>
 
                 <!-- Comments -->
-                <ul class="comments-list">
+                <div id="comment{{$post->id}}">
+                @foreach ($comments as $comment)
+                <ul class="comments-list" id="comment-list">
                     <li class="comment-item">
                         <div class="post__author author vcard inline-items">
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
                             <div class="author-date">
-                                <a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a>
+                                <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
                                 <div class="post__date">
                                     <time class="published" datetime="2004-07-24T18:18">
                                         38 mins ago
@@ -158,37 +163,27 @@
                             </div>
                             <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
                         </div>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque laudantium.</p>
-                    </li>
-                    <li class="comment-item">
-                        <div class="post__author author vcard inline-items">
-                            <img src="{{asset('guru/img/avatar1-sm.jpg')}}" alt="author">
-
-                            <div class="author-date">
-                                <a class="h6 post__author-name fn" href="#">Mathilda Brinker</a>
-                                <div class="post__date">
-                                    <time class="published" datetime="2004-07-24T18:18">
-                                        1 hour ago
-                                    </time>
-                                </div>
-                            </div>
-                            <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
-                        </div>
-                        <p>Ratione voluptatem sequi en lod nesciunt. Neque porro quisquam est, quinder dolorem ipsum
-                            quia dolor sit amet, consectetur adipisci velit en lorem ipsum duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
-                        </p>
+                        <p>{{$comment->message}}</p>
                     </li>
                 </ul>
+                @endforeach
+            </div>
+
+
+
+                {{-- @endif --}}
                 <!-- ... end Comments -->
 
                 <a href="#" class="more-comments">View more comments <span>+</span></a>
-
                 <!-- Comment Form  -->
-                <form class="comment-form inline-items">
+                <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
+                    @csrf
                     <div class="post__author author vcard inline-items">
                         <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
                         <div class="form-group with-icon-right ">
-                            <textarea class="form-control" placeholder=""></textarea>
+                            <input type="hidden" value="{{$post->id}}" name="post_id">
+                            <input type="hidden" value="{{$post->user_id}}" name="parent_id">
+                            <textarea class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
                             <div class="add-options-message">
                                 <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                                     <svg class="olymp-camera-icon">
@@ -198,14 +193,14 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-md-2 btn-primary">Post Comment</button>
+                    <button type="submit" id="btn-comment" class="btn btn-md-2 btn-primary">Post Comment</button>
                     <button class="btn btn-md-2 btn-border-think c-grey btn-transparent custom-color">Cancel</button>
                 </form>
                 <!-- ... end Comment Form  -->
             </div>
         </div>
 
-        <input type="hidden" value="{{$myid = $post->postid}}">
+        <input type="hidden" value="{{$myid = $post->id}}">
         @endforeach
     </div>
     </div>
@@ -215,7 +210,7 @@
         <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
         </div>
         @else
-        <a id="btn-more" class="btn btn-control" data-id="{{$post->postid}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
+        <a id="btn-more" class="btn btn-control" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
         @endif
     </div>
 

@@ -41,7 +41,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
-    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}"];
+    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}"];
 </script>
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
 
