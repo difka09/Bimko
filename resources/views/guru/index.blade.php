@@ -100,7 +100,7 @@
         <div id="data-post">
         @foreach ($posts as $post)
         <?php
-        $comments = $post->comments
+        $comments = $post->comments->take(2);
         ?>
         <div id="newsfeed-items-grid">
             <div class="ui-block">
@@ -140,7 +140,7 @@
                         <div class="comments-shared">
                             <a href="#" class="post-add-icon inline-items">
                                 <svg class="olymp-speech-balloon-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}"></use></svg>
-                                <span>17</span>
+                                <span>{{$post->comments->count()}}</span>
                             </a>
                         </div>
                     </div>
@@ -175,14 +175,16 @@
                     </li>
                 </ul>
                 @endforeach
-            </div>
-
-
-
-                {{-- @endif --}}
                 <!-- ... end Comments -->
+                    <div id="remove-row-comments{{$post->id}}">
+                            @if ($post->comments->count()==0)
+                            @else
+                        <a id="btn-more-comment{{$post->id}}" class="more-comments btn-more-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Lihat Komentar Sebelumnya<span>+</span></a>
+                            @endif
+                    </div>
+                </div>
 
-                <a href="#" class="more-comments">View more comments <span>+</span></a>
+
                 <!-- Comment Form  -->
                 <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
                     @csrf
@@ -302,6 +304,7 @@
 $(document).ready(function(){
    $(document).on('click','#btn-more',function(){
        var id = $(this).data('id');
+    //    console.log(id);
        $("#btn-more").html("...");
        $.ajax({
            url : urls[0],
@@ -310,6 +313,7 @@ $(document).ready(function(){
            dataType : "text",
            success : function (data)
            {
+               console.log(data);
               if(data != '')
               {
                   $('#remove-row').remove();
@@ -325,6 +329,35 @@ $(document).ready(function(){
 });
 </script>
 
+<script>
+        // load more comments
+    $(document).ready(function(){
+        $(document).on('click','.btn-more-comment',function(){
+            var id = $(this).data('id');
+            console.log(id);
+            var post = $(this).data('post');
+            $("#btn-more-comment"+post).html("...");
+            $.ajax({
+                url : urls[4],
+                method : "POST",
+                data : {id:id, post:post, _token:"{{csrf_token()}}"},
+                dataType : "text",
+                success : function (data)
+                {
+                    if(data != '')
+                    {
+                        $('#remove-row-comments'+post).remove();
+                        $('#comment'+post).append(data);
+                    }
+                    else
+                    {
+                        $('#btn-more-comment'+post).html("No Data");
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 
 @endpush

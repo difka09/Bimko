@@ -33,6 +33,7 @@ class GuruController extends Controller
     public function index()
     {
         $posts = Post::latest()->limit(2)->get();
+
         return view('guru.index', compact('posts'));
     }
 
@@ -254,6 +255,62 @@ class GuruController extends Controller
     public function deleteComment($id)
     {
         $comment = Comment::find($id)->delete();
+    }
+
+    public function loadDataComment(Request $request)
+    {
+        $output = '';
+        $id = $request->id;
+        $postid = $request->post;
+        $posts = Post::find($postid);
+        $comments = $posts->comments()->where('id', '<', $id)->take(2)->get();
+
+// dd($comments);
+        if(!$comments->isEmpty())
+        {
+
+
+                foreach($comments as $comment){
+                $output .= ' <ul class="comments-list" id="comment-list">
+                <li class="comment-item">
+                    <div class="post__author author vcard inline-items">
+                        <img src="'.asset('guru/img/author-page.jpg').'" alt="author">
+                        <div class="author-date">
+                            <a class="h6 post__author-name fn" href="02-ProfilePage.html">'.$comment->user->name.'</a>
+                            <div class="post__date">
+                                <time class="published" datetime="2004-07-24T18:18">
+                                    38 mins ago
+                                </time>
+                            </div>
+                        </div>';
+                        if($comment->user_id == auth()->user()->id){
+                        $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
+                        <ul class="more-dropdown">
+                                <li>
+                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                </li>
+                        </ul>
+                        </div>';
+                        }
+                        $output .= ' </div>
+                                <p>'.$comment->message.'</p>
+                                </li>
+                        </ul>';
+                        $postid = $comment->post_id;
+                        $commentid = $comment->id;
+                    }
+                        $output .= '<div id="remove-row-comments'.$comment->post_id.'">';
+                        if ($comments->isEmpty()){
+
+                        }else{
+                            $output .='<a id="btn-more-comment'.$comment->post_id.'" class="more-comments btn-more-comment" data-post="'.$postid.'" data-id="'.$commentid.'">Lihat Komentar Sebelumnya<span>+</span></a>';
+                        }
+                        $output .='</div>';
+
+
+            echo $output;
+        }
+
     }
 
     //notifikasi
