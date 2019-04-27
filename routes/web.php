@@ -84,6 +84,8 @@ Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.edit
 Route::post('tes/123/comment', 'User\GuruController@addComment')->name('guru.addcomment');
 Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name('guru.deletecomment');
 Route::post('tes/123/loadcomment','User\GuruController@loadDataComment')->name('guru.loadcomment');
+Route::get('tes/123/{post}', 'User\GuruController@showPost')->name('guru.show');
+Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru.download');
 
 
 

@@ -141,6 +141,12 @@ class GuruController extends Controller
 
     public function showPost(Post $post)
     {
+        $comments = Comment::where('post_id',$post->id)->get();
+        // dd($comments);
+        return view('guru.show', [
+            'post' => $post,
+            'comments' => $comments
+        ]);
 
     }
 
@@ -263,14 +269,12 @@ class GuruController extends Controller
         $id = $request->id;
         $postid = $request->post;
         $posts = Post::find($postid);
-        $comments = $posts->comments()->where('id', '<', $id)->take(2)->get();
+        $comments = $posts->comments()->where('id', '>', $id)->take(2)->get();
 
 // dd($comments);
         if(!$comments->isEmpty())
         {
-
-
-                foreach($comments as $comment){
+            foreach($comments as $comment){
                 $output .= ' <ul class="comments-list" id="comment-list">
                 <li class="comment-item">
                     <div class="post__author author vcard inline-items">
@@ -298,12 +302,12 @@ class GuruController extends Controller
                         </ul>';
                         $postid = $comment->post_id;
                         $commentid = $comment->id;
-                    }
+            }
                         $output .= '<div id="remove-row-comments'.$comment->post_id.'">';
                         if ($comments->isEmpty()){
 
                         }else{
-                            $output .='<a id="btn-more-comment'.$comment->post_id.'" class="more-comments btn-more-comment" data-post="'.$postid.'" data-id="'.$commentid.'">Lihat Komentar Sebelumnya<span>+</span></a>';
+                            $output .='<a id="btn-more-comment'.$comment->post_id.'" class="more-comments btn-more-comment" data-post="'.$postid.'" data-id="'.$commentid.'">Lihat Komentar Lainnya<span>+</span></a>';
                         }
                         $output .='</div>';
 
@@ -311,6 +315,14 @@ class GuruController extends Controller
             echo $output;
         }
 
+    }
+
+    public function download(Post $post)
+    {
+
+
+        $file = public_path() .'/images/'. $post->file_2;
+        return response()->download($file);
     }
 
     //notifikasi

@@ -11,14 +11,19 @@ class Post extends Model
         'title','content', 'user_id', 'file_1','file_2', 'type' ,
     ];
 
-    public function getImage()
+    public function getImage1()
     {
         return asset('images/' . $this->file_1);
     }
 
+    public function getImage2()
+    {
+        return asset('images/' . $this->file_2);
+    }
+
     public function comments()
     {
-        return $this->hasMany(Comment::class)->latest();
+        return $this->hasMany(Comment::class);
     }
 
     public function user()

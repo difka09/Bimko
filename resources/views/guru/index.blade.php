@@ -112,7 +112,7 @@
                             <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
                             <div class="post__date">
                                 <time class="published" datetime="2004-07-24T18:18">
-                                    9 hours ago
+                                <a href="{{route('guru.show',$post)}}">9 hours ago</a>
                                 </time>
                             </div>
                         </div>
@@ -136,6 +136,7 @@
                         @endif
                     </div>
                         <p>{{$post->content}}</p>
+                <div id="countcomment{{$post->id}}">
                     <div class="post-additional-info inline-items">
                         <div class="comments-shared">
                             <a href="#" class="post-add-icon inline-items">
@@ -144,6 +145,7 @@
                             </a>
                         </div>
                     </div>
+                </div>
                 </article>
 
                 <!-- Comments -->
@@ -179,7 +181,7 @@
                     <div id="remove-row-comments{{$post->id}}">
                             @if ($post->comments->count()==0)
                             @else
-                        <a id="btn-more-comment{{$post->id}}" class="more-comments btn-more-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Lihat Komentar Sebelumnya<span>+</span></a>
+                        <a id="btn-more-comment{{$post->id}}" class="more-comments btn-more-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Lihat Komentar Lainnya<span>+</span></a>
                             @endif
                     </div>
                 </div>
@@ -194,17 +196,16 @@
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">
                             <textarea class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
-                            <div class="add-options-message">
+                            {{-- <div class="add-options-message">
                                 <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                                     <svg class="olymp-camera-icon">
                                         <use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-camera-icon')}}"></use>
                                     </svg>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
-                    <button type="submit" id="btn-comment" class="btn btn-md-2 btn-primary">Post Comment</button>
-                    <button class="btn btn-md-2 btn-border-think c-grey btn-transparent custom-color">Cancel</button>
+                    <button type="submit" id="btn-comment" class="btn btn-md-2 btn-primary">Tulis Komentar</button>
                 </form>
                 <!-- ... end Comment Form  -->
             </div>
@@ -348,6 +349,8 @@ $(document).ready(function(){
                     {
                         $('#remove-row-comments'+post).remove();
                         $('#comment'+post).append(data);
+                        $("#countcomment"+post).load(location.href + " #countcomment"+post);
+
                     }
                     else
                     {

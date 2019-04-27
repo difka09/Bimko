@@ -1,4 +1,3 @@
-//post statusform
 $(document).ready(function (e) {
     $.ajaxSetup({
         headers: {
@@ -6,32 +5,7 @@ $(document).ready(function (e) {
         }
         });
 
-    // var post_id = $(this).data("id");
-    // var post_id = $("#comment-form"+post_id).find("input[name='post_id']").val();
-
-    // if($("#comment-form"+post_id).length > 0){
-    //     $("#comment-form"+post_id).validate({
-    //         submitHandler: function(form){
-    //             // var actionType = $('#btn-comment').val();
-    //             $('#btn-comment'+post_id).html('commenting..');
-
-    //             $.ajax({
-    //                 data: $('#comment-form'+post_id).serialize(),
-    //                 url: urls[3],
-    //                 type: "POST",
-    //                 dataType: 'json',
-    //                 success: function(){
-    //                     // console.log(response)
-    //                     location.reload();
-    //                 },
-    //                 error: function(data){
-    //                     console.log('Error:', data);
-    //                 }
-    //             });
-    //         }
-    //     });
-    // };
-
+//post statusform
     $('#uploadForm').on('submit',(function(e) {
     e.preventDefault();
     var formData = new FormData(this);
@@ -210,6 +184,8 @@ $(document).ready(function (e) {
                 post_id = data['post_id'];
                 comment_id = data['id'];
                 $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+
                 document.getElementById("comment-form"+post_id).reset();
             },
             error: function(data){
@@ -238,6 +214,8 @@ $(document).ready(function (e) {
                                 icon: "success",
                             });
                             $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                            $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+
                         },
                         error: function(data){
                             console.log('Error:' ,data);
@@ -286,61 +264,3 @@ function showFileName4( event ) {
     var fileName4 = input4.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
     infoArea4.textContent = 'File name : ' + fileName4;// use fileName however fits your app best, i.e. add it into a div
   }
-
-
-// $('button#delete-post').on('click', function(){
-//         // var href = $(this).attr('href');
-//         // var title = $(this).data('title');
-//         swal({
-//             title: "Apakah kamu yakin akan hapus postingan ini ?",
-//             text: "Jika menghapus data ini, data akan hilang!",
-//             icon: "warning",
-//             buttons: true,
-//             dangerMode: true,
-//             })
-//             .then((willDelete) => {
-//             if (willDelete) {
-//                 swal("Data telah terhapus", {
-//                 icon: "success",
-//                 });
-//             }
-//         });
-// });
-
-
-// spesial komen
-//  <script>
-//     if ($("#postForm").length > 0){
-//         $("#postForm").validate({
-//             submitHandler: function(form){
-//                 $.ajaxSetup({
-//                     headers: {
-//                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//                         }
-//                     });
-
-//                 $('#btn-save').html('posting..');
-//                 var formData = new FormData($(this)[0]);
-
-//                 $.ajax({
-//                     // data:formData,
-//                     data: $('#postForm').serialize(),
-//                     url: "{{route('guru.addpost')}}",
-//                     type: "POST",
-//                     dataType: 'json',
-//                     success: function(data){
-//                         $('#btn-save').html('Post Status');
-//                         document.getElementById("postForm").reset();
-//                         location.reload();
-
-//                         //untuk komen $("#data-post").load(location.href + " #data-post");
-
-//                     }
-//                 });
-//                 // setInterval(function(){
-//                 //     $('#post-data').html(data.html).fadeIn("slow");
-//                 // }, 1000);
-//             }
-//         })
-//     }
-// </script>
