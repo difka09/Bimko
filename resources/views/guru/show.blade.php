@@ -118,7 +118,7 @@
                         <div class="form-group with-icon-right ">
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">
-                            <textarea class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
+                            <textarea data-id="{{$post->id}}" class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
                             {{-- <div class="add-options-message">
                                 <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                                     <svg class="olymp-camera-icon">
@@ -128,7 +128,8 @@
                             </div> --}}
                         </div>
                     </div>
-                    <button type="submit" id="btn-comment" class="btn btn-md-2 btn-primary">Tulis Komentar</button>
+                    <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                    <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
                 <!-- ... end Comment Form  -->
 
@@ -140,14 +141,68 @@
 
 
 @endsection
+@push('customecss')
+<style>
+    #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+    }
+
+    #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+    }
+
+    @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+    }
+</style>
+@endpush
 
 @push('scripts')
+
+<script>
+function myFunction() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+
 <script>
         // load more comments
     $(document).ready(function(){
         $(document).on('click','.btn-more-comment',function(){
             var id = $(this).data('id');
-            console.log(id);
+            // console.log(id);
             var post = $(this).data('post');
             $("#btn-more-comment"+post).html("...");
             $.ajax({

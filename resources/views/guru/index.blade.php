@@ -51,7 +51,7 @@
                         </div>
                         <div class="add-options-message">
                             <div class="image-upload">
-                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
+                            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top" data-original-title="Upload gambar">
                                 <label for="file_1">
                                 <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
                                 <div id="filename_upload_1"></div>
@@ -195,7 +195,7 @@
                         <div class="form-group with-icon-right ">
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">
-                            <textarea class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
+                            <textarea data-id="{{$post->id}}" class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
                             {{-- <div class="add-options-message">
                                 <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                                     <svg class="olymp-camera-icon">
@@ -205,7 +205,8 @@
                             </div> --}}
                         </div>
                     </div>
-                    <button type="submit" id="btn-comment" class="btn btn-md-2 btn-primary">Tulis Komentar</button>
+                    <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                    <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
                 <!-- ... end Comment Form  -->
             </div>
@@ -299,6 +300,13 @@
 
 @push('scripts')
 
+<script>
+    function myFunction() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
 
 <script>
 // load more timeline post
@@ -335,7 +343,7 @@ $(document).ready(function(){
     $(document).ready(function(){
         $(document).on('click','.btn-more-comment',function(){
             var id = $(this).data('id');
-            console.log(id);
+            // console.log(id);
             var post = $(this).data('post');
             $("#btn-more-comment"+post).html("...");
             $.ajax({
@@ -360,6 +368,45 @@ $(document).ready(function(){
             });
         });
     });
+</script>
+
+<script>
+        // get filename file_1 and file_2
+var input = document.getElementById( 'file_2' );
+var input4 = document.getElementById( 'file_4' );
+var infoArea = document.getElementById( 'filename_upload' );
+var infoArea4 = document.getElementById( 'filename_upload_4' );
+
+var input1 = document.getElementById( 'file_1' );
+var input3 = document.getElementById( 'file_3' );
+var infoArea1 = document.getElementById( 'filename_upload_1' );
+var infoArea3 = document.getElementById( 'filename_upload_3' );
+
+input.addEventListener( 'change', showFileName );
+input1.addEventListener( 'change', showFileName1 );
+input3.addEventListener( 'change', showFileName3 );
+input4.addEventListener( 'change', showFileName4 );
+
+function showFileName( event ) {
+  var input = event.srcElement;// the change event gives us the input it occurred in
+  var fileName = input.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+  infoArea.textContent = 'File name : ' + fileName;// use fileName however fits your app best, i.e. add it into a div
+}
+function showFileName1( event ) {
+    var input1 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName1 = input1.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea1.textContent = 'File name : ' + fileName1;// use fileName however fits your app best, i.e. add it into a div
+  }
+function showFileName3( event ) {
+    var input3 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName3 = input3.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea3.textContent = 'File name : ' + fileName3;// use fileName however fits your app best, i.e. add it into a div
+  }
+function showFileName4( event ) {
+    var input4 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName4 = input4.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea4.textContent = 'File name : ' + fileName4;// use fileName however fits your app best, i.e. add it into a div
+  };
 </script>
 
 

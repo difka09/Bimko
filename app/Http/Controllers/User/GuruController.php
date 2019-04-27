@@ -319,8 +319,6 @@ class GuruController extends Controller
 
     public function download(Post $post)
     {
-
-
         $file = public_path() .'/images/'. $post->file_2;
         return response()->download($file);
     }
