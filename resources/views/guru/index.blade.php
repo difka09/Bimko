@@ -135,7 +135,15 @@
                         </div>
                         @endif
                     </div>
-                        <p>{{$post->content}}</p>
+                    <p>{{$post->content}}</p>
+                    @if ($post->file_2)
+                    <div class="post-thumb">
+                        <a href="{{route('guru.download',$post)}}"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg><span>{{$post->title}}{{substr(($post->file_2),-4)}}</span></a>
+                    <div>
+                    @elseif($post->file_1)
+                        <img src="{{$post->getImage1()}}" alt="author" width="770" height="520">
+                    @else
+                    @endif
                 <div id="countcomment{{$post->id}}">
                     <div class="post-additional-info inline-items">
                         <div class="comments-shared">
