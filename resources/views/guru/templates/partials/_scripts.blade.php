@@ -41,7 +41,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
-    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}"];
+    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}","{{URL::asset('guru/img/author-page.jpg')}}","{{route('guru.loadcommentshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"];
 </script>
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
 

@@ -6,10 +6,10 @@ $(document).ready(function (e) {
         });
 
 //post statusform
-    $('#uploadForm').on('submit',(function(e) {
+    $('#statusForm').on('submit',(function(e) {
     e.preventDefault();
     var formData = new FormData(this);
-    var formURL = $('#uploadForm').attr("action");
+    var formURL = $('#statusForm').attr("action");
     $.ajax({
         type:'POST',
         url: formURL,
@@ -29,7 +29,7 @@ $(document).ready(function (e) {
 
 
 //post fileform
-    $('#postForm').on('submit',(function(e) {
+    $('#uploadForm').on('submit',(function(e) {
         var fileku = $('#file_2').val();
         if(fileku=='')
         {
@@ -37,7 +37,7 @@ $(document).ready(function (e) {
         }
     e.preventDefault();
     var formData = new FormData(this);
-    var formURL = $('#postForm').attr("action");
+    var formURL = $('#uploadForm').attr("action");
 
     $.ajax({
         type:'POST',
@@ -91,7 +91,6 @@ $(document).ready(function (e) {
         e.preventDefault();
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
-        // var content = $("#ajax-crud-modal").find("textarea[name='content']").val();
         var post_id = $("#ajax-crud-modal").find("input[name='id']").val();
         $.ajax({
             dataType: 'json',
@@ -104,7 +103,9 @@ $(document).ready(function (e) {
             processData: false,
             success: function(data){
                 $('#ajax-crud-modal').modal('hide');
-                $("#data-post").load(location.href + " #data-post");
+                location.href=urls[2]+ '/' +post_id;
+                // location.href=urls[2]+ '/' +post_id;
+                // $("#khusus"+post_id).load(location.href + " #khusus"+post_id);
             },
             error: function(data){
                 console.log('Error:' ,data);
@@ -115,10 +116,12 @@ $(document).ready(function (e) {
 
 //  update post2
     $('#updateForm2').on('submit',(function(e) {
+
         e.preventDefault();
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
         var post_id = $("#ajax-crud-modal2").find("input[name='id']").val();
+
         $.ajax({
             dataType: 'json',
             type:'POST',
@@ -129,8 +132,12 @@ $(document).ready(function (e) {
             processData: false,
             success: function(data){
                 $('#ajax-crud-modal2').modal('hide');
-                $("#data-post").load(location.href + " #data-post");
-            },
+                // $("#khusus"+post_id).load(location.href + " #khusus"+post_id);
+                location.href=urls[2]+ '/' +post_id;
+
+
+                // $("#khusus" + post_id).replaceWith(update1);
+             },
             error: function(data){
                 console.log('Error:' ,data);
             }
@@ -141,6 +148,7 @@ $(document).ready(function (e) {
 //delete post
     $('body').on('click', '.delete-post', function(){
         var post_id = $(this).data("id");
+        // console.log(lastFive);
         swal({
             title: "Apakah kamu yakin akan hapus postingan ini ?",
             icon: "warning",
@@ -168,8 +176,8 @@ $(document).ready(function (e) {
 
     });
 
-    // addcomment
-    $('.comment-form').on('submit',(function(e) {
+    // addcomment load and index
+    $('body').on('submit','.comment-form', (function(e) {
         e.preventDefault();
         var data = new FormData($(this)[0]);
         $.ajax({
@@ -180,16 +188,20 @@ $(document).ready(function (e) {
             contentType: false,
             processData: false,
             success:function(data){
-                // console.log(data);
-                post_id = data['post_id'];
-                comment_id = data['id'];
-                document.getElementById("btn-comment"+post_id).disabled = true,
-                document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
-                $("#comment"+post_id).load(location.href + " #comment"+post_id);
-                $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+                console.log(data);
+                console.log([urls[5]])
+                post_id = data[0]['post_id'];
+                comment_id = data[0]['id'];
+                // $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                // $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+
+                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="02-ProfilePage.html">'+data[1][0]['name']+'</a> <div class="post__date"><time class="published" datetime="2004-07-24T18:18">38 mins ago</time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                $('#comment'+post_id).prepend(comment);
 
                 document.getElementById("comment-form"+post_id).reset();
-                $('#btn-comment').hide();
+                document.getElementById("btn-comment"+post_id).disabled = true,
+                document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
+                // $('#btn-comment').hide();
             },
             error: function(data){
                 console.log(data);
@@ -197,10 +209,46 @@ $(document).ready(function (e) {
         });
     }));
 
-    // delete comment
+
+    // delete comment index
     $('body').on('click', '.delete-comment', function(){
+        var idpost = $(this).parents('div.komen').find('input[name=post]').val();
+        var idku = $(this).parents('div.komen').find('input').val();
+        // var idku = $("#comment-list"+post_id+"> li.comment-item > input:text.name_val").val();
+        swal({
+            title: "Apakah kamu yakin akan hapus komentar ini ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+                if(willDelete){
+                    $.ajax({
+                        type: "DELETE",
+                        url: urls[3] + '/' + idku,
+                        success: function(){
+                            swal("Data telah terhapus", {
+                                icon: "success",
+                            });
+                            location.href=urls[2]+ '/' +idpost;
+                            // $("#data-post").load(location.href + " #data-post");
+                            // location.reload(urls[2]+post_id);
+                            // $("#comment"+idpost).load(location.href + "#comment"+idpost);
+                            // $("#countcomment"+idpost).load(location.href + "#countcomment"+idpost);
+                        },
+                        error: function(data){
+                            console.log('Error:' ,data);
+                        }
+                    });
+                }
+            });
+    });
+
+     // delete comment show
+     $('body').on('click', '.delete-comment-show', function(){
         var comment_id = $(this).data("id");
         var post_id = $(this).data("post");
+        // var idku = $("#comment-list"+post_id+"> li.comment-item > input:text.name_val").val();
         swal({
             title: "Apakah kamu yakin akan hapus komentar ini ?",
             icon: "warning",
@@ -218,7 +266,6 @@ $(document).ready(function (e) {
                             });
                             $("#comment"+post_id).load(location.href + " #comment"+post_id);
                             $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
-
                         },
                         error: function(data){
                             console.log('Error:' ,data);
@@ -227,18 +274,76 @@ $(document).ready(function (e) {
                 }
             });
     });
+//for index and show
+    $('.comment-form textarea').on('keyup', function(){
+        var id = $(this).data("id");
+        console.log(id);
+    if($.trim(this.value).length > 0)
+        document.getElementById("btn-comment"+id).style.pointerEvents = "auto",
+        document.getElementById("btn-comment"+id).disabled = false;
+
+    else
+        document.getElementById("btn-comment"+id).disabled = true,
+        document.getElementById("btn-comment"+id).style.pointerEvents = "none";
+
+    });
+
+//for loadmore index
+$(document).on('keyup', '.tgInput', function(){
+        var id = $(this).data("id");
+        console.log(id);
+    if($.trim(this.value).length > 0)
+        document.getElementById("btn-comment"+id).style.pointerEvents = "auto",
+        document.getElementById("btn-comment"+id).disabled = false;
+
+    else
+        document.getElementById("btn-comment"+id).disabled = true,
+        document.getElementById("btn-comment"+id).style.pointerEvents = "none";
+
+    });
 
 });
 
-$('.comment-form textarea').on('keyup', function(){
-    var id = $(this).data("id");
-    // console.log(id);
-if($.trim(this.value).length > 0)
-    document.getElementById("btn-comment"+id).style.pointerEvents = "auto",
-    document.getElementById("btn-comment"+id).disabled = false;
+//validation textarea
+// $(document).ready(function() {
+//     $("textarea").keypress(function(e) {
+//       var length = this.value.length;
+//       if (length == 250) {
+//         e.preventDefault();
+//         $("div.error-message").html("Maksimal 250 karakter");
+//       }
+//     }),
+//     $("textarea").on('keydown', function(e){
+//       $("div.error-message").html("");
+//   });
 
-else
-    document.getElementById("btn-comment"+id).disabled = true,
-    document.getElementById("btn-comment"+id).style.pointerEvents = "none";
+//   });
 
-});
+ // addcomment oonly 1page no append
+//  $('.comment-form').on('submit',(function(e) {
+//     e.preventDefault();
+//     var data = new FormData($(this)[0]);
+//     $.ajax({
+//         type:'POST',
+//         url: urls[3],
+//         data: data,
+//         cache:false,
+//         contentType: false,
+//         processData: false,
+//         success:function(data){
+//             // console.log(data);
+//             post_id = data['post_id'];
+//             comment_id = data['id'];
+//             $("#comment"+post_id).load(location.href + " #comment"+post_id);
+//             $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+
+//             document.getElementById("comment-form"+post_id).reset();
+//             document.getElementById("btn-comment"+post_id).disabled = true,
+//             document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
+//             // $('#btn-comment').hide();
+//         },
+//         error: function(data){
+//             console.log(data);
+//         }
+//     });
+// }));

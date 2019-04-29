@@ -32,73 +32,12 @@ class GuruController extends Controller
 
     public function index()
     {
-        $posts = Post::latest()->limit(2)->get();
+
+
+        $posts = Post::latest()->limit(5)->get();
+
 
         return view('guru.index', compact('posts'));
-    }
-
-    public function loadDataAjax(Request $request)
-    {
-        $output = '';
-        $id = $request->id;
-        $posts = DB::table('posts')
-                                ->where('posts.id','<',$id)
-                                ->join('users', 'users.id', '=', 'posts.user_id')->orderBy('posts.created_at','DESC')
-                                ->limit(2)
-
-                                ->get(['posts.id as postid','posts.content','posts.type', 'users.name as username' ,'users.id as usersid', 'users.email', 'users.phone', 'users.school_id', 'users.file as userphoto']);
-
-
-        if(!$posts->isEmpty())
-        {
-            foreach($posts as $post)
-            {
-                $output .= ' <article class="hentry post">
-                <div class="post__author author vcard inline-items">
-                <img src="'.asset('guru/img/avatar10-sm.jpg').'" alt="author">
-
-                <div class="author-date">
-                    <a class="h6 post__author-name fn" href="#">'.$post->username.'</a>
-                    <div class="post__date">
-                        <time class="published" datetime="2004-07-24T18:18">
-                            9 hours ago
-                        </time>
-                    </div>
-                </div>';
-
-                if(($post->usersid == auth()->user()->id))
-                $output .= '
-                <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
-                    <ul class="more-dropdown">
-                        <li>
-                            <a href="#">Edit Post</a>
-                        </li>
-                        <li>
-                            <a href="#">Delete Post</a>
-                        </li>
-                    </ul>
-                </div>';
-            $output .= '
-            </div>
-                <p>'.$post->content.'</p>
-            <div class="post-additional-info inline-items">
-                <div class="comments-shared">
-                    <a href="#" class="post-add-icon inline-items">
-                        <svg class="olymp-speech-balloon-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon').'"></use></svg>
-                        <span>17</span>
-                    </a>
-                </div>
-            </div>
-            </article>';
-            $last_id = $post->postid;
-            }
-            $output.= '<div id="remove-row">
-            <a id="btn-more" class="btn btn-control" data-id="'.$last_id.'" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon').'"></use></svg></a>
-            </div>
-            ';
-            echo $output;
-
-        }
     }
 
     public function addPost(Request $request)
@@ -141,7 +80,7 @@ class GuruController extends Controller
 
     public function showPost(Post $post)
     {
-        $comments = Comment::where('post_id',$post->id)->get();
+        $comments = Comment::where('post_id',$post->id)->latest()->get();
         // dd($comments);
         return view('guru.show', [
             'post' => $post,
@@ -231,8 +170,11 @@ class GuruController extends Controller
             'user_id' => auth()->user()->id
 
         ]);
+        $id = auth()->user()->id;
+        $user = User::where('id','=',$id)->get();
 
-        return response()->json($data);
+        return response()->json([$data,$user]);
+
         // return response();
         // $tesparent = $comment->parent_id;
         // $tesuser = $comment->user_id;
@@ -257,64 +199,20 @@ class GuruController extends Controller
 
 
     }
+    public function tes()
+    {
+        $comments = new Comment();
+        $id = $comments->user_id = auth()->user()->id;
+        $user = User::where('id','=',$id)->get();
+        dd($user);
+
+
+
+    }
 
     public function deleteComment($id)
     {
         $comment = Comment::find($id)->delete();
-    }
-
-    public function loadDataComment(Request $request)
-    {
-        $output = '';
-        $id = $request->id;
-        $postid = $request->post;
-        $posts = Post::find($postid);
-        $comments = $posts->comments()->where('id', '>', $id)->take(2)->get();
-
-// dd($comments);
-        if(!$comments->isEmpty())
-        {
-            foreach($comments as $comment){
-                $output .= ' <ul class="comments-list" id="comment-list">
-                <li class="comment-item">
-                    <div class="post__author author vcard inline-items">
-                        <img src="'.asset('guru/img/author-page.jpg').'" alt="author">
-                        <div class="author-date">
-                            <a class="h6 post__author-name fn" href="02-ProfilePage.html">'.$comment->user->name.'</a>
-                            <div class="post__date">
-                                <time class="published" datetime="2004-07-24T18:18">
-                                    38 mins ago
-                                </time>
-                            </div>
-                        </div>';
-                        if($comment->user_id == auth()->user()->id){
-                        $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
-                        <ul class="more-dropdown">
-                                <li>
-                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
-                                </li>
-                        </ul>
-                        </div>';
-                        }
-                        $output .= ' </div>
-                                <p>'.$comment->message.'</p>
-                                </li>
-                        </ul>';
-                        $postid = $comment->post_id;
-                        $commentid = $comment->id;
-            }
-                        $output .= '<div id="remove-row-comments'.$comment->post_id.'">';
-                        if ($comments->isEmpty()){
-
-                        }else{
-                            $output .='<a id="btn-more-comment'.$comment->post_id.'" class="more-comments btn-more-comment" data-post="'.$postid.'" data-id="'.$commentid.'">Lihat Komentar Lainnya<span>+</span></a>';
-                        }
-                        $output .='</div>';
-
-
-            echo $output;
-        }
-
     }
 
     public function download(Post $post)
@@ -350,6 +248,9 @@ class GuruController extends Controller
     //     $lessons = auth()->user()->readNotifications;
     //     return view('allLesson', compact('lessons'));
     // }
+
+
+
 
 
 

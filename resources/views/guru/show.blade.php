@@ -77,6 +77,8 @@
                 <!-- Comments -->
                 <ul class="comments-list" id="comment-list">
                         <li class="comment-item">
+                            {{-- <input type="text" name="ax" class="name_val" value="{{$comment->id}}">
+                            <input type="text" name="post" class="name_val" value="{{$comment->post_id}}"> --}}
                             <div class="post__author author vcard inline-items">
                                 <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
                                 <div class="author-date">
@@ -91,7 +93,7 @@
                                 <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                 <ul class="more-dropdown">
                                         <li>
-                                        <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                        <a class="delete-comment-show" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
                                         </li>
                                 </ul>
                                 </div>
@@ -206,7 +208,7 @@ function myFunction() {
             var post = $(this).data('post');
             $("#btn-more-comment"+post).html("...");
             $.ajax({
-                url : urls[4],
+                url : urls[6],
                 method : "POST",
                 data : {id:id, post:post, _token:"{{csrf_token()}}"},
                 dataType : "text",
@@ -216,7 +218,9 @@ function myFunction() {
                     {
                         $('#remove-row-comments'+post).remove();
                         $('#comment'+post).append(data);
-                        $("#countcomment"+post).load(location.href + " #countcomment"+post);                    }
+                        $("#countcomment"+post).load(location.href + " #countcomment"+post);
+                        // $("#comment"+post).load(location.href + " #comment"+post);
+                    }
                     else
                     {
                         $('#btn-more-comment'+post).html("No Data");

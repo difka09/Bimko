@@ -39,7 +39,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="status" role="tabpanel" aria-expanded="true">
-                    <form id="uploadForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
+                    <form id="statusForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="author-thumb">
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
@@ -48,6 +48,7 @@
                             <label class="control-label">Share what you are thinking here...</label>
                             <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
                             <textarea class="form-control" name="content" id="content" placeholder="" required></textarea>
+                            {{-- <div class="error-message" style="color:red"></div> --}}
                         </div>
                         <div class="add-options-message">
                             <div class="image-upload">
@@ -65,7 +66,7 @@
                 </div>
 
                 <div class="tab-pane" id="upload" role="tabpanel" aria-expanded="true">
-                    <form id="postForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
+                    <form id="uploadForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="author-thumb">
                                 <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
@@ -75,6 +76,7 @@
                                 <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
                                 <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
                                 <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" required></textarea>
+                                {{-- <div style="color:red" class="error-message"></div> --}}
 
 
                             </div>
@@ -99,10 +101,7 @@
     <div id="load-data">
         <div id="data-post">
         @foreach ($posts as $post)
-        <?php
-        $comments = $post->comments->take(2);
-        ?>
-        <div id="newsfeed-items-grid">
+        <div id="newsfeed-items-grid{{$post->id}}">
             <div class="ui-block">
                 <article class="hentry post"  id="post_id_{{$post->id}}">
                     <div class="post__author author vcard inline-items">
@@ -135,19 +134,21 @@
                         </div>
                         @endif
                     </div>
-                    <p>{{$post->content}}</p>
-                    @if ($post->file_2)
+                    <div id="khusus{{$post->id}}">
+                        <p>{{$post->content}}</p>
+                        @if ($post->file_2)
                     <div class="post-thumb">
                         <a href="{{route('guru.download',$post)}}"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg><span>{{$post->title}}{{substr(($post->file_2),-4)}}</span></a>
-                    <div>
+                    </div>
                     @elseif($post->file_1)
                         <img src="{{$post->getImage1()}}" alt="author" width="770" height="520">
                     @else
                     @endif
-                <div id="countcomment{{$post->id}}">
+                    </div>
+                <div id="countcomment{{$post->id}}" class="countcomment">
                     <div class="post-additional-info inline-items">
                         <div class="comments-shared">
-                            <a href="#" class="post-add-icon inline-items">
+                            <a class="post-add-icon inline-items">
                                 <svg class="olymp-speech-balloon-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}"></use></svg>
                                 <span>{{$post->comments->count()}}</span>
                             </a>
@@ -157,10 +158,16 @@
                 </article>
 
                 <!-- Comments -->
-                <div id="comment{{$post->id}}">
+                <?php $comments = $post->comments->take(3);?>
+                <div id="comment{{$post->id}}" class="comment">
+                    {{-- <textarea>{{$post->id}}</textarea> --}}
                 @foreach ($comments as $comment)
+                {{-- @if ($comments->count()>5) --}}
                 <ul class="comments-list" id="comment-list">
+                    <div class="komen">
                     <li class="comment-item">
+                        <input type="hidden" name="ax" class="name_val" value="{{$comment->id}}">
+                        <input type="hidden" name="post" class="name_val" value="{{$comment->post_id}}">
                         <div class="post__author author vcard inline-items">
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
                             <div class="author-date">
@@ -183,12 +190,16 @@
                         </div>
                         <p>{{$comment->message}}</p>
                     </li>
+                    </div>
                 </ul>
+                {{-- @break
+                @endif
+                @continue --}}
                 @endforeach
                 <!-- ... end Comments -->
                     <div id="remove-row-comments{{$post->id}}">
                             @if ($post->comments->count()==0)
-                            @else
+                            @elseif($post->comments->count() > 3)
                         <a id="btn-more-comment{{$post->id}}" class="more-comments btn-more-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Lihat Komentar Lainnya<span>+</span></a>
                             @endif
                     </div>
@@ -197,6 +208,7 @@
 
                 <!-- Comment Form  -->
                 <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
+                {{-- <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="{{route('guru.addcomment')}}" class="comment-form inline-items" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="post__author author vcard inline-items">
                         <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
@@ -224,6 +236,7 @@
         @endforeach
     </div>
     </div>
+    <div id="iniload"></div>
     <div id="remove-row">
         @if (empty($myid))
         <div title="Data tidak ditemukan">
@@ -296,6 +309,7 @@
                         </label>
                     </a>
                     <input type="file" name="file_2" id="file_4">
+
                     </div>
                     <button type="submit" id="btn-save2" class="btn btn-primary btn-md-2 btn-save2">Edit Post</button>
                 </div>
@@ -330,11 +344,13 @@ $(document).ready(function(){
            dataType : "text",
            success : function (data)
            {
-               console.log(data);
+            //    console.log(data);
               if(data != '')
               {
                   $('#remove-row').remove();
-                  $('#load-data').append(data);
+                  $('#iniload').append(data);
+                //   $("#comment").load(location.href + " #comment");
+                //   btn-comment{{$post->id}}
               }
               else
               {
@@ -351,7 +367,7 @@ $(document).ready(function(){
     $(document).ready(function(){
         $(document).on('click','.btn-more-comment',function(){
             var id = $(this).data('id');
-            // console.log(id);
+            console.log(id);
             var post = $(this).data('post');
             $("#btn-more-comment"+post).html("...");
             $.ajax({
@@ -365,6 +381,7 @@ $(document).ready(function(){
                     {
                         $('#remove-row-comments'+post).remove();
                         $('#comment'+post).append(data);
+                        // $("#comment"+post).load(location.href + " #comment"+post);
                         $("#countcomment"+post).load(location.href + " #countcomment"+post);
 
                     }
@@ -417,5 +434,13 @@ function showFileName4( event ) {
   };
 </script>
 
+     {{-- $(document).ready(function () {
+     $(".content").hide();
+     $(".show_hide").on("click", function () {
+         var txt = $(".content").is(':visible') ? 'Read More' : 'Read Less';
+         $(".show_hide").text(txt);
+         $(this).next('.content').slideToggle(200);
+     });
+ }); --}}
 
 @endpush

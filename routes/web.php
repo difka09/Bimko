@@ -66,15 +66,17 @@ Route::delete('hapus/comment/{feedcomment}','User\GuestController@deleteComment'
 Route::get('guest/shownotification','User\GuestController@showNotification')->middleware('auth', 'role:Murid,guest')->name('guest.shownotification');
 
 Route::get('tes/123','User\GuruController@index')->middleware('auth')->name('guru.index');
-Route::post('tes/123','User\GuruController@loadDataAjax')->middleware('auth')->name('guru.loaddata');
 
 // Route::get('tes/12','User\GuruController@indexs')->name('guru.indexs');
 // Route::post('tes/12/load_data', 'User\GuruController@load_data')->name('loadmore.load_data');
 
 
+//load
+Route::post('tes/123','User\LoadController@loadDataAjax')->middleware('auth')->name('guru.loaddata');
+Route::post('tes/123/loadcomment','User\LoadController@loadDataComment')->name('guru.loadcomment');
+Route::post('tes/123/loadcommentshow','User\LoadController@loadDataCommentShow')->name('guru.loadcommentshow');
 
 //guru
-
 Route::post('tes/123/post', 'User\GuruController@addPost')->name('guru.addpost');
 Route::post('tes/123/status', 'User\GuruController@addStatus')->name('guru.addstatus');
 Route::delete('tes/123/{id}', 'User\GuruController@deletePost')->name('guru.deletepost');
@@ -83,9 +85,10 @@ Route::put('tes/123/post/{id}', 'User\GuruController@updatePost')->name('guru.up
 Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.editpost');
 Route::post('tes/123/comment', 'User\GuruController@addComment')->name('guru.addcomment');
 Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name('guru.deletecomment');
-Route::post('tes/123/loadcomment','User\GuruController@loadDataComment')->name('guru.loadcomment');
 Route::get('tes/123/{post}', 'User\GuruController@showPost')->name('guru.show');
 Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru.download');
+
+Route::get('ajeb','User\GuruController@tes');
 
 
 
