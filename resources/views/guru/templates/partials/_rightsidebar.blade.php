@@ -20,7 +20,7 @@
 <div class="ui-block">
     <div class="ui-block-title">
         <h6 class="title">Recent File Upload</h6>
-        <a href="#" class="more"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg></a>
+        <a href="{{route('guru.filepage')}}" class="more"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg></a>
     </div>
     <!-- W-Activity-Feed -->
     <ul class="widget w-activity-feed notification-list">

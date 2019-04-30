@@ -1,4 +1,18 @@
 @extends('guru.templates.wtsidebar')
+@push('uploadicon')
+<style>
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload a
+{
+    width: 80px;
+    cursor: pointer;
+}
+</style>
+@endpush
 @section('content')
 
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
@@ -8,47 +22,102 @@
         </div>
         <div class="ui-block-content">
             <!-- Personal Information Form  -->
-            <form>
+            <form action="{{ route('guru.updateprofil')}}" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method("PUT")
+
                 <div class="row">
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="form-group label-floating is-empty">
-                            <label class="control-label">First Name</label>
-                            <input class="form-control" placeholder="" type="text" value="">
+                        <div class="form-group label-floating is-select">
+                            <label class="control-label">Nama Lengkap</label>
+                            <input class="form-control" placeholder="" type="text" name="name" value="{{$user->name}}">
                         <span class="material-input"></span></div>
 
-                        <div class="form-group label-floating is-empty">
-                            <label class="control-label">Your Email</label>
-                            <input class="form-control" placeholder="" type="email" value="">
-                        <span class="material-input"></span></div>
-
-                        <div class="form-group date-time-picker label-floating is-empty">
-                            <label class="control-label">Your Birthday</label>
-                            <input name="datetimepicker" value="">
-                            <span class="input-group-addon">
-                                 <svg class="olymp-month-calendar-icon icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-month-calendar-icon')}}"></use></svg>
-                            </span>
+                        <div class="form-group label-floating is-select">
+                            <label class="control-label">Email</label>
+                            <input class="form-control" placeholder="" type="email" name="email" value="{{$user->email}}" disabled>
+                        <span class="material-input"></span>
                         </div>
+
+                        <div class="form-group label-floating is-empty">
+                                <label class="control-label">Password</label>
+                                <input class="form-control" placeholder="" type="password" name="password">
+                                <span >(*)untuk password baru</span>
+                            <span class="material-input"></span>
+                        </div>
+
+                        <div class="form-group label-floating is-select">
+                                <label class="control-label">NIP</label>
+                                <input class="form-control" placeholder="" type="number" name="identity" value="{{$user->identity}}">
+                            <span class="material-input"></span>
+                        </div>
+
+                        <div class="form-group label-floating is-select">
+                                <label class="control-label">Sekolah</label>
+                            <div class="btn-group bootstrap-select form-control">
+                                <select class="selectpicker form-control" tabindex="-98">
+                                    <option value="MA">Married</option>
+                                    <option value="FE">Not Married</option>
+                                </select>
+                            </div>
+                                <span class="material-input"></span>
+                        </div>
+
+                        <div class="form-group label-floating is-select">
+                            <label class="control-label">Kelas</label>
+                        <div class="btn-group bootstrap-select form-control">
+                            <select name="grade" class="selectpicker form-control" tabindex="-98">
+                                <option value="10" {{$user->grade == 10  ? 'selected' : ''}}>10</option>
+                                <option value="11" {{$user->grade == 11  ? 'selected' : ''}}>11</option>
+                                <option value="12" {{$user->grade == 12  ? 'selected' : ''}}>12</option>
+                            </select>
+                        </div>
+                            <span class="material-input"></span>
+                        </div>
+
                     </div>
 
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="form-group label-floating is-empty">
-                            <label class="control-label">Last Name</label>
-                            <input class="form-control" placeholder="" type="text" value="">
-                        <span class="material-input"></span></div>
 
-                        <div class="form-group label-floating is-empty">
-                            <label class="control-label">Your Website</label>
-                            <input class="form-control" placeholder="" type="email" value="">
-                        <span class="material-input"></span></div>
+                        <div class="form-group date-time-picker label-floating is-empty">
+                            <label class="control-label">Tanggal Lahir</label>
+                            <input name="datetimepicker" value="">
+                            <span class="input-group-addon">
+                                    <svg class="olymp-month-calendar-icon icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-month-calendar-icon')}}"></use></svg>
+                            </span>
+                        </div>
+                        <div class="form-group label-floating is-select">
+                                <label class="control-label">Telepon</label>
+                                <input class="form-control" placeholder="" type="number" name="phone" value="{{$user->phone}}">
+                            <span class="material-input"></span>
+                        </div>
+                        <div class="form-group label-floating">
+                        <div class="photo-album-item" data-mh="album-item" style="height: 430px">
+								<div class="photo-item" style="height: 370px;max-height: 370px; width: 433.5px; max-width: 433.5px; display:inline-block">
+									<img id="showImg" src="{{$user->getImage()}}" alt="photo">
+									<div class="overlay overlay-dark"></div>
+								</div>
+								<div class="content">
+                                    <div class="image-upload">
+                                   <label for="imgProfil">
+                                        <b><a style="color: black">Pilih Gambar</a></b>
+                                    </label>
+                                        <input accept="image/x-png,image/gif,image/jpeg" type="file" id="imgProfil" name="file">
+                                    </div>
+								</div>
 
+                        </div>
+                        <span class="material-input"></span>
 
-                        <div class="form-group label-floating is-empty">
-                            <label class="control-label">Your Phone Number</label>
+                        </div>
+                        {{-- <div class="form-group label-floating is-empty">
+                            <label class="control-label">Guru Kelas</label>
                             <input class="form-control" placeholder="" type="text">
-                        <span class="material-input"></span></div>
+                            <span class="material-input"></span>
+                        </div> --}}
                     </div>
 
-                    <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
+                    {{-- <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
                         <div class="form-group label-floating is-select">
                             <label class="control-label">Your Country</label>
                             <div class="btn-group bootstrap-select form-control"><button type="button" class="btn dropdown-toggle btn-secondary" data-toggle="dropdown" role="button" title="United States" aria-expanded="false"><span class="filter-option pull-left">United States</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" x-placement="bottom-start" style="max-height: 407.828px; overflow: hidden; min-height: 0px; position: absolute; transform: translate3d(0px, 58px, 0px); top: 0px; left: 0px; will-change: transform;"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 389.828px; overflow-y: auto; min-height: 0px;"><li data-original-index="0" class="selected"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">United States</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Australia</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker form-control" tabindex="-98">
@@ -56,8 +125,8 @@
                                 <option value="AU">Australia</option>
                             </select></div>
                         <span class="material-input"></span></div>
-                    </div>
-                    <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
+                    </div> --}}
+                    {{-- <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
                         <div class="form-group label-floating is-select">
                             <label class="control-label">Your State / Province</label>
                             <div class="btn-group bootstrap-select form-control"><button type="button" class="btn dropdown-toggle btn-secondary" data-toggle="dropdown" role="button" title="California" aria-expanded="false"><span class="filter-option pull-left">California</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" x-placement="bottom-start" style="max-height: 407.828px; overflow: hidden; min-height: 0px; position: absolute; transform: translate3d(0px, 58px, 0px); top: 0px; left: 0px; will-change: transform;"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 389.828px; overflow-y: auto; min-height: 0px;"><li data-original-index="0" class="selected"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">California</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Texas</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker form-control" tabindex="-98">
@@ -65,8 +134,8 @@
                                 <option value="TE">Texas</option>
                             </select></div>
                         <span class="material-input"></span></div>
-                    </div>
-                    <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
+                    </div> --}}
+                    {{-- <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
                         <div class="form-group label-floating is-select">
                             <label class="control-label">Your City</label>
                             <div class="btn-group bootstrap-select form-control"><button type="button" class="btn dropdown-toggle btn-secondary" data-toggle="dropdown" role="button" title="San Francisco" aria-expanded="false"><span class="filter-option pull-left">San Francisco</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" x-placement="bottom-start" style="max-height: 407.828px; overflow: hidden; min-height: 0px; position: absolute; transform: translate3d(0px, 58px, 0px); top: 0px; left: 0px; will-change: transform;"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 389.828px; overflow-y: auto; min-height: 0px;"><li data-original-index="0" class="selected"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">San Francisco</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class=" dropdown-item" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">New York</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker form-control" tabindex="-98">
@@ -74,8 +143,8 @@
                                 <option value="NY">New York</option>
                             </select></div>
                         <span class="material-input"></span></div>
-                    </div>
-                    <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    </div> --}}
+                    {{-- <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="form-group label-floating is-empty">
                             <label class="control-label">Write a little description about you</label>
                             <textarea class="form-control" placeholder="">text</textarea>
@@ -93,8 +162,8 @@
                             <label class="control-label">Religious Belifs</label>
                             <input class="form-control" placeholder="" type="text">
                         <span class="material-input"></span></div>
-                    </div>
-                    <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    </div> --}}
+                    {{-- <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="form-group label-floating is-empty">
                             <label class="control-label">Your Birthplace</label>
                             <input class="form-control" placeholder="" type="text">
@@ -117,8 +186,8 @@
                             <label class="control-label">Political Incline</label>
                             <input class="form-control" placeholder="" type="text" value="">
                         <span class="material-input"></span></div>
-                    </div>
-                    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    </div> --}}
+                    {{-- <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="form-group with-icon label-floating">
                             <label class="control-label">Your Facebook Account</label>
                             <input class="form-control" type="text" value="www.facebook.com/james-spiegel95321">
@@ -144,12 +213,14 @@
                             <input class="form-control" type="text">
                             <svg class="svg-inline--fa fa-spotify fa-w-16 c-spotify" aria-hidden="true" data-prefix="fab" data-icon="spotify" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><!-- <i class="fab fa-spotify c-spotify" aria-hidden="true"></i> -->
                         <span class="material-input"></span></div>
-                    </div>
+                    </div> --}}
+
+                    <input type="hidden" value="{{$user->id}}" name="id">
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
                         <button class="btn btn-secondary btn-lg full-width">Restore all Attributes</button>
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-                        <button class="btn btn-primary btn-lg full-width">Save all Changes</button>
+                        <button type="submit" class="btn btn-primary btn-lg full-width">Save all Changes</button>
                     </div>
                 </div>
             </form>
@@ -159,3 +230,24 @@
 </div>
 
 @endsection
+@push('scripts')
+<script>
+function readURL(input) {
+
+if (input.files && input.files[0]) {
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    $('#showImg').attr('src', e.target.result);
+  }
+
+  reader.readAsDataURL(input.files[0]);
+}
+}
+
+$("#imgProfil").change(function() {
+readURL(this);
+});
+</script>
+
+@endpush

@@ -19,7 +19,7 @@
                     @endif
                     <div class="single-post-additional inline-items">
                         <div class="post__author author vcard inline-items">
-                            <img alt="author" src="{{asset('guru/img/avatar84-sm.jpg')}}" class="avatar">
+                            <img alt="author" src="{{$post->user->getImage()}}" class="avatar">
                             <div class="author-date not-uppercase">
                                 <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
                                 <div class="author_prof">
@@ -80,7 +80,7 @@
                             {{-- <input type="text" name="ax" class="name_val" value="{{$comment->id}}">
                             <input type="text" name="post" class="name_val" value="{{$comment->post_id}}"> --}}
                             <div class="post__author author vcard inline-items">
-                                <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                                <img src="{{$comment->user->getImage()}}" alt="author">
                                 <div class="author-date">
                                     <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
                                     <div class="post__date">
@@ -113,10 +113,10 @@
                 </div>
 
                 <!-- Comment Form  -->
-                <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
+                <form method="post" id="comment-form-show" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
                     @csrf
                     <div class="post__author author vcard inline-items">
-                        <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                        <img src="{{auth()->user()->getImage()}}" alt="author">
                         <div class="form-group with-icon-right ">
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">

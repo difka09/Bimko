@@ -41,9 +41,9 @@
                 <div class="tab-pane active" id="status" role="tabpanel" aria-expanded="true">
                     <form id="statusForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
                         @csrf
-                        <div class="author-thumb">
+                        {{-- <div class="author-thumb">
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
-                        </div>
+                        </div> --}}
                         <div class="form-group with-icon label-floating is-empty">
                             <label class="control-label">Share what you are thinking here...</label>
                             <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
@@ -68,9 +68,9 @@
                 <div class="tab-pane" id="upload" role="tabpanel" aria-expanded="true">
                     <form id="uploadForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
                             @csrf
-                            <div class="author-thumb">
+                            {{-- <div class="author-thumb">
                                 <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
-                            </div>
+                            </div> --}}
                             <div class="form-group with-icon label-floating is-empty">
                                 {{-- <label class="control-label">Share what you are thinking here...</label> --}}
                                 <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
@@ -105,7 +105,7 @@
             <div class="ui-block">
                 <article class="hentry post"  id="post_id_{{$post->id}}">
                     <div class="post__author author vcard inline-items">
-                        <img src="{{asset('guru/img/avatar10-sm.jpg')}}" alt="author">
+                        <img src="{{$post->user->getImage()}}" alt="author">
 
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
@@ -169,7 +169,7 @@
                         <input type="hidden" name="ax" class="name_val" value="{{$comment->id}}">
                         <input type="hidden" name="post" class="name_val" value="{{$comment->post_id}}">
                         <div class="post__author author vcard inline-items">
-                            <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                            <img src="{{$comment->user->getImage()}}" alt="author">
                             <div class="author-date">
                                 <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
                                 <div class="post__date">
@@ -207,11 +207,11 @@
 
 
                 <!-- Comment Form  -->
-                <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form inline-items" enctype="multipart/form-data">
+                <form method="post" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form form-komen inline-items" enctype="multipart/form-data">
                 {{-- <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="{{route('guru.addcomment')}}" class="comment-form inline-items" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="post__author author vcard inline-items">
-                        <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                        <img src="{{auth()->user()->getImage()}}" alt="author">
                         <div class="form-group with-icon-right ">
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">
@@ -350,7 +350,6 @@ $(document).ready(function(){
                   $('#remove-row').remove();
                   $('#iniload').append(data);
                 //   $("#comment").load(location.href + " #comment");
-                //   btn-comment{{$post->id}}
               }
               else
               {
@@ -382,7 +381,7 @@ $(document).ready(function(){
                         $('#remove-row-comments'+post).remove();
                         $('#comment'+post).append(data);
                         // $("#comment"+post).load(location.href + " #comment"+post);
-                        $("#countcomment"+post).load(location.href + " #countcomment"+post);
+                        // $("#countcomment"+post).load(location.href + " #countcomment"+post);
 
                     }
                     else

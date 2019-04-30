@@ -20,4 +20,9 @@ class School extends Model
         return asset('images/' . $this->image);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

@@ -1,4 +1,18 @@
 @extends('guru.templates.defaultprofil')
+@push('uploadicon')
+<style>
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload svg
+{
+    width: 80px;
+    cursor: pointer;
+}
+</style>
+@endpush
 @section('content')
 
 <div class="container">
@@ -10,25 +24,28 @@
                     <img src="{{asset('guru/img/top-header1.jpg')}}" alt="nature">
                 </div>
                 <div class="profile-section">
-                    <div class="control-block-button">
+                    @if($user->id == auth()->user()->id)
+                    <div class="control-block-button" style="margin-top:10px">
                         <div class="btn btn-control bg-primary more">
-                            <svg class="olymp-settings-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-settings-icon')}}"></use></svg>
+                            <svg style="margin-top:10px" class="olymp-settings-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-settings-icon')}}"></use></svg>
                             <ul class="more-dropdown more-with-triangle triangle-bottom-right">
                                 <li>
-                                    <a href="29-YourAccount-AccountSettings.html">Account Settings</a>
+                                    <a href="{{route('guru.editprofil')}}">Edit Akun</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
+                    @endif
                 </div>
+
+
                 <div class="top-header-author">
-                    <a href="02-ProfilePage.html" class="author-thumb">
-                        <img src="{{asset('guru/img/author-main1.jpg')}}" alt="author">
+                    <a class="author-thumb">
+                        <img style="width:100%;height: 100%" src="{{$user->getimage()}}" alt="author">
                     </a>
                     <div class="author-content">
-                        <a href="02-ProfilePage.html" class="h4 author-name">James Spiegel</a>
-                    <div class="country">San Francisco, CA</div>
+                        <a class="h4 author-name">{{$user->name}}</a>
+                    <div class="country">{{$user->school->name}}</div>
                     </div>
                 </div>
             </div>
@@ -41,116 +58,232 @@
     <div class="row">
         <!-- Main Content -->
         <div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-            <div id="newsfeed-items-grid">
+        @if($user->id == auth()->user()->id)
+        <div class="ui-block">
+                <!-- News Feed Form  -->
+            <div class="news-feed-form">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active inline-items" data-toggle="tab" href="#status" role="tab" aria-expanded="true">
+                            <svg class="olymp-status-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-status-icon')}}"></use></svg>
+                            <span>Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link inline-items" data-toggle="tab" href="#upload" role="tab" aria-expanded="false">
+                            <svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg>
+                            <span>Upload File</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="status" role="tabpanel" aria-expanded="true">
+                        <form id="statusForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group with-icon label-floating is-empty">
+                                <label class="control-label">Share what you are thinking here...</label>
+                                <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
+                                <textarea class="form-control" name="content" id="content" placeholder="" required></textarea>
+                                {{-- <div class="error-message" style="color:red"></div> --}}
+                            </div>
+                            <div class="add-options-message">
+                                <div class="image-upload">
+                                <a href="#" class="options-message" data-toggle="tooltip" data-placement="top" data-original-title="Upload gambar">
+                                    <label for="file_1">
+                                    <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                                    <div id="filename_upload_1"></div>
+                                    </label>
+                                </a>
+                                <input type="file" name="file_1" id="file_1">
+                                <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post Status</button>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="upload" role="tabpanel" aria-expanded="true">
+                        <form id="uploadForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group with-icon label-floating is-empty">
+                                    {{-- <label class="control-label">Share what you are thinking here...</label> --}}
+                                    <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
+                                    <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
+                                    <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" required></textarea>
+                                    {{-- <div style="color:red" class="error-message"></div> --}}
+
+
+                                </div>
+                                <div class="add-options-message">
+                                    <div class="image-upload">
+                                    <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload File">
+                                        <label for="file_2">
+                                        <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
+                                        <div id="filename_upload"></div>
+                                        </label>
+                                    </a>
+                                    <input type="file" name="file_2" id="file_2" nonvalidate>
+                                    <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post File</button>
+                                </div>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            </div>
+                <!-- ... end News Feed Form  -->
+            </div>
+            @endif
+            <div id="load-data">
+            <div id="data-post">
+            @foreach ($posts as $post)
+            <div id="newsfeed-items-grid{{$post->id}}">
                 <div class="ui-block">
-                    <article class="hentry post">
+                    <article class="hentry post"  id="post_id_{{$post->id}}">
                         <div class="post__author author vcard inline-items">
-                            <img src="{{asset('guru/img/avatar10-sm.jpg')}}" alt="author">
+                            <img src="{{$user->getimage()}}" alt="author">
                             <div class="author-date">
-                                <a class="h6 post__author-name fn" href="#">Elaine Dreyfuss</a>
+                                <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
                                 <div class="post__date">
                                     <time class="published" datetime="2004-07-24T18:18">
-                                        9 hours ago
+                                    <a href="{{route('guru.show',$post)}}">9 hours ago</a>
                                     </time>
                                 </div>
                             </div>
+                            @if ($post->user_id == auth()->user()->id)
                             <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                 <ul class="more-dropdown">
+                                    @if ($post->type == 1)
                                     <li>
-                                        <a href="#">Edit Post</a>
+                                        <a href="javascript:void(0)" id="edit-post1" data-id="{{$post->id}}">Edit Status</a>
                                     </li>
+                                    @else
                                     <li>
-                                        <a href="#">Delete Post</a>
+                                        <a href="javascript:void(0)" id="edit-post2" data-id="{{$post->id}}">Edit File</a>
                                     </li>
+                                    @endif
                                     <li>
-                                        <a href="#">Turn Off Notifications</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Select as Featured</a>
+                                        <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Delete Post</a>
                                     </li>
                                 </ul>
                             </div>
+                            @endif
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris consequat.
-                        </p>
+                        <div id="khusus{{$post->id}}">
+                            <p>{{$post->content}}</p>
+                            @if ($post->file_2)
+                        <div class="post-thumb">
+                            <a href="{{route('guru.download',$post)}}"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg><span>{{$post->title}}{{substr(($post->file_2),-4)}}</span></a>
+                        </div>
+                        @elseif($post->file_1)
+                            <img src="{{$post->getImage1()}}" alt="author" width="770" height="520">
+                        @else
+                        @endif
+                        </div>
+                    <div id="countcomment{{$post->id}}" class="countcomment">
                         <div class="post-additional-info inline-items">
                             <div class="comments-shared">
-                                <a href="#" class="post-add-icon inline-items">
+                                <a class="post-add-icon inline-items">
                                     <svg class="olymp-speech-balloon-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}"></use></svg>
-                                    <span>17</span>
+                                    <span>{{$post->comments->count()}}</span>
                                 </a>
                             </div>
                         </div>
+                    </div>
                     </article>
 
                     <!-- Comments -->
-                    <ul class="comments-list">
+                    <?php $comments = $post->comments->take(3);?>
+                    <div id="comment{{$post->id}}" class="comment">
+                        {{-- <textarea>{{$post->id}}</textarea> --}}
+                    @foreach ($comments as $comment)
+                    {{-- @if ($comments->count()>5) --}}
+                    <ul class="comments-list" id="comment-list">
+                        <div class="komen">
                         <li class="comment-item">
+                            <input type="hidden" name="ax" class="name_val" value="{{$comment->id}}">
+                            <input type="hidden" name="post" class="name_val" value="{{$comment->post_id}}">
                             <div class="post__author author vcard inline-items">
-                                <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                                <img src="{{$comment->user->getImage()}}" alt="author">
                                 <div class="author-date">
-                                    <a class="h6 post__author-name fn" href="02-ProfilePage.html">James Spiegel</a>
+                                    <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
                                     <div class="post__date">
                                         <time class="published" datetime="2004-07-24T18:18">
                                             38 mins ago
                                         </time>
                                     </div>
                                 </div>
-                                <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
-                            </div>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque laudantium.</p>
-                        </li>
-                        <li class="comment-item">
-                            <div class="post__author author vcard inline-items">
-                                <img src="{{asset('guru/img/avatar1-sm.jpg')}}" alt="author">
-
-                                <div class="author-date">
-                                    <a class="h6 post__author-name fn" href="#">Mathilda Brinker</a>
-                                    <div class="post__date">
-                                        <time class="published" datetime="2004-07-24T18:18">
-                                            1 hour ago
-                                        </time>
-                                    </div>
+                                @if ($comment->user_id == auth()->user()->id)
+                                <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
+                                <ul class="more-dropdown">
+                                        <li>
+                                        <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                        </li>
+                                </ul>
                                 </div>
-                                <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
+                                @endif
                             </div>
-                            <p>Ratione voluptatem sequi en lod nesciunt. Neque porro quisquam est, quinder dolorem ipsum
-                                quia dolor sit amet, consectetur adipisci velit en lorem ipsum duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
-                            </p>
+                            <p>{{$comment->message}}</p>
                         </li>
+                        </div>
                     </ul>
+                    {{-- @break
+                    @endif
+                    @continue --}}
+                    @endforeach
                     <!-- ... end Comments -->
+                        <div id="remove-row-comments{{$post->id}}">
+                                @if ($post->comments->count()==0)
+                                @elseif($post->comments->count() > 3)
+                            <a id="btn-more-comment{{$post->id}}" class="more-comments btn-more-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Lihat Komentar Lainnya<span>+</span></a>
+                                @endif
+                        </div>
+                    </div>
 
-                    <a href="#" class="more-comments">View more comments <span>+</span></a>
 
                     <!-- Comment Form  -->
-                    <form class="comment-form inline-items">
+                    <form method="post" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form form-komen inline-items" enctype="multipart/form-data">
+                    {{-- <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="{{route('guru.addcomment')}}" class="comment-form inline-items" enctype="multipart/form-data"> --}}
+                        @csrf
                         <div class="post__author author vcard inline-items">
-                            <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
+                            <img src="{{$user->getImage()}}" alt="author">
                             <div class="form-group with-icon-right ">
-                                <textarea class="form-control" placeholder=""></textarea>
-                                <div class="add-options-message">
+                                <input type="hidden" value="{{$post->id}}" name="post_id">
+                                <input type="hidden" value="{{$post->user_id}}" name="parent_id">
+                                <textarea data-id="{{$post->id}}" class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
+                                {{-- <div class="add-options-message">
                                     <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                                         <svg class="olymp-camera-icon">
                                             <use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-camera-icon')}}"></use>
                                         </svg>
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
-                        <button class="btn btn-md-2 btn-primary">Post Comment</button>
-                        <button class="btn btn-md-2 btn-border-think c-grey btn-transparent custom-color">Cancel</button>
+                        <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                        <div id="snackbar">Berhasil Berkomentar</div>
                     </form>
                     <!-- ... end Comment Form  -->
                 </div>
             </div>
-                <a id="load-more-button" href="#" class="btn btn-control btn-more" data-load-link="items-to-load.html" data-container="newsfeed-items-grid">
-                    <svg class="olymp-three-dots-icon">
-                        <use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use>
-                    </svg>
-                </a>
+
+            <input type="hidden" value="{{$myid = $post->id}}">
+            @endforeach
+        </div>
+        </div>
+
+        <div id="iniload"></div>
+            <div id="remove-row">
+                @if (empty($myid))
+                <div title="Data tidak ditemukan">
+                    <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
+                </div>
+                @else
+                <a id="btn-more" class="btn btn-control" data-user="{{$user->id}}" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
+                @endif
             </div>
+        </div>
         <!-- ... end Main Content -->
 
         <!-- Left Sidebar -->
@@ -203,3 +336,197 @@
 </div>
 
 @endsection
+
+<div class="modal fade" id="ajax-crud-modal" aria-hidden="true" style="display:none">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="postCrudModal"></h4>
+    </div>
+
+    <div class="modal-body">
+    <form id="updateForm1" name="updateForm1" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
+            <input type="hidden" name="id" id="postid">
+            <textarea class="form-control" name="content" id="content" placeholder="Tulis status di sini.." required></textarea>
+        </div>
+        <div class="add-options-message">
+            <div class="image-upload">
+            <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
+                <label for="file_3">
+                <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                <div id="filename_upload_3"></div>
+                </label>
+            </a>
+            <input type="file" name="file_1" id="file_3">
+            </div>
+            <button type="submit" id="btn-save1" class="btn btn-primary btn-md-2 btn-save1">Edit Post</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ajax-crud-modal2" aria-hidden="true" style="display:none">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="postCrudModal2"></h4>
+        </div>
+
+        <div class="modal-body">
+            <form id="updateForm2" name="updateForm2" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input type="hidden" name="user_id" id="user_id2" value="{{auth()->user()->id}}">
+                <input type="hidden" name="id" id="postid2">
+                <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none" required>
+                <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file" required></textarea>
+            </div>
+            <div class="add-options-message">
+                <div class="image-upload">
+                <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
+                    <label for="file_4">
+                    <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                    <div id="filename_upload_4"></div>
+                    </label>
+                </a>
+                <input type="file" name="file_2" id="file_4">
+
+                </div>
+                <button type="submit" id="btn-save2" class="btn btn-primary btn-md-2 btn-save2">Edit Post</button>
+            </div>
+        </form>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+@push('scripts')
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+
+<script>
+// load more timeline post
+$(document).ready(function(){
+    $(document).on('click','#btn-more',function(){
+        var id = $(this).data('id');
+        var user = $(this).data('user');
+    //    console.log(id);
+        $("#btn-more").html("...");
+        $.ajax({
+            url : urls[8],
+            method : "POST",
+            data : {id:id, user:user, _token:"{{csrf_token()}}"},
+            dataType : "text",
+            success : function (data)
+            {
+            //    console.log(data);
+                if(data != '')
+                {
+                    $('#remove-row').remove();
+                    $('#iniload').append(data);
+                }
+                else
+                {
+                    $('#btn-more').html("No Data");
+                }
+            }
+        });
+    });
+});
+</script>
+
+<script>
+    // load more comments
+$(document).ready(function(){
+    $(document).on('click','.btn-more-comment',function(){
+        var id = $(this).data('id');
+        console.log(id);
+        var post = $(this).data('post');
+        $("#btn-more-comment"+post).html("...");
+        $.ajax({
+            url : urls[4],
+            method : "POST",
+            data : {id:id, post:post, _token:"{{csrf_token()}}"},
+            dataType : "text",
+            success : function (data)
+            {
+                if(data != '')
+                {
+                    $('#remove-row-comments'+post).remove();
+                    $('#comment'+post).append(data);
+                    // $("#comment"+post).load(location.href + " #comment"+post);
+                    // $("#countcomment"+post).load(location.href + " #countcomment"+post);
+
+                }
+                else
+                {
+                    $('#btn-more-comment'+post).html("No Data");
+                }
+            }
+        });
+    });
+});
+</script>
+
+<script>
+        // get filename file_1 and file_2
+var input = document.getElementById( 'file_2' );
+var input4 = document.getElementById( 'file_4' );
+var infoArea = document.getElementById( 'filename_upload' );
+var infoArea4 = document.getElementById( 'filename_upload_4' );
+
+var input1 = document.getElementById( 'file_1' );
+var input3 = document.getElementById( 'file_3' );
+var infoArea1 = document.getElementById( 'filename_upload_1' );
+var infoArea3 = document.getElementById( 'filename_upload_3' );
+
+input.addEventListener( 'change', showFileName );
+input1.addEventListener( 'change', showFileName1 );
+input3.addEventListener( 'change', showFileName3 );
+input4.addEventListener( 'change', showFileName4 );
+
+function showFileName( event ) {
+  var input = event.srcElement;// the change event gives us the input it occurred in
+  var fileName = input.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+  infoArea.textContent = 'File name : ' + fileName;// use fileName however fits your app best, i.e. add it into a div
+}
+function showFileName1( event ) {
+    var input1 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName1 = input1.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea1.textContent = 'File name : ' + fileName1;// use fileName however fits your app best, i.e. add it into a div
+  }
+function showFileName3( event ) {
+    var input3 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName3 = input3.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea3.textContent = 'File name : ' + fileName3;// use fileName however fits your app best, i.e. add it into a div
+  }
+function showFileName4( event ) {
+    var input4 = event.srcElement;// the change event gives us the input it occurred in
+    var fileName4 = input4.files[0].name;// the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+    infoArea4.textContent = 'File name : ' + fileName4;// use fileName however fits your app best, i.e. add it into a div
+  };
+</script>
+
+            {{-- $(document).ready(function () {
+            $(".content").hide();
+            $(".show_hide").on("click", function () {
+                var txt = $(".content").is(':visible') ? 'Read More' : 'Read Less';
+                $(".show_hide").text(txt);
+                $(this).next('.content').slideToggle(200);
+            });
+        }); --}}
+
+@endpush
+

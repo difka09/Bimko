@@ -10,6 +10,7 @@ use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Hash;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -32,11 +33,7 @@ class GuruController extends Controller
 
     public function index()
     {
-
-
         $posts = Post::latest()->limit(5)->get();
-
-
         return view('guru.index', compact('posts'));
     }
 
@@ -48,7 +45,8 @@ class GuruController extends Controller
             'content' => $request->content,
             'user_id' => $request->user_id,
             'file_2' => $file_2,
-            'type' => 2
+            'type' => 2,
+            'file_3' => ($request->title."".substr($file_2, -4)),
         ]);
 
         return response()->json($data);
@@ -137,6 +135,7 @@ class GuruController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'file_2' => $file_2,
+            'file_3' => ($request->title."".substr($file_2, -4)),
         ]);
         return response()->json($data);
     }
@@ -156,6 +155,7 @@ class GuruController extends Controller
 
     public function addComment(Request $request)
     {
+        $postid = $request->input('post_id');
         // $comment = new Comment;
         // $comment->post_id = $request->post_id;
         // $comment->message = $request->message;
@@ -173,7 +173,10 @@ class GuruController extends Controller
         $id = auth()->user()->id;
         $user = User::where('id','=',$id)->get();
 
-        return response()->json([$data,$user]);
+        $posts = Post::find($postid);
+        $count = $posts->comments()->count();
+
+        return response()->json([$data,$user,$count]);
 
         // return response();
         // $tesparent = $comment->parent_id;
@@ -199,16 +202,6 @@ class GuruController extends Controller
 
 
     }
-    public function tes()
-    {
-        $comments = new Comment();
-        $id = $comments->user_id = auth()->user()->id;
-        $user = User::where('id','=',$id)->get();
-        dd($user);
-
-
-
-    }
 
     public function deleteComment($id)
     {
@@ -219,6 +212,13 @@ class GuruController extends Controller
     {
         $file = public_path() .'/images/'. $post->file_2;
         return response()->download($file);
+    }
+    public function tes()
+    {
+        $comments = new Comment();
+        $id = $comments->user_id = auth()->user()->id;
+        $user = User::where('id','=',$id)->get();
+        dd($user);
     }
 
     //notifikasi
@@ -249,8 +249,102 @@ class GuruController extends Controller
     //     return view('allLesson', compact('lessons'));
     // }
 
+    public function showProfil(User $user)
+    {
+        $posts = Post::where('user_id','=',$user->id)->latest()->limit(2)->get();
 
+        return view('guru.profil',[
+            'user' => $user,
+            'posts' => $posts
+        ]);
+    }
+    public function editProfil()
+    {
+        $id = auth()->user()->id;
+        $user = User::where('id','=',$id)->get()->first();
 
+        return view('guru.editprofil',[
+            'user' => $user
+        ]);
+    }
+
+    public function updateProfil(Request $request)
+    {
+        $id = $request->input('id');
+        $password = $request->input('password');
+        $user = User::find($id);
+        // dd($user);
+        //get file_1
+        $file = null;
+
+        if ($request->hasFile('file')) {
+            if($user->file){
+                Storage::delete($user->file);
+            }
+            $file = $request->file('file')->store('users');
+        }
+        if (!$request->hasFile('file') && $user->file) {
+            $file = $user->file;
+        }
+
+        if(!empty($password)){
+            $newpassword = Hash::make($request['password']);
+        }else{
+            $newpassword = $user->password;
+        }
+
+        $data = User::find($id)->update([
+            'name' => $request->name,
+            'identity' => $request->identity,
+            'grade' => $request->grade,
+            'phone' => $request->phone,
+            'password' => $newpassword,
+            'file' => $file
+        ]);
+        return back();
+    }
+
+    public function filePage()
+    {
+        $files = Post::where('type','=',2)->latest()->paginate(4);
+        return view('guru.filepage',[
+            'files' => $files
+        ]);
+    }
+
+    public function searchFile(Request $request)
+    {
+
+        if($request->ajax()){
+            $output="";
+            $files = Post::where('file_3','LIKE','%'.$request->search.'%')->latest()->paginate(4);
+            // ->orWhere('file_2','LIKE','%'.$request->search.'%')
+
+        if($files)
+        {
+            $output .='<ul class="notification-list">';
+            foreach($files as $file)
+            {
+                $output .=' <li>
+                <div class="author-thumb">
+                    <img width="42px" height="42px" src="'.$file->user->getImage().'" alt="author">
+                </div>
+                <div class="notification-event">
+                    <a href="#" class="h6 notification-friend">'.$file->user->name.'</a> telah mengupload file <a href="#" class="notification-link">'.$file->title.''.substr(($file->file_2),-4).'</a>
+                    <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+                </div>
+                <span class="notification-icon">
+                    <a href="'.route('guru.show',$file).'" class="btn btn-blue btn-sm">Lihat</a>
+                    <a href="'.route('guru.download',$file).'" class="btn btn-green btn-sm">Download</a>
+                </span>
+            </li>';
+            }
+            $output .='</div>';
+            return Response($output);
+        }
+
+            }
+    }
 
 
 

@@ -73,8 +73,10 @@ Route::get('tes/123','User\GuruController@index')->middleware('auth')->name('gur
 
 //load
 Route::post('tes/123','User\LoadController@loadDataAjax')->middleware('auth')->name('guru.loaddata');
+Route::post('loadshow','User\LoadController@loadDataAjaxShow')->middleware('auth')->name('guru.loadshow');
 Route::post('tes/123/loadcomment','User\LoadController@loadDataComment')->name('guru.loadcomment');
 Route::post('tes/123/loadcommentshow','User\LoadController@loadDataCommentShow')->name('guru.loadcommentshow');
+
 
 //guru
 Route::post('tes/123/post', 'User\GuruController@addPost')->name('guru.addpost');
@@ -88,10 +90,19 @@ Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name
 Route::get('tes/123/{post}', 'User\GuruController@showPost')->name('guru.show');
 Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru.download');
 
-Route::get('ajeb','User\GuruController@tes');
+
+// tess
+Route::get('sa/sa','User\GuruController@searchFile')->name('guru.search');
 
 
 
+
+//profil
+Route::put('tes/123/edit/profil/update','User\GuruController@updateProfil')->name('guru.updateprofil')->middleware('auth');
+Route::get('tes/123/edit/profil','User\GuruController@editProfil')->name('guru.editprofil')->middleware('auth');
+Route::get('tes/123/profil/{user}', 'User\GuruController@showProfil')->name('guru.profil')->middleware('auth');
+
+Route::get('tes/123/a/files','User\GuruController@filePage')->name('guru.filepage');
 
 
 

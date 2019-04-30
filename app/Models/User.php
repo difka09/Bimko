@@ -42,6 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getImage()
+    {
+        return asset('images/' . $this->file);
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -50,6 +55,11 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
     }
 
 }

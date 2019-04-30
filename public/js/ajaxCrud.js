@@ -177,7 +177,7 @@ $(document).ready(function (e) {
     });
 
     // addcomment load and index
-    $('body').on('submit','.comment-form', (function(e) {
+    $('body').on('submit','.form-komen', (function(e) {
         e.preventDefault();
         var data = new FormData($(this)[0]);
         $.ajax({
@@ -195,8 +195,10 @@ $(document).ready(function (e) {
                 // $("#comment"+post_id).load(location.href + " #comment"+post_id);
                 // $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
 
-                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="02-ProfilePage.html">'+data[1][0]['name']+'</a> <div class="post__date"><time class="published" datetime="2004-07-24T18:18">38 mins ago</time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="02-ProfilePage.html">'+data[1][0]['name']+'</a> <div class="post__date"><time class="published" datetime="2004-07-24T18:18">38 mins ago</time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                var count ='<div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items"><svg class="olymp-speech-balloon-icon"><use xlink:href="'+urls[9]+'"></use></svg><span>'+data[2]+'</span></a></div></div>';
                 $('#comment'+post_id).prepend(comment);
+                $("#countcomment" + post_id).html(count);
 
                 document.getElementById("comment-form"+post_id).reset();
                 document.getElementById("btn-comment"+post_id).disabled = true,
@@ -244,6 +246,37 @@ $(document).ready(function (e) {
             });
     });
 
+    //addcommentshow
+    $('body').on('submit','#comment-form-show', (function(e) {
+        e.preventDefault();
+        var data = new FormData($(this)[0]);
+        $.ajax({
+            type:'POST',
+            url: urls[3],
+            data: data,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                // console.log(data);
+                // console.log([urls[5]])
+                post_id = data[0]['post_id'];
+                comment_id = data[0]['id'];
+
+                $("#comment"+post_id).load(location.href + " #comment"+post_id);
+                $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+
+                document.getElementById("comment-form-show").reset();
+                document.getElementById("btn-comment"+post_id).disabled = true,
+                document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
+                // $('#btn-comment').hide();
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+    }));
+
      // delete comment show
      $('body').on('click', '.delete-comment-show', function(){
         var comment_id = $(this).data("id");
@@ -274,7 +307,7 @@ $(document).ready(function (e) {
                 }
             });
     });
-//for index and show
+//for index and show and profil
     $('.comment-form textarea').on('keyup', function(){
         var id = $(this).data("id");
         console.log(id);
