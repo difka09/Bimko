@@ -82,7 +82,7 @@
                             <div class="post__author author vcard inline-items">
                                 <img src="{{$comment->user->getImage()}}" alt="author">
                                 <div class="author-date">
-                                    <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
+                                    <a class="h6 post__author-name fn" href="{{route('guru.profil',$comment->user->id)}}">{{$comment->user->name}}</a>
                                     <div class="post__date">
                                         <time class="published" datetime="2004-07-24T18:18">
                                             38 mins ago

@@ -94,7 +94,7 @@
                         <div class="form-group label-floating">
                         <div class="photo-album-item" data-mh="album-item" style="height: 430px">
 								<div class="photo-item" style="height: 370px;max-height: 370px; width: 433.5px; max-width: 433.5px; display:inline-block">
-									<img id="showImg" src="{{$user->getImage()}}" alt="photo">
+									<img id="showImg" style="height: 100%;width: 100%" src="{{$user->getImage()}}" alt="photo">
 									<div class="overlay overlay-dark"></div>
 								</div>
 								<div class="content">

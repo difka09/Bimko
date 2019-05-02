@@ -1,0 +1,567 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 24, 2019 at 06:21 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `bimko`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `agreements`
+--
+
+CREATE TABLE `agreements` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `answers`
+--
+
+CREATE TABLE `answers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catfeeds`
+--
+
+CREATE TABLE `catfeeds` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `catfeeds`
+--
+
+INSERT INTO `catfeeds` (`id`, `name`, `slug`, `created_at`, `updated_at`) VALUES
+(1, 'info_kuliah', 'info-kuliah', NULL, NULL),
+(2, 'info_pekerjaan', 'info-pekerjaan', NULL, NULL),
+(3, 'info_iklan', 'info-iklan', NULL, NULL),
+(4, 'hiburan', 'hiburan', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catfeed_feed`
+--
+
+CREATE TABLE `catfeed_feed` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `catfeed_id` bigint(20) UNSIGNED NOT NULL,
+  `feed_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `catfeed_feed`
+--
+
+INSERT INTO `catfeed_feed` (`id`, `catfeed_id`, `feed_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, NULL, NULL),
+(2, 2, 1, NULL, NULL),
+(3, 1, 2, NULL, NULL),
+(4, 2, 2, NULL, NULL),
+(5, 1, 3, NULL, NULL),
+(6, 1, 4, NULL, NULL),
+(7, 1, 5, NULL, NULL),
+(8, 1, 6, NULL, NULL),
+(9, 3, 7, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feeds`
+--
+
+CREATE TABLE `feeds` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `readby` int(11) DEFAULT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `feeds`
+--
+
+INSERT INTO `feeds` (`id`, `name`, `content`, `readby`, `slug`, `user_id`, `file`, `created_at`, `updated_at`) VALUES
+(6, 'a sa', '<div>\r\n<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n</div>\r\n<div>&nbsp;</div>', 1, 'a-sa', 1, 'feeds/njlkhNwBrHb23tRPRWZ9GRSMmS681mS8JUtP054k.jpeg', '2019-03-23 09:11:13', '2019-03-23 09:12:02'),
+(7, 'Where does it come from?', '<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</p>', 9, 'where-does-it-come-from', 1, 'feeds/2neGQOX373ziECNYy33j7C8deegrsctvvxROOPu0.png', '2019-03-23 09:11:47', '2019-03-23 09:34:16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2019_03_12_103432_create_schools_table', 1),
+(4, '2019_03_12_105542_create_feeds_table', 1),
+(5, '2019_03_12_105746_create_questions_table', 1),
+(6, '2019_03_13_000505_create_answers_table', 1),
+(7, '2019_03_13_072222_create_agreements_table', 1),
+(8, '2019_03_14_061300_create_roles_table', 1),
+(9, '2019_03_14_061558_create_permissions_table', 1),
+(10, '2019_03_14_061807_create_users_roles_table', 1),
+(11, '2019_03_14_061856_create_users_permissions_table', 1),
+(12, '2019_03_14_061913_create_roles_permissions_table', 1),
+(14, '2019_03_16_141833_add_deleted_at_on_users_table', 2),
+(17, '2019_03_18_055934_delete_file_and_add_image_on_school_table', 3),
+(18, '2019_03_21_134642_add_slug_readby_tag_field_on_feeds_table', 4),
+(25, '2019_03_21_154354_remove_tag_add_catfeed_id_field_on_feeds_table', 5),
+(28, '2019_03_21_155030_create_catfeeds_table', 6),
+(30, '2019_03_21_160835_create_catfeed_feed_table', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '2019-03-14 06:36:45', '2019-03-14 06:36:45'),
+(2, 'Guru', '2019-03-14 06:36:45', '2019-03-14 06:36:45'),
+(3, 'Murid', '2019-03-14 06:36:45', '2019-03-14 06:36:45'),
+(4, 'guest', '2019-03-14 06:36:45', '2019-03-14 06:36:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles_permissions`
+--
+
+CREATE TABLE `roles_permissions` (
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schools`
+--
+
+CREATE TABLE `schools` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `schools`
+--
+
+INSERT INTO `schools` (`id`, `name`, `slug`, `address`, `latitude`, `longitude`, `description`, `created_at`, `updated_at`, `image`) VALUES
+(1, 'smk 1 blora', 'smk-1-blora', 'JL Jenderal Gatot Subroto, Km. 4, 1, Taman Rejo, 58252, Maguwon, Tutup, Kec. Blora Kota, Kabupaten Blora, Jawa Tengah 58252', '-6.9675655', '111.3851717', 'Sekolah Menengah Kejuruan Negeri 1 Blora atau disingkat SMK Negeri 1 Blora adalah salah satu sekolah menengah kejuruan yang berada di kelurahan Maguan, Kecamatan Tunjungan, Kabupaten Blora diresmikan pada tanggal 11 Maret 1985, dan sebelumnya dikenal dengan STM', NULL, '2019-03-18 13:06:55', NULL),
+(9, 'sma 1 blora', 'sma-1-blora', 'jalan', '-6.966918440029028', '111.41872644424438', 'jalan tentara pelajar', '2019-03-18 12:51:40', '2019-03-21 06:59:49', 'schools/IkzhB3gtOuYSF7tXT0Xi8iE6CZUeBHzCsalXFmaU.jpeg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `identity` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `agency` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `school_id` int(10) UNSIGNED DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `identity`, `agency`, `grade`, `phone`, `file`, `school_id`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'admin super', 'admin@bimko.test', NULL, '$2y$10$4nkq.uHOwTM.W6YwRHj2lufVi4eG3M6a5Dx/0Cr5MquEJoiaDElDS', NULL, NULL, NULL, '082136336432', 'admin.jpeg', NULL, NULL, NULL, '2019-03-14 06:36:45', '2019-03-16 06:04:44'),
+(2, 'akba', 'akbar@bimko.test', NULL, '$2y$10$P2F7gDrLOcqxla3kxOkQ4ONiH7OHObON5sp3B7oYrENoV6qW8TCsK', '1234567890', 'undip', 10, '080802180', 'Screenshot_100.png', NULL, NULL, NULL, '2019-03-14 07:12:48', '2019-03-19 02:16:14'),
+(4, 'difka13', 'difkaa@bimko.test', NULL, '$2y$10$d6ITB/t8IAg/BrulQKWfJeaiiwIXoVJibZ9fTkiZKyzhg9O3nUzPi', '2120111', NULL, 10, '0821373731737', NULL, NULL, NULL, NULL, '2019-03-15 20:49:01', '2019-03-19 02:15:30'),
+(11, 'akbartanjung', 'akbart@bimko.test', NULL, '$2y$10$7Z8X.E5DnlWWjzRBkeWQieJ9lnlG4JkRc.Cz06nxjLDjSh/n8PaZ.', '212010', NULL, 10, '0821821821', NULL, NULL, NULL, NULL, '2019-03-16 23:53:39', '2019-03-19 02:15:16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_permissions`
+--
+
+CREATE TABLE `users_permissions` (
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_roles`
+--
+
+CREATE TABLE `users_roles` (
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users_roles`
+--
+
+INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES
+(1, 1),
+(2, 2),
+(4, 3),
+(11, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `userview`
+-- (See below for the actual view)
+--
+CREATE TABLE `userview` (
+`id` bigint(20) unsigned
+,`name` varchar(191)
+,`email` varchar(191)
+,`identity` varchar(20)
+,`agency` varchar(191)
+,`grade` int(11)
+,`phone` varchar(20)
+,`file` varchar(191)
+,`school_id` int(10) unsigned
+,`roleName` varchar(191)
+,`deleted_at` datetime
+,`user_id` bigint(20) unsigned
+,`role_id` bigint(20) unsigned
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `userview`
+--
+DROP TABLE IF EXISTS `userview`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `userview`  AS  select `users`.`id` AS `id`,`users`.`name` AS `name`,`users`.`email` AS `email`,`users`.`identity` AS `identity`,`users`.`agency` AS `agency`,`users`.`grade` AS `grade`,`users`.`phone` AS `phone`,`users`.`file` AS `file`,`users`.`school_id` AS `school_id`,`roles`.`name` AS `roleName`,`users`.`deleted_at` AS `deleted_at`,`users_roles`.`user_id` AS `user_id`,`users_roles`.`role_id` AS `role_id` from ((`users` join `roles`) join `users_roles`) where ((`users`.`id` = `users_roles`.`user_id`) and (`roles`.`id` = `users_roles`.`role_id`)) ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `agreements`
+--
+ALTER TABLE `agreements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `answers`
+--
+ALTER TABLE `answers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `catfeeds`
+--
+ALTER TABLE `catfeeds`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `catfeeds_slug_unique` (`slug`);
+
+--
+-- Indexes for table `catfeed_feed`
+--
+ALTER TABLE `catfeed_feed`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `feeds`
+--
+ALTER TABLE `feeds`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `feeds_slug_unique` (`slug`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `questions`
+--
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roles_permissions`
+--
+ALTER TABLE `roles_permissions`
+  ADD PRIMARY KEY (`role_id`,`permission_id`),
+  ADD KEY `roles_permissions_permission_id_foreign` (`permission_id`);
+
+--
+-- Indexes for table `schools`
+--
+ALTER TABLE `schools`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `schools_slug_unique` (`slug`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `users_permissions`
+--
+ALTER TABLE `users_permissions`
+  ADD PRIMARY KEY (`user_id`,`permission_id`),
+  ADD KEY `users_permissions_permission_id_foreign` (`permission_id`);
+
+--
+-- Indexes for table `users_roles`
+--
+ALTER TABLE `users_roles`
+  ADD PRIMARY KEY (`user_id`,`role_id`),
+  ADD KEY `users_roles_role_id_foreign` (`role_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `agreements`
+--
+ALTER TABLE `agreements`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `answers`
+--
+ALTER TABLE `answers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `catfeeds`
+--
+ALTER TABLE `catfeeds`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `catfeed_feed`
+--
+ALTER TABLE `catfeed_feed`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `feeds`
+--
+ALTER TABLE `feeds`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `questions`
+--
+ALTER TABLE `questions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `schools`
+--
+ALTER TABLE `schools`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `roles_permissions`
+--
+ALTER TABLE `roles_permissions`
+  ADD CONSTRAINT `roles_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `roles_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users_permissions`
+--
+ALTER TABLE `users_permissions`
+  ADD CONSTRAINT `users_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `users_permissions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users_roles`
+--
+ALTER TABLE `users_roles`
+  ADD CONSTRAINT `users_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `users_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

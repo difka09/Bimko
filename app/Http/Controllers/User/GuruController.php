@@ -256,11 +256,20 @@ class GuruController extends Controller
     public function showProfil(User $user)
     {
         $posts = Post::where('user_id','=',$user->id)->latest()->limit(2)->get();
-
+        $status = Post::where([
+            ['type','=',1],
+            ['user_id','=',$user->id],
+        ])->count();
+        $file = Post::where([
+            ['type','=',2],
+            ['user_id','=',$user->id],
+        ])->count();
 
         return view('guru.profil',[
             'user' => $user,
-            'posts' => $posts
+            'posts' => $posts,
+            'status' => $status,
+            'file' => $file,
         ]);
     }
     public function editProfil()

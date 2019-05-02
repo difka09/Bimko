@@ -41,7 +41,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
-    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}","{{URL::asset('images/')}}","{{route('guru.loadcommentshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}","{{route('guru.loadshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}","{{route('guru.filepage')}}","{{route('guru.sortbydate')}}","{{route('guru.sortbyabjad')}}","{{route('guru.searchpeople')}}"];
+    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}","{{URL::asset('images/')}}","{{route('guru.loadcommentshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}","{{route('guru.loadshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}","{{route('guru.filepage')}}","{{route('guru.sortbydate')}}","{{route('guru.sortbyabjad')}}","{{route('guru.searchpeople')}}","http://localhost:8000/tes/123/profil"];
 </script>
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
 

@@ -27,7 +27,7 @@ button{
             <h6 class="title">Recent File</h6>
             <input class="form-control" id="cari" name="cari" type="text" placeholder="Cari File Di sini..." >
             <button type="submit" class="btn">Cari</button>
-            <a href="{{route('guru.filepage')}}?title=gdx">a</a>
+            {{-- <a href="{{route('guru.filepage')}}?title=gdx">a</a> --}}
             <div class="btn-group bootstrap-select form-control without-border">
                 <select name="dropdownList" id="dropdownList" tabindex="-98" class="selectpicker form-control without-border" onchange="location=this.value;">
                         <option value="#" selected>Urutkan</option>
@@ -50,7 +50,7 @@ button{
                     <img width="42px" height="42px" src="{{$file->user->getImage()}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->file_3}}</a>
+                    <a href="{{route('guru.profil',$file->user->id)}}" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="{{route('guru.show',$file)}}" class="notification-link">{{$file->file_3}}</a>
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
                 </div>
                 <span class="notification-icon">

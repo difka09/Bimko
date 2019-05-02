@@ -13,6 +13,30 @@
 }
 </style>
 @endpush
+<div class="modal fade" id="open-photo-popup-v1" tabindex="-1" role="dialog" aria-labelledby="open-photo-popup-v1" aria-hidden="true" style="display:none">
+	<div class="modal-dialog window-popup open-photo-popup open-photo-popup-v1" role="document">
+		<div class="modal-content" style="width: 970px;height:756px;">
+			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+				<svg class="olymp-close-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-close-icon')}}"></use></svg>
+			</a>
+
+			<div class="modal-body">
+				<div class="open-photo-thumb">
+					<div class="swiper-container" data-slide="fade">
+						{{-- <div class="swiper-wrapper"> --}}
+							{{-- <div class="swiper-slide"> --}}
+								<div class="photo-item" style="max-width: 970px;max-height:756px">
+                                <img src="{{$user->getImage()}}" alt="photo" style="width: 100%;height: 100%;" width="970px" height="100px">
+									<div class="overlay"></div>
+								</div>
+							{{-- </div> --}}
+						{{-- </div> --}}
+					</div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
 @section('content')
 
 <div class="container">
@@ -24,6 +48,36 @@
                     <img src="{{asset('guru/img/top-header1.jpg')}}" alt="nature">
                 </div>
                 <div class="profile-section">
+                    <div class="row">
+                        <div class="col col-lg-5 col-md-5 col-sm-12 col-12">
+                            <ul class="profile-menu">
+                                <li>
+                                </li>
+                                <li>
+                                    <a href="{{route('guru.filepage')}}" style="text-align: center">{{$file}}
+                                    <br>File
+                                    </a>
+                                </li>
+                                <li>
+                                    <a style="text-align: center">{{$status}}</a>
+                                    <a style="text-align: center">Status</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
+                            <ul class="profile-menu">
+                                <li>
+                                    <a style="text-align: center">{{$user->comments->count()}}</a>
+                                    <a style="text-align: center">Komentar</a>
+                                </li>
+                                <li>
+                                    <a style="text-align: center">{{$user->comments->count()}}</a>
+                                    <a style="text-align: center">Menjawab</a>
+                                </li>
+                            </ul>
+						</div>
+
+                    </div>
                     @if($user->id == auth()->user()->id)
                     <div class="control-block-button" style="margin-top:10px">
                         <div class="btn btn-control bg-primary more">
@@ -40,7 +94,7 @@
 
 
                 <div class="top-header-author">
-                    <a class="author-thumb">
+                    <a href="#" data-toggle="modal" data-target="#open-photo-popup-v1" class="author-thumb full-block">
                         <img style="width:100%;height: 100%" src="{{$user->getimage()}}" alt="author">
                     </a>
                     <div class="author-content">
@@ -144,7 +198,7 @@
                         <div class="post__author author vcard inline-items">
                             <img src="{{$user->getimage()}}" alt="author">
                             <div class="author-date">
-                                <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
+                                <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user->id)}}">{{$post->user->name}}</a>
                                 <div class="post__date">
                                     <time class="published" datetime="2004-07-24T18:18">
                                     <a href="{{route('guru.show',$post)}}">9 hours ago</a>
@@ -207,7 +261,7 @@
                             <div class="post__author author vcard inline-items">
                                 <img src="{{$comment->user->getImage()}}" alt="author">
                                 <div class="author-date">
-                                    <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{$comment->user->name}}</a>
+                                    <a class="h6 post__author-name fn" href="{{route('guru.profil',$comment->user->id)}}">{{$comment->user->name}}</a>
                                     <div class="post__date">
                                         <time class="published" datetime="2004-07-24T18:18">
                                             38 mins ago
@@ -452,7 +506,6 @@ $(document).ready(function(){
 $(document).ready(function(){
     $(document).on('click','.btn-more-comment',function(){
         var id = $(this).data('id');
-        console.log(id);
         var post = $(this).data('post');
         $("#btn-more-comment"+post).html("...");
         $.ajax({
@@ -466,6 +519,10 @@ $(document).ready(function(){
                 {
                     $('#remove-row-comments'+post).remove();
                     $('#comment'+post).append(data);
+                    console.log(data);
+
+                    console.log(post);
+
                     // $("#comment"+post).load(location.href + " #comment"+post);
                     // $("#countcomment"+post).load(location.href + " #countcomment"+post);
 
