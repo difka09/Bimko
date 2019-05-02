@@ -335,6 +335,28 @@ $(document).on('keyup', '.tgInput', function(){
 
     });
 
+$(document).on('keyup', '.search-here', function(){
+    $value =$(this).val();
+
+    if($.trim(this.value).length > 0)
+        $.ajax({
+            type: 'get',
+            url: urls[13],
+            data:{'search':$value},
+            success:function(data){
+                $('#im-here').html(data);
+            }
+        });
+        else
+        var noresult = '';
+        $('#im-here').html(noresult);
+    });
+
+// $('div.author-thumb').on('mouseover', function() {
+//     document.getElementById("image").style.display = "inline";
+// });
+
+
 });
 
 //validation textarea

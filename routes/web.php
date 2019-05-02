@@ -79,20 +79,20 @@ Route::post('tes/123/loadcommentshow','User\LoadController@loadDataCommentShow')
 
 
 //guru
-Route::post('tes/123/post', 'User\GuruController@addPost')->name('guru.addpost');
-Route::post('tes/123/status', 'User\GuruController@addStatus')->name('guru.addstatus');
-Route::delete('tes/123/{id}', 'User\GuruController@deletePost')->name('guru.deletepost');
-Route::put('tes/123/status/{id}', 'User\GuruController@updateStatus')->name('guru.updatestatus');
-Route::put('tes/123/post/{id}', 'User\GuruController@updatePost')->name('guru.updatepost');
-Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.editpost');
-Route::post('tes/123/comment', 'User\GuruController@addComment')->name('guru.addcomment');
-Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name('guru.deletecomment');
-Route::get('tes/123/{post}', 'User\GuruController@showPost')->name('guru.show');
-Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru.download');
+Route::post('tes/123/post', 'User\GuruController@addPost')->name('guru.addpost')->middleware('auth');
+Route::post('tes/123/status', 'User\GuruController@addStatus')->name('guru.addstatus')->middleware('auth');
+Route::delete('tes/123/{id}', 'User\GuruController@deletePost')->name('guru.deletepost')->middleware('auth');
+Route::put('tes/123/status/{id}', 'User\GuruController@updateStatus')->name('guru.updatestatus')->middleware('auth');
+Route::put('tes/123/post/{id}', 'User\GuruController@updatePost')->name('guru.updatepost')->middleware('auth');
+Route::get('tes/123/{id}/edit', 'User\GuruController@editPost')->name('guru.editpost')->middleware('auth');
+Route::post('tes/123/comment', 'User\GuruController@addComment')->name('guru.addcomment')->middleware('auth');
+Route::delete('tes/123/comment/{id}', 'User\GuruController@deleteComment')->name('guru.deletecomment')->middleware('auth');
+Route::get('tes/123/{post}', 'User\GuruController@showPost')->name('guru.show')->middleware('auth');
+Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru.download')->middleware('auth');
 
 
 // tess
-Route::get('sa/sa','User\GuruController@searchFile')->name('guru.search');
+// Route::get('sa/sa','User\GuruController@searchFile')->name('guru.search');
 
 
 
@@ -102,7 +102,13 @@ Route::put('tes/123/edit/profil/update','User\GuruController@updateProfil')->nam
 Route::get('tes/123/edit/profil','User\GuruController@editProfil')->name('guru.editprofil')->middleware('auth');
 Route::get('tes/123/profil/{user}', 'User\GuruController@showProfil')->name('guru.profil')->middleware('auth');
 
-Route::get('tes/123/a/files','User\GuruController@filePage')->name('guru.filepage');
+Route::get('tes/123/a/files','User\FileController@filePage')->name('guru.filepage')->middleware('auth');
+// Route::get('tes/123/a/filesa','User\FileController@searchFile')->name('guru.search')->middleware('auth');
+// Route::get('tes/123/a/files','User\FileController@search')->name('guru.s')->middleware('auth');
+Route::get('search/people','User\FileController@searchPeople')->name('guru.searchpeople');
+Route::get('sa/date','User\FileController@sortbyDate')->name('guru.sortbydate')->middleware('auth');
+Route::get('sa/abjad','User\FileController@sortbyAbjad')->name('guru.sortbyabjad')->middleware('auth');
+
 
 
 

@@ -1,30 +1,56 @@
 @extends('guru.templates.wtsidebar')
-@section('content')
+@push('customecss')
+<style>
+input[type="text"] {
+    width: 440px;
+    height: 20px;
+    text-align: center;
+    margin-left:100px;
+}
+button{
+    width: 100px;
+    height: 35px;
+    margin-top: 4px;
+    margin-right: 2px;
+    background-color:steelblue
 
+}
+</style>
+
+@endpush
+@section('content')
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
-    <div class="ui-block">
+<div class="ui-block">
+    {{-- <form action="{{url()->current()}}"> --}}
+    <form action="{{route('guru.filepage')}}" method="GET">
         <div class="ui-block-title">
             <h6 class="title">Recent File</h6>
-            <input class="form-control" id="search" name="search" type="text" style="display: inline-block;text-align: center;margin-left:100px" placeholder="Cari File Di sini...">
+            <input class="form-control" id="cari" name="cari" type="text" placeholder="Cari File Di sini..." >
+            <button type="submit" class="btn">Cari</button>
+            <a href="{{route('guru.filepage')}}?title=gdx">a</a>
             <div class="btn-group bootstrap-select form-control without-border">
-                <select name="" id="" tabindex="-98" class="selectpicker form-control without-border">
-                        <option value="LY">LAST YEAR (2016)</option>
-                        <option value="LY">LAST YEAR (2016)</option>
+                <select name="dropdownList" id="dropdownList" tabindex="-98" class="selectpicker form-control without-border" onchange="location=this.value;">
+                        <option value="#" selected>Urutkan</option>
+                        <option value="{{route('guru.filepage', ['cari' => request('cari'), 'sort' => 'desc'])}}">Terbaru</option>
+                        <option value="{{route('guru.filepage', ['cari' => request('cari'), 'sort' => 'asc'])}}">Terlama</option>
+                        <option value="{{route('guru.filepage', ['cari' => request('cari'), 'abjad' => 'asc'])}}">Abjad</option>
+
                 </select>
             </div>
 
         </div>
-
+    </form>
+    <div class="ui-block-content">
         <!-- Notification List -->
-        <div id=contentku>
+    <div id=contentku>
         <ul class="notification-list">
             @foreach ($files as $file)
             <li>
-                <div class="author-thumb">
+                <div class="author-thumb" id="author-thumb">
                     <img width="42px" height="42px" src="{{$file->user->getImage()}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->title}}{{substr(($file->file_2),-4)}}</a>
+                    <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->file_3}}</a>
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
                 </div>
                 <span class="notification-icon">
@@ -33,7 +59,8 @@
                 </span>
             </li>
             @endforeach
-      </ul>
+        </ul>
+
     </div>
         <!-- ... end Notification List -->
     </div>
@@ -41,6 +68,9 @@
     <div style="position:fixed">
             {{ $files->links() }}
     </div>
+
+</div>
+
 
 
     <!-- Pagination -->
@@ -63,24 +93,22 @@
 
 </div>
 
+
+
+
 @endsection
 @push('scripts')
+
 <script>
-$('input').on('keyup', function(){
-    // alert('hi');
-    $value = $(this).val();
+var selectedItem = sessionStorage.getItem("dropdownList");
+$('#dropdownList').val(selectedItem);
 
-    $.ajax({
-        type: 'get',
-        url: urls[10],
-        data:{'search':$value},
-        success:function(data){
-            $('#contentku').html(data);
-            // console.log(data)
+$('#dropdownList').change(function() {
+    var dropVal = $(this).val();
+    sessionStorage.setItem("dropdownList", dropVal);
+});
 
-        }
-    });
-})
 </script>
+
 
 @endpush

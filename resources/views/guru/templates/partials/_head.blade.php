@@ -74,6 +74,14 @@ div.ex2 {
 
 
 </style>
+<style>
+        .custome-title a:link, .custome-title a:visited {
+            color:green;
+        }
+        .custome-title a:hover, .custome-title a:active {
+            text-decoration: underline;
+        }
+</style>
         <!-- Main Styles CSS -->
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/main.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/fonts.min.css')}}">

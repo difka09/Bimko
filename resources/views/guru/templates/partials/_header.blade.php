@@ -7,12 +7,14 @@
         </div>
 
         <div class="header-content-wrapper">
-            <form class="search-bar w-search ">
+            <form class="search-bar w-search notification-list friend-requests">
                 <div class="form-group with-button">
-                    <input class="form-control " placeholder="Search here people or pages..." type="text">
-                    <button>
+                    <input style="text-align: left;margin-left: 1px;" class="form-control search-here" placeholder="Search here people or pages..." type="text">
+                    <button style="height: 50px">
                         <svg class="olymp-magnifying-glass-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon')}}"></use></svg>
                     </button>
+                </div>
+                <div id="im-here">
                 </div>
             </form>
 
@@ -174,6 +176,8 @@
             </div>
         </div>
     </header>
+
+
     <!-- ... end Header-BP -->
 
     {{-- <!-- Responsive Header-BP -->

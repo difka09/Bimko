@@ -5,7 +5,6 @@
         <div class="icons-block">
             <a data-target="#create-event" data-toggle="modal" class="more"><svg class="olymp-calendar-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-calendar-icon')}}"></use></svg></a>
         </div>
-
         <div class="content">
             <div class="author-thumb">
                 <img src="{{asset('guru/img/badge13.png')}}" alt="author">
@@ -18,21 +17,27 @@
 </div>
 
 <div class="ui-block">
+    <div class="custome-title">
+    <a href="{{route('guru.filepage')}}">
     <div class="ui-block-title">
         <h6 class="title">Recent File Upload</h6>
-        <a href="{{route('guru.filepage')}}" class="more"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg></a>
+        <a href="{{route('guru.filepage')}}" class="more btn"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg></a>
+    </div>
+    </a>
     </div>
     <!-- W-Activity-Feed -->
     <ul class="widget w-activity-feed notification-list">
+        @foreach ($files as $file)
         <li>
             <div class="author-thumb">
-                <img src="{{asset('guru/img/avatar49-sm.jpg')}}" alt="author">
+                <img src="{{$file->user->getImage()}}" alt="author">
             </div>
             <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Marina Polson</a> commented on Jason Mark’s <a href="#" class="notification-link">photo.</a>.
+                <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->title}}{{substr(($file->file_2),-4)}}</a>
                 <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
             </div>
         </li>
+        @endforeach
     </ul>
     <!-- .. end W-Activity-Feed -->
 </div>
@@ -127,3 +132,4 @@
     </div>
 
 </aside>
+

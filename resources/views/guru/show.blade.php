@@ -21,9 +21,9 @@
                         <div class="post__author author vcard inline-items">
                             <img alt="author" src="{{$post->user->getImage()}}" class="avatar">
                             <div class="author-date not-uppercase">
-                                <a class="h6 post__author-name fn" href="#">{{$post->user->name}}</a>
+                                <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user)}}">{{$post->user->name}}</a>
                                 <div class="author_prof">
-                                    {{$post->user->school_id}}
+                                    {{$post->user->school->name}}
                                 </div>
                             </div>
                         </div>

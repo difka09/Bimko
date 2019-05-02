@@ -7,6 +7,7 @@
                 <!-- Main Content -->
                 @yield('content')
                 <!-- ... end Main Content -->
+
         @include('guru.templates.partials._scripts')
 </body>
 </html>
