@@ -93,7 +93,7 @@ class FeedController extends Controller
 
         $catfeeds = Catfeed::find($request->catfeed);
         $feed->catfeeds()->attach($catfeeds);
-        return redirect()->route('guest.showfeed');
+        return redirect()->route('guest.showfeed')->with('msg', 'Berhasil Menambahkan Artikel, Akan tampil setelah disetujui admin (1x24jam)');
     }
 
 

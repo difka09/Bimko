@@ -59,6 +59,7 @@ Route::get('/', 'HomeController@index')->name('guest.landing');
 
 Route::get('guest/createfeed', 'User\FeedController@create')->middleware('auth', 'role:Murid,guest')->name('guest.createfeed');
 Route::get('guest/profil', 'User\GuestController@showUser')->middleware('auth', 'role:Murid,guest')->name('guest.showuser');
+Route::put('guest/profil/update','User\GuestController@updateUser')->middleware('auth', 'role:Murid,guest')->name('guest.updateprofil');
 Route::get('guest/showfeed','User\GuestController@showFeed')->middleware('auth', 'role:Murid,guest')->name('guest.showfeed');
 Route::delete('hapus/feed/{feed}','User\GuestController@deleteFeed')->middleware('auth', 'role:Murid,guest')->name('guest.deletefeed');
 Route::get('guest/showcomment','User\GuestController@showComment')->middleware('auth', 'role:Murid,guest')->name('guest.showcomment');

@@ -23,6 +23,9 @@
                 @endforeach
             </div>
     </div>
+    <div>
+            {{ $feednotifications->links('vendor.pagination.adminlte') }}
+    </div>
 </div>
 
 @endsection

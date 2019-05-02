@@ -28,6 +28,9 @@
 
                     @endforeach
 				</div>
-		</div>
+        </div>
+        <div>
+                {{ $feedcomments->links('vendor.pagination.adminlte') }}
+        </div>
 	</div>
 @endsection

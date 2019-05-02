@@ -13,6 +13,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Hash;
+
 // use Illuminate\Support\Facades\Auth;
 
 
@@ -31,16 +33,53 @@ class GuestController extends Controller
     public function showUser()
     {
         $id = Auth::user()->id;
-        $users = User::where('id',$id)->get();
+        $user = User::where('id',$id)->get()->first();
         // dd($users);
         return view('user.templates.panel.guest.showBiodata', [
-            'users' => $users,
+            'user' => $user,
             'controller' => $this
         ]);
     }
+
+    public function updateUser(Request $request)
+    {
+        $id = $request->input('id');
+        $password = $request->input('password');
+        $user = User::find($id);
+
+        //get file_1
+        // $file = null;
+
+        // if ($request->hasFile('file')) {
+        //     if($user->file){
+        //         Storage::delete($user->file);
+        //     }
+        //     $file = $request->file('file')->store('users');
+        // }
+        // if (!$request->hasFile('file') && $user->file) {
+        //     $file = $user->file;
+        // }
+
+        if(!empty($password)){
+            $newpassword = Hash::make($request['password']);
+        }else{
+            $newpassword = $user->password;
+        }
+
+        $data = User::find($id)->update([
+            'name' => $request->name,
+            'password' => $newpassword,
+            'agency' => $request->agency,
+            'phone' => $request->phone,
+
+        ]);
+        return back()->with('msg', 'Berhasil memperbaharui profil');
+
+    }
+
     public function showFeed()
     {
-        $feeds = Feed::orderBy('id','DESC')->where('user_id', Auth::user()->id)->get();
+        $feeds = Feed::orderBy('id','DESC')->where('user_id', Auth::user()->id)->paginate(6);
         // dd($feeds);
         return view('user.templates.panel.guest.showFeed',[
             'feeds' => $feeds,
@@ -64,7 +103,8 @@ class GuestController extends Controller
                                                 // ->where('feedcomments.id', '==', 'feedcomments.parent_id')
                                                  ->join('feeds', 'feeds.id', '=', 'feedcomments.feed_id')
                                                  ->join('users', 'feedcomments.user_id', '=', 'users.id')
-                                                 ->orderBy('feedcomments.id', 'DESC')->get(['feedcomments.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username']);
+                                                 ->orderBy('feedcomments.id', 'DESC')->select(['feedcomments.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username'])->paginate(8);
+
 
         return view('user.templates.panel.guest.showComment',[
             'feedcomments' => $feedcomments,
@@ -77,7 +117,7 @@ class GuestController extends Controller
         $feedcomment->delete();
         FeedComment::where('parent_id', $feedcomment->id)->delete();
 
-        return back()->with('msg', 'Berhasil Menghapus Artikel');
+        return back()->with('msg', 'Berhasil Menghapus Komentar');
     }
 
     public function showNotification()
@@ -86,7 +126,7 @@ class GuestController extends Controller
                                                            ->where('feednotifications.user_id', '!=', Auth::user()->id)
                                                            ->join('feeds', 'feeds.id', '=', 'feednotifications.feed_id')
                                                            ->join('users', 'users.id', '=', 'feednotifications.user_id')
-                                                           ->orderBy('feednotifications.id', 'DESC')->get(['feednotifications.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username']);
+                                                           ->orderBy('feednotifications.id', 'DESC')->select(['feednotifications.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username'])->paginate(8);
 
         return view('user.templates.panel.guest.showNotif',[
             'feednotifications' => $feednotifications,

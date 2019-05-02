@@ -34,5 +34,8 @@
             @endforeach
         </div>
     </div>
+    <div>
+            {{ $feeds->links('vendor.pagination.adminlte') }}
+    </div>
 </div>
 @endsection
