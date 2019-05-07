@@ -25,6 +25,11 @@ class Feed extends Model
         return $this->belongsToMany(Catfeed::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function feedcomments()
     {
         return $this->hasMany(FeedComment::class);

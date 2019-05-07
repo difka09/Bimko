@@ -217,15 +217,17 @@
 
 
 	<!-- Why Choose Us -->
-	<div id="map" class="section md-padding bg-grey">
+	<div id="map" class="section md-padding">
 
 		<!-- Container -->
-		<div class="container">
+		{{-- <div class="container"> --}}
 
 			<!-- Row -->
-			<div class="row">
+			{{-- <div class="row"> --}}
 
-				<!-- why choose us content -->
+
+
+				{{-- <!-- why choose us content -->
 				<div class="col-md-6">
 					<div class="section-header">
 						<h2 class="title">Why Choose Us</h2>
@@ -259,7 +261,7 @@
 						<img class="img-responsive" src="{{asset('landing/img/about2.jpg')}}" alt="">
 					</div>
 				</div>
-				<!-- /About slider -->
+				<!-- /About slider --> --}}
 
 			</div>
 			<!-- /Row -->
@@ -405,7 +407,43 @@
             $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
                 $("#alert-danger").slideUp(500);
             });
-        </script>
+    </script>
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyD_eiIH24e4fILRNWijlDHOMpo4dbVelJY"></script>
+    <script src="{{ asset('js/gmaps.js') }}"></script>
+    <style type="text/css">
+        .user-panel>.image>img {
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        }
+        #map {
+        width: 100%;
+        height: 640px;
+        }
+        </style>
+
+    <script>
+        var map = new GMaps({
+            el: '#map',
+            zoom: 12,
+            lat: -6.9611102,
+            lng: 111.4038343
+        });
+
+        @foreach($maps as $map)
+        map.addMarker({
+            lat: '{{$map->latitude}}',
+            lng: '{{$map->longitude}}',
+            title: '{{$map->name}}',
+            icon: '{{ asset('images/maps/icon-school.png') }}',
+            infoWindow: {
+                content : '<h3>{{$map->name}}</h3><p>{{$map->description}}</p>'
+            }
+        });
+        @endforeach
+    </script>
 
 </body>
 

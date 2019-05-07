@@ -10,10 +10,7 @@
                     <a href="index.html" class="breadcrumbs__url"><i class="ui-home"></i></a>
                   </li>
                   <li class="breadcrumbs__item">
-                    <a href="index.html" class="breadcrumbs__url">News</a>
-                  </li>
-                  <li class="breadcrumbs__item breadcrumbs__item--current">
-                    World
+                    <a href="index.html" class="breadcrumbs__url">Berita</a>
                   </li>
                 </ul>
 
@@ -21,7 +18,6 @@
                 <article class="entry">
 
                   <div class="single-post__entry-header entry__header">
-                    <a href="#" class="entry__meta-category">World</a>
                     <h1 class="single-post__entry-title">
                     {{ $feed->name }}
                     </h1>
@@ -29,14 +25,14 @@
                     <ul class="entry__meta">
                       <li class="entry__meta-author">
                         <i class="ui-author"></i>
-                        <a href="#">DeoThemes</a>
+                        <a href="#" data-toggle="modal" style="cursor:pointer" data-target="#commentmodal{{$feed->user_id}}">{{$feed->user->name}}</a>
                       </li>
                         <?php
                             $controller->tanggal($feed->created_at);
                         ?>
                       <li class="entry__meta-comments">
                         <i class="ui-comments"></i>
-                        <a href="#">115</a>
+                        <a href="#">{{$feed->feedcomments->count()}}</a>
                       </li>
                     </ul>
                   </div>
@@ -46,9 +42,8 @@
                   </div>
 
                   <div class="entry__article">
-                        <div class="col-12 val-news">{!! $feed->content !!}</div>
+                  <div class="col-12 val-news">{!! $feed->content !!}</div>
                     {{-- <p>{{!! $feed->content!! }}</p> --}}
-
 
                     <!-- Share -->
                   <div class="entry__share">
@@ -75,15 +70,18 @@
                   <!-- Related Posts -->
                   <div class="related-posts">
                     <div class="title-wrap mt-40">
-                      <h5 class="uppercase">Related Posts</h5>
+                      <h5 class="uppercase">Artikel lain</h5>
                     </div>
                     <div class="row row-20">
-                      <div class="col-md-4">
+
+                    @foreach ($relatednews as $relatednew)
+                        <div class="col-md-4">
+
                         <article class="entry">
                           <div class="entry__img-holder">
-                            <a href="single-post.html">
+                            <a href="{{ route('feeds.show', $relatednew)}}">
                               <div class="thumb-container thumb-75">
-                                <img data-src="img/blog/carousel_img_1.jpg" src="img/empty.png" class="entry__img lazyload" alt="">
+                                <img data-src="{{$relatednew->getImage()}}" class="entry__img lazyload" alt="">
                               </div>
                             </a>
                           </div>
@@ -91,12 +89,13 @@
                           <div class="entry__body">
                             <div class="entry__header">
                               <h2 class="entry__title entry__title--sm">
-                                <a href="single-post.html">Satelite cost tens of millions or even hundreds of millions of dollars to build</a>
+                                <a href="{{ route('feeds.show', $relatednew)}}">{{$relatednew->name}}</a>
                               </h2>
                             </div>
                           </div>
                         </article>
-                      </div>
+                        </div>
+                      @endforeach
 
                     </div>
                   </div> <!-- end related posts -->
@@ -107,7 +106,7 @@
                 <!-- Comments -->
                 <div class="entry-comments mt-30">
                   <div class="title-wrap mt-40">
-                    <h5 class="uppercase">3 comments</h5>
+                    <h5 class="uppercase">{{$feed->feedcomments->count()}} Komentar</h5>
                   </div>
                   <ul class="comment-list">
                     <li class="comment">
@@ -120,7 +119,7 @@
                           <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#commentmodal{{$feedcomment->user_id}}">{{$feedcomment->name}}:</h6>
                           {{-- <h6 class="comment-author">{{$feedcomment->name}}: </h6> --}}
                           <div class="comment-metadata">
-                            <a href="#" class="comment-date">July 17, 2017 at 12:48 pm</a>
+                            <a href="#" class="comment-date">{{$controller->fullTimeShow($feedcomment->created_at)}}</a>
                           </div>
                             <p>{{$feedcomment->message}}</p>
                           {{-- <a class="comment-reply" style="cursor: pointer" id="reply">Reply</a> --}}
@@ -148,7 +147,7 @@
                             <div class="comment-text">
                             <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#replymodal{{$feedreply->user_id}}">{{$feedreply->name}}:</h6>
                               <div class="comment-metadata">
-                                <a href="#" class="comment-date">July 17, 2017 at 12:48 pm</a>
+                              <a href="#" class="comment-date">{{$controller->fullTimeShow($feedreply->created_at)}}</a>
                               </div>
                               <p>{{$feedreply->message}}</p>
                               {{-- <a href="#" class="comment-reply">Reply</a> --}}

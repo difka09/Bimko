@@ -66,4 +66,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function feeds()
+    {
+        return $this->hasMany(Feed::class);
+    }
+
+    public function feedcomments()
+    {
+        return $this->hasMany(FeedComment::class);
+    }
+
 }

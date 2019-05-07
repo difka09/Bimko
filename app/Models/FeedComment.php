@@ -16,4 +16,8 @@ class FeedComment extends Model
     {
         return $this->belongsTo(Feed::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

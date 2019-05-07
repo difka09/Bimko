@@ -15,6 +15,7 @@ use App\Models\FeedNotification;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Post;
 
 class FeedController extends Controller
 {
@@ -27,33 +28,84 @@ class FeedController extends Controller
         $this->maps = School::orderBy('name', 'asc')->get();
         $this->populars = Feed::orderBy('readby', 'desc')->limit(4)->get();
         $this->latests = Feed::orderBy('created_at', 'desc')->limit(4)->get();
+
+
     }
 
     public function indexFeed()
     {
-        $Allfeeds = Feed::get();
-        $feeds = Feed::orderBy('name', 'asc')->paginate(5);
+        $categories = Catfeed::get();
+        $feeds = Feed::latest()->paginate(5);
+
         // dd($latests);
 
         return view('user.feed.index', [
             'feeds' => $feeds,
-            'Allfeeds' => $Allfeeds,
+            'categories' => $categories,
             'populars' => $this->populars,
             'latests' => $this->latests,
             'maps' => $this->maps,
             'controller' => $this
+        ]);
+    }
+    public function search(Request $request)
+    {
+        $categories = Catfeed::get();
+        $input = $request->cari;
 
+        $feeds = new Feed;
+        if(request()->has('cari')){
+            $feeds = $feeds->where([
+               ['name','LIKE',"%{$request->cari}%"],
+           ]);
+       }
+
+       $feeds = $feeds->paginate(4)->appends([
+        'cari' =>  request('cari'),
+    ]);
+
+    return view('user.feed.search',[
+        'feeds' => $feeds,
+        'input' => $input,
+        'populars' => $this->populars,
+        'latests' => $this->latests,
+        'feeds' => $feeds,
+        'maps' => $this->maps,
+        'categories' => $categories,
+        'controller' => $this
         ]);
     }
 
-    public function index()
-    {
-        $Allfeeds = Feed::get();
-        $feeds = Feed::orderBy('name', 'asc')->paginate(3);
+    // public function index()
+    // {
+    //     $Allfeeds = Feed::get();
+    //     $feeds = Feed::orderBy('name', 'asc')->paginate(3);
 
-        return view('user.feed.index', [
+    //     return view('user.feed.index', [
+    //         'feeds' => $feeds,
+    //         'Allfeeds' => $Allfeeds,
+    //         'controller' => $this
+    //     ]);
+    // }
+
+    public function category($id)
+    {
+        $category_name = Catfeed::where('slug',$id)->select('name')->get();
+
+        $feeds = Feed::whereHas('catfeeds', function($q) use ($id){
+            $q->where('slug', $id);
+        })->latest()->paginate(5);
+
+
+        $categories = Catfeed::get();
+
+        return view('user.feed.category', [
+            'category_name' => $category_name,
+            'categories' => $categories,
+            'populars' => $this->populars,
+            'latests' => $this->latests,
             'feeds' => $feeds,
-            'Allfeeds' => $Allfeeds,
+            'maps' => $this->maps,
             'controller' => $this
         ]);
     }
@@ -99,8 +151,21 @@ class FeedController extends Controller
 
     public function show(Feed $feed)
     {
+        $categories = Catfeed::get();
+
         $feed->readby = $feed->readby + 1;
         $feed->save();
+
+
+    $relates = $feed->catfeeds;
+
+    foreach($relates as $relate){
+        $relatednews = Feed::whereHas('catfeeds', function($q) use ($relate){
+            $q->where([
+                ['slug', $relate->slug]
+                ]);
+        })->where('slug','!=',$feed->slug)->latest()->limit(2)->get();
+    }
 
         $feedcomments = DB::table('feedcomments')
                                                 ->where('feedcomments.feed_id', $feed->id)
@@ -114,8 +179,11 @@ class FeedController extends Controller
                                                 ->join('users', 'users.id', '=', 'feedcomments.user_id')
                                                 ->orderBy('feedcomments.id', 'DESC')->get(['feedcomments.*', 'users.name', 'users.email', 'users.phone', 'users.agency', 'users.file as userphoto']);
 
+
          return view('user.feed.show',[
             'feed' => $feed,
+            'relatednews' => $relatednews,
+            'categories' => $categories,
             'feedcomments' => $feedcomments,
             'feedreplies' => $feedreplies,
             'populars' => $this->populars,
@@ -202,5 +270,14 @@ class FeedController extends Controller
         $time = $date->format('d')." ".$month[$date->format('m') - 1]." ".$date->format('Y')." ".$date->format("H:i:s");
         echo '<li class="entry__meta-date"><i class="ui-date"></i>'.$time.'</li>';
     }
+
+    public function fullTimeShow($tgl)//using clock
+    {
+        $date = new DateTime($tgl);
+        $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+        $time = $date->format('d')." ".$month[$date->format('m') - 1]." ".$date->format('Y')." ".$date->format("H:i:s");
+        echo $time;
+    }
+
 
 }

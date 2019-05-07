@@ -104,8 +104,8 @@
             </div>
           </div>
         </div> <!-- end container --> --}}
-
-        <div class="footer__bottom">
+{{-- style="bottom: 0;right: 0;left: 0;position: fixed" --}}
+        <div class="footer__bottom" >
           <div class="container">
             <div class="row">
               <div class="col-lg-7 order-lg-2 text-right text-md-center">

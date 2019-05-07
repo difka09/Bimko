@@ -17,7 +17,7 @@
 
 
     <!-- Trending Now -->
-    <div class="trending-now">
+    {{-- <div class="trending-now">
       <div class="container relative">
         <span class="trending-now__label">Trending</span>
         <ul class="newsticker">
@@ -30,7 +30,7 @@
           <button class="newsticker-button newsticker-button--next" id="newsticker-button--next" aria-label="previous article"><i class="ui-arrow-right"></i></button>
         </div>
       </div>
-    </div>
+    </div> --}}
 
     <div class="main-container container mt-40" id="main-container">
 

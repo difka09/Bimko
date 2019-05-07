@@ -94,6 +94,9 @@ Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru
 
 // tess
 // Route::get('sa/sa','User\GuruController@searchFile')->name('guru.search');
+Route::get('/feed/category/{id}', 'User\FeedController@category')->name('feed.category');
+Route::get('/feed/a/cari','User\FeedController@search')->name('feed.search');
+
 
 
 

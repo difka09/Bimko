@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\School;
 
 class HomeController extends Controller
 {
@@ -15,12 +16,16 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->maps = School::orderBy('name', 'asc')->get();
+
     }
 
 
     public function index()
     {
-        return view('landing');
+        return view('landing',[
+            'maps' => $this->maps
+        ]);
     }
 
     public function storeGuest(Request $request)

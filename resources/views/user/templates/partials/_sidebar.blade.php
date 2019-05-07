@@ -7,14 +7,14 @@
               <div class="tabs widget-tabpost__tabs">
                 <ul class="tabs__list widget-tabpost__tabs-list">
                   <li class="tabs__item widget-tabpost__tabs-item tabs__item--active">
-                    <a href="#tab-trending" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Trending</a>
+                    <a href="#tab-trending" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Terpopuler</a>
                   </li>
                   <li class="tabs__item widget-tabpost__tabs-item">
-                    <a href="#tab-latest" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Latest</a>
+                    <a href="#tab-latest" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Terbaru</a>
                   </li>
-                  <li class="tabs__item widget-tabpost__tabs-item">
+                  {{-- <li class="tabs__item widget-tabpost__tabs-item">
                     <a href="#tab-comments" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Comments</a>
-                  </li>
+                  </li> --}}
                 </ul> <!-- end tabs -->
 
                 <!-- tab content -->
@@ -77,98 +77,24 @@
                     </ul>
                   </div>
 
-                  <div class="tabs__content-pane" id="tab-comments">
+                  {{-- <div class="tabs__content-pane" id="tab-comments">
                     <ul class="post-list-small">
+                        @foreach ($feedcomments as $feedcomment)
                       <li class="post-list-small__item">
                         <article class="post-list-small__entry clearfix">
-                          <div class="post-list-small__img-holder">
-                            <div class="thumb-container thumb-75">
-                              <a href="single-post.html">
-                                <img data-src="img/blog/popular_post_3.jpg" src="img/empty.png" alt="" class=" lazyload">
-                              </a>
-                            </div>
-                          </div>
                           <div class="post-list-small__body">
                             <h3 class="post-list-small__entry-title">
-                              <a href="single-post.html">June in Africa: Taxi wars, smarter cities and increased investments</a>
+                                <a>{{$feedcomment->user()->name}}</a>
                             </h3>
                             <ul class="entry__meta">
-                              <li class="entry__meta-date">
-                                <i class="ui-date"></i>
-                                21 October, 2017
-                              </li>
+                            Mengkomentari pada <a href="">{{$feedcomment->feeds->name}}</a> {{$controller->tanggal($recentUser->created_at)}}
                             </ul>
                           </div>
                         </article>
                       </li>
-                      <li class="post-list-small__item">
-                        <article class="post-list-small__entry clearfix">
-                          <div class="post-list-small__img-holder">
-                            <div class="thumb-container thumb-75">
-                              <a href="single-post.html">
-                                <img data-src="img/blog/popular_post_1.jpg" src="img/empty.png" alt="" class=" lazyload">
-                              </a>
-                            </div>
-                          </div>
-                          <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                              <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
-                            </h3>
-                            <ul class="entry__meta">
-                              <li class="entry__meta-date">
-                                <i class="ui-date"></i>
-                                21 October, 2017
-                              </li>
-                            </ul>
-                          </div>
-                        </article>
-                      </li>
-                      <li class="post-list-small__item">
-                        <article class="post-list-small__entry clearfix">
-                          <div class="post-list-small__img-holder">
-                            <div class="thumb-container thumb-75">
-                              <a href="single-post.html">
-                                <img data-src="img/blog/popular_post_2.jpg" src="img/empty.png" alt="" class=" lazyload">
-                              </a>
-                            </div>
-                          </div>
-                          <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                              <a href="single-post.html">How Meditation Can Transform Your Business</a>
-                            </h3>
-                            <ul class="entry__meta">
-                              <li class="entry__meta-date">
-                                <i class="ui-date"></i>
-                                21 October, 2017
-                              </li>
-                            </ul>
-                          </div>
-                        </article>
-                      </li>
-                      <li class="post-list-small__item">
-                        <article class="post-list-small__entry clearfix">
-                          <div class="post-list-small__img-holder">
-                            <div class="thumb-container thumb-75">
-                              <a href="single-post.html">
-                                <img data-src="img/blog/popular_post_4.jpg" src="img/empty.png" alt="" class=" lazyload">
-                              </a>
-                            </div>
-                          </div>
-                          <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                              <a href="single-post.html">PUBG Desert Map Finally Revealed, Here Are All The Details</a>
-                            </h3>
-                            <ul class="entry__meta">
-                              <li class="entry__meta-date">
-                                <i class="ui-date"></i>
-                                21 October, 2017
-                              </li>
-                            </ul>
-                          </div>
-                        </article>
-                      </li>
+                      @endforeach
                     </ul>
-                  </div>
+                  </div> --}}
 
                 </div> <!-- end tab content -->
               </div> <!-- end tabs -->

@@ -14,7 +14,7 @@
 
           <!-- Mobile logo -->
           <a href="index.html" class="logo logo--mobile d-lg-none">
-            <img class="logo__img" src="img/logo_mobile.png" srcset="img/logo_mobile.png 1x, img/logo_mobile@2x.png 2x" alt="logo">
+            <img class="logo__img" src="{{asset('user/img/logo_mobile.png')}}" srcset="{{asset('user/img/logo_mobile.png')}} 1x, {{asset('user/img/logo_mobile@2x.png')}} 2x" alt="logo">
           </a>
 
           <!-- Nav-wrap -->
@@ -28,10 +28,12 @@
               <li class="nav__dropdown">
                 <a href="#">Kategori</a>
                 <ul class="nav__dropdown-menu">
-                  <li><a href="single-post-gallery.html">Info Pekerjaan</a></li>
-                  <li><a href="single-post.html">Info Kuliah</a></li>
-                  <li><a href="single-post.html">Info Iklan</a></li>
-                  <li><a href="single-post-quote.html">Hiburan</a></li>
+                @foreach ($categories as $category)
+                <li><a href="{{Route('feed.category',$category->slug)}}" data-id="{{$category->id}}">{{$category->name}}</a></li>
+                  {{-- <li><a href="{{Route('feed.category')}}">Hiburan</a></li>
+                  <li><a href="{{Route('feed.category')}}">Info Kuliah</a></li>
+                  <li><a href="{{Route('feed.category')}}">Info Iklan</a></li> --}}
+                  @endforeach
                 </ul>
               </li>
 
@@ -106,8 +108,8 @@
                 <i class="ui-search nav__search-trigger-icon"></i>
               </a>
               <div class="nav__search-box" id="nav__search-box">
-                <form class="nav__search-form">
-                  <input type="text" placeholder="Search an article" class="nav__search-input">
+                <form class="nav__search-form" action="{{route('feed.search')}}" method="GET">
+                  <input type="text" id="cari" name="cari" placeholder="Cari artikel disini" class="nav__search-input">
                   <button type="submit" class="search-button btn btn-lg btn-color btn-button">
                     <i class="ui-search nav__search-icon"></i>
                   </button>
