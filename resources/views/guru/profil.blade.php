@@ -44,8 +44,8 @@
     <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="ui-block">
             <div class="top-header">
-                <div class="top-header-thumb">
-                    <img src="{{asset('guru/img/top-header1.jpg')}}" alt="nature">
+                <div class="top-header-thumb bg-music">
+                    <img src="{{asset('guru/img/top-header7.png')}}" alt="nature">
                 </div>
                 <div class="profile-section">
                     <div class="row">

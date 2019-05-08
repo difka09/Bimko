@@ -52,6 +52,8 @@
                 <h6 class="title">Create an Event</h6>
             </div>
             <div class="modal-body">
+                <form action="{{Route('guru.addagenda')}}" method="POST">
+                    @csrf
                 <div class="form-group label-floating is-select is-empty">
                     <label class="control-label">Personal Event</label>
                     <div class="btn-group bootstrap-select form-control">
@@ -64,32 +66,32 @@
                 </div>
 
                 <div class="form-group label-floating">
-                    <label class="control-label">Event Name</label>
-                    <input class="form-control" placeholder="" value="Take Querty to the Veterinarian" type="text">
+                    <label class="control-label">Nama Rapat</label>
+                    <input class="form-control" placeholder="" type="text" name="name" required>
                     <span class="material-input"></span></div>
                 <div class="form-group label-floating is-empty">
-                    <label class="control-label">Event Location</label>
-                    <input class="form-control" placeholder="" value="" type="text">
+                    <label class="control-label">Tempat</label>
+                    <input class="form-control" placeholder="" value="" type="text" name="place" required>
                     <span class="material-input"></span></div>
                 <div class="form-group date-time-picker label-floating is-focused">
-                    <label class="control-label">Event Date</label>
-                    <input name="datetimepicker" value="26/03/2016">
-                    <span class="input-group-addon">
+                    <label class="control-label">Tanggal</label>
+                    <input name="date" type="date" required>
+                    {{-- <span class="input-group-addon">
                     <svg class="olymp-calendar-icon icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-calendar-icon')}}"></use></svg>
-                    </span>
+                    </span> --}}
                 </div>
 
                 <div class="row">
 
                 <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
-                <div class="form-group label-floating">
-                    <label class="control-label">Event Time</label>
-                    <input class="form-control" placeholder="" value="09:00" type="text">
+                <div class="form-group label-floating is-focused" >
+                    <label class="control-label">Waktu</label>
+                    <input class="form-control" placeholder="" type="time" name="time" style="width: 120px" required>
                     <span class="material-input"></span>
                 </div>
                 </div>
 
-                <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
+                {{-- <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
                 <div class="form-group label-floating is-select">
                     <label class="control-label">AM-PM</label>
                     <div class="btn-group bootstrap-select form-control">
@@ -100,9 +102,9 @@
                     </div>
                     <span class="material-input"></span>
                 </div>
-                </div>
+                </div> --}}
 
-                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                {{-- <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="form-group label-floating is-select">
                     <label class="control-label">Timezone</label>
                     <div class="btn-group bootstrap-select form-control">
@@ -113,19 +115,20 @@
                     </div>
                     <span class="material-input"></span>
                 </div>
-                </div>
+                </div> --}}
 
                 </div>
 
-                <div class="form-group label-floating">
-                    <label class="control-label">Event Description</label>
-                    <textarea class="form-control" placeholder="">I need to take Querty for a check up and ask the doctor if he needs a new tank.
+                <div class="form-group label-floating is-empty">
+                    <label class="control-label">Deskripsi Rapat</label>
+                    <textarea name="summary" class="form-control" required>
                     </textarea>
                     <span class="material-input"></span>
                 </div>
 
-                <button class="btn btn-breez btn-lg full-width">Create Event</button>
+                <button type="submit" class="btn btn-breez btn-lg full-width">Buat Rapat</button>
             </div>
+        </form>
 
             </div>
         </div>

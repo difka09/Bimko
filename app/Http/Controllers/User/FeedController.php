@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 // use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Feed;
 use App\Models\School;
 use App\Models\User;
@@ -76,18 +77,6 @@ class FeedController extends Controller
         ]);
     }
 
-    // public function index()
-    // {
-    //     $Allfeeds = Feed::get();
-    //     $feeds = Feed::orderBy('name', 'asc')->paginate(3);
-
-    //     return view('user.feed.index', [
-    //         'feeds' => $feeds,
-    //         'Allfeeds' => $Allfeeds,
-    //         'controller' => $this
-    //     ]);
-    // }
-
     public function category($id)
     {
         $category_name = Catfeed::where('slug',$id)->select('name')->get();
@@ -120,16 +109,27 @@ class FeedController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|unique:feeds',
             'content' => 'required',
-            'catfeed.*' => 'required'
+            'catfeed' => 'required'
+        ],[
+            'name.unique'  => '*Judul telah digunakan, gunakan judul lain',
+            'name.required'  => '*Judul artikel kosong',
+            'content.required' => '*konten artikel kosong',
+            'catfeed.required' => '*kategori artikel kosong'
         ]);
 
+        if($validate->fails())
+        {
+            return back()
+                ->with('danger', 'Gagal menambah artikel')
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         $file = $request->file('file')->store('feeds');
-        // $date = new DateTime($tgl);
-        // $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
-        // $time = $date->format('d')." ".$month[$date->format('m') - 1]." ".$date->format('Y');
+
         $date = new DateTime();
         $newDate = $date->format('dmy');
 

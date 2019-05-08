@@ -24,6 +24,27 @@
     <link rel="apple-touch-icon" href="{{ asset('user/img/apple-touch-icon.png') }}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('user/img/apple-touch-icon-72x72.png') }}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('user/img/apple-touch-icon-114x114.png') }}">
+    <style>
+    .act-btn{
+        background-image: url(images/maps/tanya1.png);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        display: block;
+        width: 400px;
+        height: 250px;
+        text-align: center;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: ease all 0.3s;
+        position:fixed;
+        right: 30px;
+        bottom: 30px;
+        border: none;
+    }
+    </style>
 
     <!-- Lazyload -->
     <script src="{{ asset('user/js/lazysizes.min.js') }}"></script>

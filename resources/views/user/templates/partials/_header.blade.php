@@ -87,9 +87,17 @@
                     {{-- <a href="#">{{ Auth::user()->name }} <span class="caret"></span></a> --}}
                 <ul class="nav__dropdown-menu">
                     </a></li>
+                    @if (auth()->user()->isGuru())
+                    <li><a class="dropdown-item" href="{{ route('guru.index') }}">
+                            Home
+                    </a></li>
+                    @endif
+                    @if (auth()->user()->isGuest())
                     <li><a class="dropdown-item" href="{{ route('guest.showuser') }}">
-                    Home</a></li>
-                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                        Home
+                    </a></li>
+                    @endif
+                  <li><a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}

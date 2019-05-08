@@ -59,7 +59,7 @@
             {{ $feeds->links('vendor.pagination.paginationfeed') }}
             <br>
         </div>
-
+        <a href="{{Route('guest.createfeed')}}" title="Konsultasi Yuk..." class="act-btn"></a>
 
       </div> <!-- end posts -->
       @endsection

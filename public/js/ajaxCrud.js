@@ -352,6 +352,24 @@ $(document).on('keyup', '.search-here', function(){
         $('#im-here').html(noresult);
     });
 
+    //get value agenda list
+    $('body').on('click', '#view-detail', function(){
+        var agenda_id = $(this).data("id");
+        $.get(urls[15] + '/' + agenda_id + '/show', function(data){
+            var newdate = moment(new Date(data.start_At, )).format("DD/MM/YYYY");
+            var newtime = moment(new Date(data.start_At, )).format("HH:mm");
+            $('#view-agenda').modal('show');
+            $('#name').val(data.name);
+            $('#date').val(newdate);
+            $('#time').val(newtime);
+            $('#place').val(data.place);
+            $('#summary').val(data.summary);
+            console.log(newtime);
+            // $('#postid').val(data.id);
+        });
+
+    });
+
 // $('div.author-thumb').on('mouseover', function() {
 //     document.getElementById("image").style.display = "inline";
 // });

@@ -11,6 +11,8 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use App\Models\Agenda;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -316,6 +318,42 @@ class GuruController extends Controller
             'file' => $file
         ]);
         return back();
+    }
+
+    public function addAgenda(Request $request)
+    {
+        // $date = Carbon::createFromFormat('d/m/Y', $request->date);
+        $newdate = Carbon::parse($request->date)->format('Y-m-d');
+        $time = Carbon::parse($request->time)->format('H:i:s');
+
+        $start_At = date('Y-m-d H:i:s', strtotime("$newdate $time"));
+        $data = Agenda::create([
+            'name' => $request->name,
+            'place' => $request->place,
+            'user_id' => auth()->user()->id,
+            'summary' => $request->summary,
+            'start_At' => $start_At
+        ]);
+
+        return redirect()->route('guru.index');
+    }
+
+    public function indexAgenda()
+    {
+        $agendas = Agenda::latest()->get();
+        // dd($agendas);
+
+        return view('guru.agendalist',[
+            'agendas' => $agendas
+        ]);
+    }
+
+    public function showAgenda($id)
+    {
+        $where = array ('id' => $id);
+        $agenda = Agenda::where($where)->first();
+
+        return response()->json($agenda);
     }
 
 

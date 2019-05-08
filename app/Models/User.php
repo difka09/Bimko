@@ -76,4 +76,21 @@ class User extends Authenticatable
         return $this->hasMany(FeedComment::class);
     }
 
+    public function isMurid()
+    {
+        return $this->hasRole('Murid');
+    }
+    public function isGuru()
+    {
+        return $this->hasRole('Guru');
+    }
+    public function isGuest()
+    {
+        return $this->hasRole('guest');
+    }
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
 }

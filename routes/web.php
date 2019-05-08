@@ -97,6 +97,12 @@ Route::get('tes/123/{post}/download','User\GuruController@download')->name('guru
 Route::get('/feed/category/{id}', 'User\FeedController@category')->name('feed.category');
 Route::get('/feed/a/cari','User\FeedController@search')->name('feed.search');
 
+Route::post('tes/123/a/agenda/store', 'User\GuruController@addAgenda')->name('guru.addagenda')->middleware('auth');
+Route::get('tes/123/a/agenda/','User\GuruController@indexAgenda')->name('guru.indexagenda');
+Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name('guru.showagenda');
+
+
+
 
 
 
