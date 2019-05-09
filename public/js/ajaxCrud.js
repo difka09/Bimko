@@ -364,9 +364,12 @@ $(document).on('keyup', '.search-here', function(){
             $('#time').val(newtime);
             $('#place').val(data[0]['place']);
             $('#description').val(data[0]['description']);
+            if(data[0]['summary']!=null){
             $('#agenda_not').val(data[0]['summary']);
+            }else{
+            $('#agenda_not').val('rapat belum dilaksanakan');
+            }
             if(data[0]['file']!=null){
-            // document.getElementById('filename_file').innerHTML=data[0]['file'];data-id="'+data[0]['id']+'">
             document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[0]['file']+'</a>';
             }else{
             document.getElementById('filename_file').innerHTML="File belum diupload";

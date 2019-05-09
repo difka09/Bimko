@@ -38,9 +38,45 @@ class GuruController extends Controller
         $files = Post::where('type','=',2)->latest()->limit(4)->get();
         $posts = Post::latest()->limit(5)->get();
 
+        $agenda = Agenda::latest()->first();
+        if($agenda){
+        $date = new Carbon($agenda->start_At);
+        $now = Carbon::now();
+        if(($date->diffInDays($now) == 0) && ($date->diffInHours($now) == 0))
+        {
+            $day = 'Sekarang';
+            $name = $agenda->name;
+        }
+        elseif(($date->diffInHours($now) > 0) && ($date->diffInDays($now) == 0))
+        {
+            $day = ( $date->diffInHours($now)).' Jam Lagi';
+            $name = $agenda->name;
+
+        }
+        elseif(($date->diffInHours($now) >= 0) && ($date->diffInDays($now) > 0))
+        {
+            $day = ( $date->diffInDays($now)).' Hari Lagi';
+            $name = $agenda->name;
+
+        }else
+        {
+            $day = 'Belum ada agenda rapat';
+            $name = '';
+
+        }
+    }
+    else
+    {
+        $day = 'Belum ada agenda rapat';
+        $name = '';
+    }
+        // dd($difference);
+        // dd($agendas);
         return view('guru.index', [
             'posts' => $posts,
             'files' => $files,
+            'day' => $day,
+            'name' => $name,
 
         ]);
     }

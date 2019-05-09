@@ -9,9 +9,10 @@
             <div class="author-thumb">
                 <img src="{{asset('guru/img/badge13.png')}}" alt="author">
             </div>
-            <span>Today is</span>
-            <a href="#" class="h4 title">Marina Valentine’s Birthday!</a>
-            <p>Leave her a message with your best wishes on her profile page!</p>
+            <span>{{$day}}</span>
+            <a href="#" class="h4 title">{{$name}}</a>
+            {{-- <p>Klik Disini untuk mel</p> --}}
+            <a style="color:white;font-weight: bold;" href="{{Route('guru.indexagenda')}}"><p>Informasi Rapat Lainnya >></p></a>
         </div>
     </div>
 </div>

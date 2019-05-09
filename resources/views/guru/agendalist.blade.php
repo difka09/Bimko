@@ -14,7 +14,7 @@
                             </a>
                         </li>
                     </ul>
-                    <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
+                    {{-- <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a> --}}
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <div class="ui-block">
                     <table class="event-item-table event-item-table-fixed-width">
                         <thead>
-                            <h4 style="text-align: center;font-weight: bold;">Data rapat kosong</h4>
+                        <h4 style="text-align: center;font-weight: bold;">Data rapat kosong, <a href="{{route('guru.index')}}">buat agenda disini</a></h4>
                         </thead>
                     </table>
                 </div>
@@ -111,7 +111,9 @@
                             <td class="add-event">
                                 <a href="javascript:void(0)" class="btn btn-breez btn-sm" id="view-detail" data-id="{{$agenda->id}}">Lihat Rincian</a>
                                 @if ($agenda->status == 0)
+                                @if ($agenda->user_id == auth()->user()->id)
                                 <a class="btn btn-sm btn-border-think custom-color c-grey" id="edit-agenda" data-id="{{$agenda->id}}">Tulis Notulensi</a>
+                                @endif
                                 @endif
                             </td>
                         </tr>
