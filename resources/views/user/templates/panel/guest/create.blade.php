@@ -17,7 +17,7 @@
             {{-- <div class="form-group {{ $errors->has('catfeed') ? 'has-error' :'' }}"> --}}
                 <label for="" class="col-8 control-label">Kategori : </label>
                     <div class="col-8">
-                        <select name="catfeed[]" id="" class="col-8 form-control select2" multiple="multiple">
+                        <select name="catfeed[]" id="" class="form-control select2" multiple="multiple">
                             @foreach ($catfeeds as $catfeed)
                             <option value="{{ $catfeed->id }}">{{ $catfeed->name }}</option>
                             @endforeach

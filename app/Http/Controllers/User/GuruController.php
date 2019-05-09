@@ -37,9 +37,11 @@ class GuruController extends Controller
     {
         $files = Post::where('type','=',2)->latest()->limit(4)->get();
         $posts = Post::latest()->limit(5)->get();
+
         return view('guru.index', [
             'posts' => $posts,
-            'files' => $files
+            'files' => $files,
+
         ]);
     }
 
@@ -331,29 +333,77 @@ class GuruController extends Controller
             'name' => $request->name,
             'place' => $request->place,
             'user_id' => auth()->user()->id,
-            'summary' => $request->summary,
+            'creator' => auth()->user()->name,
+            'description' => $request->description,
             'start_At' => $start_At
         ]);
 
+
         return redirect()->route('guru.index');
+    }
+
+    public function updateAgenda(Request $request, $id)
+    {
+        $agenda = Agenda::find($id);
+        //get file
+        $file = null;
+        if ($request->hasFile('file')) {
+            if($agenda->file){
+                Storage::delete($agenda->file);
+            }
+            $file = $request->file('file')->store('agendas');
+        }
+        if (!$request->hasFile('file') && $agenda->file) {
+            $file = $agenda->file;
+        }
+
+        $data = Agenda::find($id)->update([
+            'summary' => $request->summary,
+            'status' => 1,
+            'file' => $file,
+        ]);
+
+        $users = User::find($request->user);
+        $agenda->users()->sync($users);
+
+        return response()->json($data);
     }
 
     public function indexAgenda()
     {
         $agendas = Agenda::latest()->get();
+        $users = User::whereHas('roles',function($q){
+            $q->where('name','Guru');
+        })->get();
         // dd($agendas);
 
         return view('guru.agendalist',[
-            'agendas' => $agendas
+            'agendas' => $agendas,
+            'users' => $users
         ]);
     }
 
     public function showAgenda($id)
     {
+        $users = User::whereHas('roles',function($q){
+            $q->where('name','Guru');
+        })->get();
+
         $where = array ('id' => $id);
         $agenda = Agenda::where($where)->first();
 
-        return response()->json($agenda);
+        return response()->json([$agenda,$users]);
+    }
+
+    public function agendaDownload(Agenda $agenda,$id)
+    {
+
+        $where = array ('id' => $id);
+        $agenda = Agenda::where($where)->first();
+
+        $download = public_path() .'/images/'. $agenda->file;
+        // dd($download);
+        return response()->download($download);
     }
 
 

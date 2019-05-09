@@ -304,7 +304,8 @@
                     <div class="image-upload">
                     <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
                         <label for="file_4">
-                        <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
+                        {{-- <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg> --}}
+                        <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
                         <div id="filename_upload_4"></div>
                         </label>
                     </a>
@@ -434,6 +435,8 @@ function showFileName4( event ) {
   };
 </script>
 
+
+
      {{-- $(document).ready(function () {
      $(".content").hide();
      $(".show_hide").on("click", function () {
@@ -444,3 +447,5 @@ function showFileName4( event ) {
  }); --}}
 
 @endpush
+
+

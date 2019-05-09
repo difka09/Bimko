@@ -76,6 +76,11 @@ class User extends Authenticatable
         return $this->hasMany(FeedComment::class);
     }
 
+    public function agendas()
+    {
+        return $this->belongsToMany(Agenda::class);
+    }
+
     public function isMurid()
     {
         return $this->hasRole('Murid');

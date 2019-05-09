@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @stack('select2css')
 
         <!-- Main Font -->
         <script src="{{asset('guru/js/webfontloader.min.js')}}"></script>
@@ -21,6 +22,7 @@
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-reboot.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-grid.css')}}">
+
 <style>
 div.ex1 {
   pointer-events: none;
@@ -85,8 +87,7 @@ div.ex2 {
         <!-- Main Styles CSS -->
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/main.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/fonts.min.css')}}">
-
-        @stack('uploadicon')
         @stack('customecss')
+        @stack('uploadicon')
 
 </head>

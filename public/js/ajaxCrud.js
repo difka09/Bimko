@@ -356,19 +356,71 @@ $(document).on('keyup', '.search-here', function(){
     $('body').on('click', '#view-detail', function(){
         var agenda_id = $(this).data("id");
         $.get(urls[15] + '/' + agenda_id + '/show', function(data){
-            var newdate = moment(new Date(data.start_At, )).format("DD/MM/YYYY");
-            var newtime = moment(new Date(data.start_At, )).format("HH:mm");
+            var newdate = moment(new Date(data[0]['start_At'] )).format("DD/MM/YYYY");
+            var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
             $('#view-agenda').modal('show');
-            $('#name').val(data.name);
+            $('#name').val(data[0]['name']);
             $('#date').val(newdate);
             $('#time').val(newtime);
-            $('#place').val(data.place);
-            $('#summary').val(data.summary);
-            console.log(newtime);
+            $('#place').val(data[0]['place']);
+            $('#description').val(data[0]['description']);
+            $('#agenda_not').val(data[0]['summary']);
+            if(data[0]['file']!=null){
+            // document.getElementById('filename_file').innerHTML=data[0]['file'];data-id="'+data[0]['id']+'">
+            document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[0]['file']+'</a>';
+            }else{
+            document.getElementById('filename_file').innerHTML="File belum diupload";
+            }
+            console.log(data[0]['file']);
             // $('#postid').val(data.id);
         });
 
     });
+
+    //get value agenda for update
+    $('body').on('click', '#edit-agenda', function(){
+        var agenda_id = $(this).data("id");
+        $.get(urls[15] + '/' + agenda_id + '/show', function(data){
+            $('#title-modal').html("Tambah Data Notulensi Rapat " +'"' +data[0]['name']+'"');
+            $('#agenda_id').val(data[0]['id']);
+            $('#add-notulensi').modal('show');
+            $('#agenda_name').val(data[0]['name']);
+            $('#summary-notulensi').val(data[0]['summary']);
+        });
+
+    });
+
+    // add notulensi
+    $('#notulensiForm').on('submit',(function(e) {
+
+        e.preventDefault();
+        var formData = new FormData(this);
+        formData.append('_method', 'PUT');
+        var agenda_id = $("#add-notulensi").find("input[name='agenda_id']").val();
+
+        $.ajax({
+            dataType: 'json',
+            type:'POST',
+            url: urls[15] + '/' + agenda_id+ '/update',
+            data: formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                $('#add-notulensi').modal('hide');
+                location.reload();
+
+                // location.href=urls[2]+ '/' +post_id;
+                // $("#khusus" + post_id).replaceWith(update1);
+             },
+            error: function(data){
+                console.log('Error:' ,data);
+                console.log(agenda_id);
+            }
+        });
+
+    }));
+
 
 // $('div.author-thumb').on('mouseover', function() {
 //     document.getElementById("image").style.display = "inline";

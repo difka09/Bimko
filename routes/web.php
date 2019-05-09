@@ -100,6 +100,9 @@ Route::get('/feed/a/cari','User\FeedController@search')->name('feed.search');
 Route::post('tes/123/a/agenda/store', 'User\GuruController@addAgenda')->name('guru.addagenda')->middleware('auth');
 Route::get('tes/123/a/agenda/','User\GuruController@indexAgenda')->name('guru.indexagenda');
 Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name('guru.showagenda');
+Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda');
+Route::get('tes/123/a/agenda/{id}/download','User\GuruController@agendaDownload')->name('guru.agendadownload')->middleware('auth');
+
 
 
 

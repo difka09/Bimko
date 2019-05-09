@@ -121,7 +121,7 @@
 
                 <div class="form-group label-floating is-empty">
                     <label class="control-label">Deskripsi Rapat</label>
-                    <textarea name="summary" class="form-control" required>
+                    <textarea name="description" class="form-control">
                     </textarea>
                     <span class="material-input"></span>
                 </div>
