@@ -103,6 +103,15 @@ Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name
 Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda');
 Route::get('tes/123/a/agenda/{id}/download','User\GuruController@agendaDownload')->name('guru.agendadownload')->middleware('auth');
 
+Route::post('tes/123/a/notifications/read', 'NotificationController@read')->name('guru.notificationread');
+Route::post('/notifications', 'NotificationController@notifications');
+
+
+
+Route::get('test', function () {
+    event(new App\Events\StatusLiked('Someone',[2]));
+    return "Event has been sent!";
+});
 
 
 

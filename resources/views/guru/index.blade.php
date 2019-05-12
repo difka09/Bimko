@@ -207,7 +207,7 @@
 
 
                 <!-- Comment Form  -->
-                <form method="post" id="comment-form{{$post->id}}" action="javascript:void(0)" class="comment-form form-komen inline-items" enctype="multipart/form-data">
+                <form method="post" id="comment-form{{$post->id}}" class="comment-form form-komen inline-items" enctype="multipart/form-data">
                 {{-- <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="{{route('guru.addcomment')}}" class="comment-form inline-items" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="post__author author vcard inline-items">
@@ -250,76 +250,7 @@
 </main>
 
 @endsection
-<div class="modal fade" id="ajax-crud-modal" aria-hidden="true" style="display:none">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="postCrudModal"></h4>
-        </div>
 
-        <div class="modal-body">
-        <form id="updateForm1" name="updateForm1" method="post" action="javascript:void(0)" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
-                <input type="hidden" name="id" id="postid">
-                <textarea class="form-control" name="content" id="content" placeholder="Tulis status di sini.." required></textarea>
-            </div>
-            <div class="add-options-message">
-                <div class="image-upload">
-                <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
-                    <label for="file_3">
-                    <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
-                    <div id="filename_upload_3"></div>
-                    </label>
-                </a>
-                <input type="file" name="file_1" id="file_3">
-                </div>
-                <button type="submit" id="btn-save1" class="btn btn-primary btn-md-2 btn-save1">Edit Post</button>
-            </div>
-        </form>
-        </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="ajax-crud-modal2" aria-hidden="true" style="display:none">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="postCrudModal2"></h4>
-            </div>
-
-            <div class="modal-body">
-                <form id="updateForm2" name="updateForm2" method="post" action="javascript:void(0)" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <input type="hidden" name="user_id" id="user_id2" value="{{auth()->user()->id}}">
-                    <input type="hidden" name="id" id="postid2">
-                    <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none" required>
-                    <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file" required></textarea>
-                </div>
-                <div class="add-options-message">
-                    <div class="image-upload">
-                    <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"  data-original-title="Upload gambar">
-                        <label for="file_4">
-                        {{-- <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg> --}}
-                        <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
-                        <div id="filename_upload_4"></div>
-                        </label>
-                    </a>
-                    <input type="file" name="file_2" id="file_4">
-
-                    </div>
-                    <button type="submit" id="btn-save2" class="btn btn-primary btn-md-2 btn-save2">Edit Post</button>
-                </div>
-            </form>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 @push('scripts')
 

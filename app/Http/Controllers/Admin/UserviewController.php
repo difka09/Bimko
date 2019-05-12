@@ -78,7 +78,9 @@ class UserviewController extends Controller
             'password' => Hash::make($request['password']),
             'identity' => $request->identity,
             'grade' => $request->grade,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'file' => 'users/woman.gif'
+
         ]);
         $data->assignRole('Guru');
 

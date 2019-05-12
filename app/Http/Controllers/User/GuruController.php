@@ -13,6 +13,10 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\Agenda;
+use Pusher\Pusher;
+use App\Events\StatusLiked;
+use App\Notifications\NewNotif;
+use App\Notifications\UserCommented;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -27,16 +31,17 @@ class GuruController extends Controller
         $this->year = $date->format('Y');
     }
 
-    //guru controller
     public function home()
     {
         return view('guru.index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $files = Post::where('type','=',2)->latest()->limit(4)->get();
         $posts = Post::latest()->limit(5)->get();
+        $notifications = $request->user()->unreadNotifications()->limit(20)->get()->toArray();
+
 
         $agenda = Agenda::latest()->first();
         if($agenda){
@@ -77,6 +82,7 @@ class GuruController extends Controller
             'files' => $files,
             'day' => $day,
             'name' => $name,
+            'notifications' => $notifications,
 
         ]);
     }
@@ -106,8 +112,8 @@ class GuruController extends Controller
         $file_1->user_id = $request->user_id;
         $file_1->type = 1;
         $file_1->save();
-        // echo $file_1->content;
         }
+
         else {
         $data = Post::create([
             'content' => $request->content,
@@ -120,13 +126,16 @@ class GuruController extends Controller
     return response()->json();
     }
 
-    public function showPost(Post $post)
+    public function showPost(Post $post, Request $request)
     {
         $comments = Comment::where('post_id',$post->id)->latest()->get();
-        // dd($comments);
+        $notifications = $request->user()->notifications;
+
         return view('guru.show', [
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'notifications' => $notifications
+
         ]);
 
     }
@@ -142,6 +151,7 @@ class GuruController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $post = Post::find($id);
+
         //get file_1
         $file_1 = null;
         if ($request->hasFile('file_1')) {
@@ -163,6 +173,7 @@ class GuruController extends Controller
     public function updatePost(Request $request, $id)
     {
         $post = Post::find($id);
+
         //get file_2
         $file_2 = null;
         if ($request->hasFile('file_2')) {
@@ -200,12 +211,6 @@ class GuruController extends Controller
     public function addComment(Request $request)
     {
         $postid = $request->input('post_id');
-        // $comment = new Comment;
-        // $comment->post_id = $request->post_id;
-        // $comment->message = $request->message;
-        // $comment->parent_id = $request->parent_id;
-        // $comment->user_id = auth()->user()->id;
-        // $comment->save();
 
         $data = Comment::create([
             'post_id' => $request->post_id,
@@ -214,38 +219,41 @@ class GuruController extends Controller
             'user_id' => auth()->user()->id
 
         ]);
+
+        $data->load('user');
         $id = auth()->user()->id;
         $user = User::where('id','=',$id)->get();
 
         $posts = Post::find($postid);
         $count = $posts->comments()->count();
 
-        return response()->json([$data,$user,$count]);
-
-        // return response();
-        // $tesparent = $comment->parent_id;
-        // $tesuser = $comment->user_id;
-        // $insertId = $comment->post_id;
+        $tesparent = $request->parent_id;
+        $tesuser = auth()->user()->id;
+        $insertId = $request->post_id;
+        $notifyparent = Comment::where('parent_id', '=', $tesparent)->distinct('parent_id')->pluck('parent_id');
         // $notifyparent = Comment::where('parent_id', '=', $tesparent)->select('parent_id')->get();
 
-        // $notifycomment = Comment::where([
-        //     ['post_id','=',$insertId],
-        //     ['user_id', '!=', $tesuser]
-        // ])->select('user_id')->distinct('user_id')->get();
+        $notifycomment = Comment::where([
+            ['post_id','=',$insertId],
+            ['user_id', '!=', $tesuser]
+        ])->distinct('user_id')->pluck('user_id');
 
-        // $sendnotify1 = User::whereIn('id', $notifycomment)->get();
-        // $sendnotify2 = User::whereIn('id', $notifyparent)->get();
-
-        // if($tesuser != $tesparent){
-        //     \Notification::send($sendnotify1, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
-        //     \Notification::send($sendnotify2, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
-        // }
-        //     \Notification::send($sendnotify1, new NewLessonNotification(DB::table('thread_lesson_user')->latest('id')->first()));
-            // dd($comment);
-        // return back();
+        $sendnotify1 = User::whereIn('id', $notifycomment)->get();
+        $sendnotify2 = User::whereIn('id', $notifyparent)->get();
+        $sendnotify3 = User::where('id',$notifycomment)->orwhere('id',$notifycomment)->distinct('id')->get();
 
 
+        if($tesuser != $tesparent){
+        \Notification::send($sendnotify3, new UserCommented($data));
+        }elseif(($tesuser == $tesparent) && (!$notifycomment->isEmpty())){
+            \Notification::send($sendnotify1, new UserCommented($data));
+        }elseif(($tesuser == $tesparent) && ($notifycomment->isEmpty())){
+        }
+
+
+        return response()->json([$data,$user,$count]);
     }
+
 
     public function deleteComment($id)
     {
@@ -293,8 +301,9 @@ class GuruController extends Controller
     //     return view('allLesson', compact('lessons'));
     // }
 
-    public function showProfil(User $user)
+    public function showProfil(User $user,Request $request)
     {
+        $notifications = $request->user()->notifications;
         $posts = Post::where('user_id','=',$user->id)->latest()->limit(2)->get();
         $status = Post::where([
             ['type','=',1],
@@ -310,15 +319,18 @@ class GuruController extends Controller
             'posts' => $posts,
             'status' => $status,
             'file' => $file,
+            'notifications' => $notifications,
         ]);
     }
-    public function editProfil()
+    public function editProfil(Request $request)
     {
+        $notifications = $request->user()->notifications;
         $id = auth()->user()->id;
         $user = User::where('id','=',$id)->get()->first();
 
         return view('guru.editprofil',[
-            'user' => $user
+            'user' => $user,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -327,10 +339,9 @@ class GuruController extends Controller
         $id = $request->input('id');
         $password = $request->input('password');
         $user = User::find($id);
-        // dd($user);
+
         //get file_1
         $file = null;
-
         if ($request->hasFile('file')) {
             if($user->file){
                 Storage::delete($user->file);
@@ -341,6 +352,7 @@ class GuruController extends Controller
             $file = $user->file;
         }
 
+        // get password
         if(!empty($password)){
             $newpassword = Hash::make($request['password']);
         }else{
@@ -374,13 +386,13 @@ class GuruController extends Controller
             'start_At' => $start_At
         ]);
 
-
         return redirect()->route('guru.index');
     }
 
     public function updateAgenda(Request $request, $id)
     {
         $agenda = Agenda::find($id);
+
         //get file
         $file = null;
         if ($request->hasFile('file')) {
@@ -405,17 +417,18 @@ class GuruController extends Controller
         return response()->json($data);
     }
 
-    public function indexAgenda()
+    public function indexAgenda(Request $request)
     {
+        $notifications = $request->user()->notifications;
         $agendas = Agenda::latest()->get();
         $users = User::whereHas('roles',function($q){
             $q->where('name','Guru');
         })->get();
-        // dd($agendas);
 
         return view('guru.agendalist',[
             'agendas' => $agendas,
-            'users' => $users
+            'users' => $users,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -438,10 +451,9 @@ class GuruController extends Controller
         $agenda = Agenda::where($where)->first();
 
         $download = public_path() .'/images/'. $agenda->file;
-        // dd($download);
+
         return response()->download($download);
     }
-
 
 
     //konversi tanggal

@@ -19,39 +19,44 @@
             </form>
 
             <div class="control-block">
-                <div class="control-icon more has-items">
+                {{-- count notif badge --}}
+                <div class="control-icon more has-items dropdown-notifications">
                     <svg class="olymp-thunder-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-thunder-icon')}}"></use></svg>
-
-                    <div class="label-avatar bg-primary">8</div>
-
+                    @if (auth()->user()->unreadNotifications->count() > 20)
+                    <div class="label-avatar bg-primary notif-count" id="notifications">20+</div>
+                    @else
+                    <div class="label-avatar bg-primary notif-count" id="notifications">{{auth()->user()->unreadNotifications->count()}}</div>
+                    @endif
                     <div class="more-dropdown more-with-triangle triangle-top-center">
                         <div class="ui-block-title ui-block-title-small">
-                            <h6 class="title">Notifications</h6>
+                            <h6 class="title">Pemberitahuan</h6>
                             <a href="#">Mark all as read</a>
                             <a href="#">Settings</a>
                         </div>
 
                         <div class="mCustomScrollbar" data-mcs-theme="dark">
-                            <ul class="notification-list">
+                            <ul class="notification-list" id="notificationsMenu">
                                 <li>
-                                    <div class="author-thumb">
+                                    {{-- <div class="author-thumb">
                                         <img src="{{asset('guru/img/avatar62-sm.jpg')}}" alt="author">
-                                    </div>
+                                    </div> --}}
                                     <div class="notification-event">
-                                        <div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
-                                        <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+                                        {{-- <div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+                                        <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span> --}}
+                                        <div>loading</div>
                                     </div>
-                                        <span class="notification-icon">
+                                        {{-- <span class="notification-icon">
                                             <svg class="olymp-comments-post-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"></use></svg>
-                                        </span>
+                                        </span> --}}
 
-                                    <div class="more">
+                                    {{-- <div class="more">
                                         <svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                         <svg class="olymp-little-delete"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-little-delete')}}"></use></svg>
-                                    </div>
+                                    </div> --}}
                                 </li>
 
-                                <li class="un-read">
+
+                                {{-- <li class="un-read">
                                     <div class="author-thumb">
                                         <img src="{{asset('guru/img/avatar63-sm.jpg')}}" alt="author">
                                     </div>
@@ -67,9 +72,9 @@
                                         <svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                         <svg class="olymp-little-delete"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-little-delete')}}"></use></svg>
                                     </div>
-                                </li>
+                                </li> --}}
 
-                                <li class="with-comment-photo">
+                                {{-- <li class="with-comment-photo">
                                     <div class="author-thumb">
                                         <img src="{{asset('guru/img/avatar64-sm.jpg')}}" alt="author">
                                     </div>
@@ -90,9 +95,9 @@
                                         <svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                         <svg class="olymp-little-delete"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-little-delete')}}"></use></svg>
                                     </div>
-                                </li>
+                                </li> --}}
 
-                                <li>
+                                {{-- <li>
                                     <div class="author-thumb">
                                         <img src="{{asset('guru/img/avatar65-sm.jpg')}}" alt="author">
                                     </div>
@@ -108,9 +113,9 @@
                                         <svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                         <svg class="olymp-little-delete"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-little-delete')}}"></use></svg>
                                     </div>
-                                </li>
+                                </li> --}}
 
-                                <li>
+                                {{-- <li>
                                     <div class="author-thumb">
                                         <img src="{{asset('guru/img/avatar66-sm.jpg')}}" alt="author">
                                     </div>
@@ -126,7 +131,7 @@
                                         <svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                         <svg class="olymp-little-delete"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-little-delete')}}"></use></svg>
                                     </div>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                         <a href="#" class="view-all bg-primary">View All Notifications</a>

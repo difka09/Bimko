@@ -188,8 +188,8 @@ $(document).ready(function (e) {
             contentType: false,
             processData: false,
             success:function(data){
-                console.log(data);
-                console.log([urls[5]])
+                // console.log(data);
+                // console.log([urls[5]])
                 post_id = data[0]['post_id'];
                 comment_id = data[0]['id'];
                 // $("#comment"+post_id).load(location.href + " #comment"+post_id);
@@ -310,7 +310,7 @@ $(document).ready(function (e) {
 //for index and show and profil
     $('.comment-form textarea').on('keyup', function(){
         var id = $(this).data("id");
-        console.log(id);
+        // console.log(id);
     if($.trim(this.value).length > 0)
         document.getElementById("btn-comment"+id).style.pointerEvents = "auto",
         document.getElementById("btn-comment"+id).disabled = false;

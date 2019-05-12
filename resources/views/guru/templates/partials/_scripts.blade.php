@@ -41,9 +41,22 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
-    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}","{{URL::asset('images/')}}","{{route('guru.loadcommentshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}","{{route('guru.loadshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}","{{route('guru.filepage')}}","{{route('guru.sortbydate')}}","{{route('guru.sortbyabjad')}}","{{route('guru.searchpeople')}}","http://localhost:8000/tes/123/profil","{{Route('guru.indexagenda')}}"];
+    var urls = ["{{route('guru.loaddata')}}","{{route('guru.addpost')}}","{{route('guru.index')}}", "{{route('guru.addcomment')}}","{{route('guru.loadcomment')}}","{{URL::asset('images/')}}","{{route('guru.loadcommentshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}","{{route('guru.loadshow')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon')}}","{{route('guru.filepage')}}","{{route('guru.sortbydate')}}","{{route('guru.sortbyabjad')}}","{{route('guru.searchpeople')}}","http://localhost:8000/tes/123/profil","{{Route('guru.indexagenda')}}","{{Route('guru.notificationread')}}","{{URL::asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"];
 </script>
+<script>
+        var csrf_token =["{{ csrf_token() }}"];
+</script>
+<script>
+    var me = [{{auth()->user()->id}}];
+</script>
+
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
+{{-- adding --}}
+{{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}
+<script src="//js.pusher.com/3.1/pusher.min.js"></script>
+{{-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> --}}
+<script src="{{ asset('js/app.js') }}" defer></script>
+
 
 @stack('scripts')
 

@@ -17,11 +17,22 @@
                 }
             });
         </script>
+        <script>
+            window.Laravel = @json(['csrfToken' => csrf_token()]);
+        </script>
+
+        @if (!auth()->guest())
+        <script>
+            window.Laravel.userId = {{ auth()->user()->id }}
+        </script>
+        @endif
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-reboot.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-grid.css')}}">
+        {{-- <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> --}}
 
 <style>
 div.ex1 {

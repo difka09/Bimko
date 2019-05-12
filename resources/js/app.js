@@ -1,33 +1,96 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
+window._= require('lodash');
 
-window.Vue = require('vue');
+var notifications = [];
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+const NOTIFICATION_TYPES = {
+    comment: 'App\\Notifications\\UserCommented'
+};
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+$(document).ready(function() {
+    if(window.Laravel.userId){
+        $.post('/notifications', function(data){
+            addNotificationsDB(data, "#notifications");
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+        });
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+        Echo.private('App.Models.User.' + window.Laravel.userId).notification((notification) => {
+          var count = parseInt($('#notifications').text());
+        if(count > 20 )
+        {
+            $('#notifications').html('20+');
 
-const app = new Vue({
-    el: '#app'
+        }
+        else {
+          $('#notifications').text(count+1);
+        }
+            addNotificationsDB([notification], '#notifications');
+        });
+    }
 });
+
+function addNotificationsDB(newNotifications, target){
+    notifications = _.concat(notifications, newNotifications);
+
+    notifications.slice(0, 20);
+    showNotificationsDB(notifications, target)
+}
+
+function showNotificationsDB(notifications, target){
+    if(notifications.length){
+
+        var htmlElements = notifications.map(function (notification){
+            return makeNotificationDB(notification);
+        });
+        $(target + 'Menu').html(htmlElements.join(''));
+        $(target).addClass('has-notifications')
+    }else {
+        $(target + 'Menu').html('<li><div class="notification-event"><div>No notifications</div></div></li>');
+        $(target).removeClass('has-notifications');
+    }
+}
+
+function makeNotificationDB(notification){
+    var notificationText = makeNotificationTextDB(notification);
+    return '<li><div class="post__author author"><img src="'+urls[5]+'/'+notification.data.comment.user.file+'" alt="author"></div><div class="notification-event"><div><a class="h6 notification-friend">'+notification.data.comment.user.name+'</a> mengkomentari status <a href="javascript:void(0)" class="read-me notification-link" data-notifid="'+notification.id+'" data-postid="'+notification.data.comment.post_id+'">'+ notificationText +'</a></div> <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span></div><span class="notification-icon"><svg class="olymp-comments-post-icon"><use xlink:href="'+urls[17]+'"></use></svg></span></li>';
+
+    // return '<li><div class="notification-event"><div><a href="javascript:void(0)" class="read-me notification-link" data-notifid="'+notification.id+'" data-postid="'+notification.data.comment.post_id+'">'+ notificationText +'</a></div></div></li>';
+}
+
+function makeNotificationTextDB(notification){
+    var text ='';
+    if(a = notification.type === NOTIFICATION_TYPES.comment){
+        if(notification.data.comment.parent_id == notification.data.comment.user_id){
+        const name = notification.data.comment.user.name;
+        // text += '<strong>' +name+ '</strong> commented dia';
+        text += 'nya';
+            }if(b = notification.data.comment.parent_id == me[0] ){
+                text += 'anda';
+            }if((notification.data.comment.parent_id != me[0])&&(notification.data.comment.user_id !=notification.data.comment.parent_id )){
+            const name = notification.data.comment.parent_id;
+            text += name;
+        }
+    }
+    return text;
+}
+
+$(document).on('click', '.read-me',function(){
+        var notif_id = $(this).data('notifid');
+        var post_id = $(this).data('postid');
+        $.ajax({
+            url : urls[16],
+            method : "POST",
+            data : {notif_id:notif_id, _token:csrf_token[0]},
+            dataType : 'json',
+            success : function (data)
+            {
+                window.location.href= urls[2]+'/'+post_id;
+            },
+            error: function(data){
+                console.log('Error:' ,data);
+            }
+        });
+});
+
+
+

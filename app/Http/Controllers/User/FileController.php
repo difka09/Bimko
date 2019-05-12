@@ -17,14 +17,7 @@ class FileController extends Controller
 
     public function filePage(Request $request)
     {
-        // if(request()->has('cari')){
-        // $files = Post::where([
-        //         ['type','=',2],
-        //         ['file_3','LIKE',"%{$request->cari}%"],
-        //     ])->latest()->paginate(4);
-        //     $files->appends($request->only('cari'));
-        // }
-
+        $notifications = $request->user()->notifications;
         $files = new Post;
         if(request()->has('cari')){
             $files = $files->where([
@@ -33,9 +26,6 @@ class FileController extends Controller
            ]);
        }
 
-    //    if(request()->has('title')){
-    //        $files = $files->where('title', request('title'));
-    //    }
         if(request()->has('sort')){
             $files =  $files->where('type','=',2)->orderby('created_at', request('sort'));
         }
@@ -50,13 +40,11 @@ class FileController extends Controller
                 'cari' =>  request('cari'),
             ]);
 
-        return view('guru.filepage')->with('files',$files);
+        return view('guru.filepage', [
+            'files' => $files,
+            'notifications' => $notifications,
+            ]);
 
-        // $files = Post::where('type','=',2)->latest()->paginate(4);
-
-        // return view('guru.filepage',[
-        //     'files' => $files
-        // ]);
     }
 
     public function searchPeople(Request $request)

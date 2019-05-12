@@ -42,7 +42,7 @@ class UserController extends Controller
             'password' => Hash::make($request['password']),
             'identity' => $request->identity,
             'grade' => $request->grade,
-            'phone' => $request->phone
+            'phone' => $request->phone,
         ]);
         $data->assignRole('Guru');
 

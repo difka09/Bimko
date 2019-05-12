@@ -301,7 +301,7 @@
                     {{-- <form method="post" class="comment-form" id="comment-form{{$post->id}}" action="{{route('guru.addcomment')}}" class="comment-form inline-items" enctype="multipart/form-data"> --}}
                         @csrf
                         <div class="post__author author vcard inline-items">
-                            <img src="{{$user->getImage()}}" alt="author">
+                            <img src="{{auth()->user()->getImage()}}" alt="author">
                             <div class="form-group with-icon-right ">
                                 <input type="hidden" value="{{$post->id}}" name="post_id">
                                 <input type="hidden" value="{{$post->user_id}}" name="parent_id">
