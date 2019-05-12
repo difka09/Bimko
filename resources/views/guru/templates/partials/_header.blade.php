@@ -10,7 +10,7 @@
             <form class="search-bar w-search notification-list friend-requests">
                 <div class="form-group with-button">
                     <input style="text-align: left;margin-left: 1px;" class="form-control search-here" placeholder="Search here people or pages..." type="text">
-                    <button style="height: 60px">
+                    <button style="height: 60px;pointer-events: none" disabled>
                         <svg class="olymp-magnifying-glass-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon')}}"></use></svg>
                     </button>
                 </div>
@@ -30,8 +30,8 @@
                     <div class="more-dropdown more-with-triangle triangle-top-center">
                         <div class="ui-block-title ui-block-title-small">
                             <h6 class="title">Pemberitahuan</h6>
-                            <a href="#">Mark all as read</a>
-                            <a href="#">Settings</a>
+                            {{-- <a href="#">Mark all as read</a> --}}
+                            {{-- <a href="#">Settings</a> --}}
                         </div>
 
                         <div class="mCustomScrollbar" data-mcs-theme="dark">
@@ -43,7 +43,7 @@
                                     <div class="notification-event">
                                         {{-- <div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
                                         <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span> --}}
-                                        <div>loading</div>
+                                        <div>loading..</div>
                                     </div>
                                         {{-- <span class="notification-icon">
                                             <svg class="olymp-comments-post-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"></use></svg>
@@ -134,7 +134,7 @@
                                 </li> --}}
                             </ul>
                         </div>
-                        <a href="#" class="view-all bg-primary">View All Notifications</a>
+                        <a href="javascript:void(0)" class="view-all bg-primary all-read">Lihat Semua Pemberitahuan</a>
                     </div>
                 </div>
 

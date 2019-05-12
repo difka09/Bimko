@@ -237,16 +237,18 @@ class GuruController extends Controller
             ['post_id','=',$insertId],
             ['user_id', '!=', $tesuser]
         ])->distinct('user_id')->pluck('user_id');
+        // dd($notifyparent);
 
         $sendnotify1 = User::whereIn('id', $notifycomment)->get();
         $sendnotify2 = User::whereIn('id', $notifyparent)->get();
-        $sendnotify3 = User::where('id',$notifycomment)->orwhere('id',$notifycomment)->distinct('id')->get();
 
-
-        if($tesuser != $tesparent){
-        \Notification::send($sendnotify3, new UserCommented($data));
+        if(($tesuser != $tesparent) && (!$notifycomment->isEmpty())){
+            $sendnotify3 = User::where('id',$notifycomment)->orwhere('id',$notifyparent)->distinct('id')->get();
+            \Notification::send($sendnotify3, new UserCommented($data));
         }elseif(($tesuser == $tesparent) && (!$notifycomment->isEmpty())){
             \Notification::send($sendnotify1, new UserCommented($data));
+        }elseif($tesuser != $tesparent){
+            \Notification::send($sendnotify2, new UserCommented($data));
         }elseif(($tesuser == $tesparent) && ($notifycomment->isEmpty())){
         }
 
@@ -343,7 +345,11 @@ class GuruController extends Controller
         //get file_1
         $file = null;
         if ($request->hasFile('file')) {
-            if($user->file){
+            if($user->file == "users/woman.gif")
+            {
+                $file = $user->file;
+            }
+            if($user->file != "users/woman.gif"){
                 Storage::delete($user->file);
             }
             $file = $request->file('file')->store('users');

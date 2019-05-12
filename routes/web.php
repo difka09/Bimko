@@ -103,8 +103,10 @@ Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name
 Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda');
 Route::get('tes/123/a/agenda/{id}/download','User\GuruController@agendaDownload')->name('guru.agendadownload')->middleware('auth');
 
-Route::post('tes/123/a/notifications/read', 'NotificationController@read')->name('guru.notificationread');
-Route::post('/notifications', 'NotificationController@notifications');
+Route::post('notifications/read', 'NotificationController@markAsRead')->name('guru.notificationread');
+Route::post('/notifications', 'NotificationController@notifications')->name('guru.notifications');
+Route::get('/allnotifications', 'NotificationController@allNotifications')->name('guru.allnotifications');
+Route::post('/allnotifications/read','NotificationController@allMarkAsRead')->name('guru.allnotificationread');
 
 
 

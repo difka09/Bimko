@@ -54,7 +54,7 @@ class FileController extends Controller
             $output="";
             $users = User::whereHas('roles',function($q){
                 $q->where('name','Guru');
-            })->where('name','LIKE','%'.$request->search.'%')->latest()->paginate(2);
+            })->where('name','LIKE','%'.$request->search.'%')->latest()->get();
             if($users)
             {
                 $output.=' <div class="selectize-dropdown multi form-control" style="width: 500px; top: 70px; left: 0px; visibility: visible;">
@@ -73,8 +73,22 @@ class FileController extends Controller
                 </div></a>';
                 }
                 $output.='</div></div>';
-                return Response($output);
+
             }
+            if($users->isEmpty()){
+                $output.=' <div class="selectize-dropdown multi form-control" style="width: 500px; top: 70px; left: 0px; visibility: visible;">
+                <div class="selectize-dropdown-content">';
+                $output.='
+                <a><div class="inline-items" data-selectable="">
+                    <div class="notification-event">
+                        <span class="h6 notification-friend">user tidak ditemukan</span>
+                        <span style="color:blue" class="chat-message-item"></span>
+                    </div>
+                </div></a>';
+                $output.='</div></div>';
+            }
+            return Response($output);
+
         }
     }
 

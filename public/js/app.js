@@ -29339,7 +29339,7 @@ $(document).ready(function () {
 });
 
 function addNotificationsDB(newNotifications, target) {
-  notifications = _.concat(notifications, newNotifications);
+  notifications = _.concat(newNotifications, notifications);
   notifications.slice(0, 20);
   showNotificationsDB(notifications, target);
 }
@@ -29352,7 +29352,7 @@ function showNotificationsDB(notifications, target) {
     $(target + 'Menu').html(htmlElements.join(''));
     $(target).addClass('has-notifications');
   } else {
-    $(target + 'Menu').html('<li><div class="notification-event"><div>No notifications</div></div></li>');
+    $(target + 'Menu').html('<li><div class="notification-event"><div>Tidak ada pemberitahuan</div></div></li>');
     $(target).removeClass('has-notifications');
   }
 }

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\User;
 use App\Models\Comment;
 
-class UserCommented extends Notification implements ShouldQueue
+class UserCommented extends Notification
 {
     use Queueable;
 

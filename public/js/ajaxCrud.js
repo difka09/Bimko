@@ -424,6 +424,23 @@ $(document).on('keyup', '.search-here', function(){
 
     }));
 
+    // allmarkasRead
+    $(document).on('click', '.all-read',function(){
+        $.ajax({
+            url : urls[19],
+            method : "POST",
+            data : {_token:csrf_token[0]},
+            dataType : 'json',
+            success : function (data)
+            {
+                window.location.href= urls[18];
+            },
+            error: function(data){
+                console.log('Error:' ,data);
+            }
+        });
+});
+
 
 // $('div.author-thumb').on('mouseover', function() {
 //     document.getElementById("image").style.display = "inline";

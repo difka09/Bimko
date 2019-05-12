@@ -10,21 +10,33 @@
         <!-- Notification List -->
 
         <ul class="notification-list">
+            @foreach ($allnotifications as $allnotification)
+            @if ($allnotification->type == "App\Notifications\UserCommented")
             <li>
-                <div class="author-thumb">
-                    <img src="{{asset('guru/img/avatar1-sm.jpg')}}" alt="author">
+                <div class="post__author author">
+                    <img src="{{asset('images/'.$allnotification->data['comment']['user']['file'])}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.
+                    @if (($allnotification->data['comment']['parent_id']) == ($allnotification->data['comment']['user_id']))
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">nya</a>.
+                    @endif
+                    @if (($allnotification->data['comment']['parent_id']) == (auth()->user()->id))
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">anda</a>.
+                    @endif
+                    @if (((($allnotification->data['comment']['parent_id']) != (auth()->user()->id))) && (($allnotification->data['comment']['user_id']) != ($allnotification->data['comment']['parent_id'])))
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">{{$allnotification->data['comment']['parent_id']}}</a>.
+                    @endif
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
                 </div>
                 <span class="notification-icon">
                     <svg class="olymp-comments-post-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"></use></svg>
                 </span>
-
             </li>
+            @endif
+            @endforeach
 
-            <li>
+
+            {{-- <li>
                 <div class="author-thumb">
                     <img src="{{asset('guru/img/avatar5-sm.jpg')}}" alt="author">
                 </div>
@@ -36,29 +48,13 @@
                     <svg class="olymp-calendar-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-calendar-icon')}}"></use></svg>
                 </span>
 
-            </li>
+            </li> --}}
       </ul>
         <!-- ... end Notification List -->
     </div>
 
+    {{ $allnotifications->links() }}
 
-    <!-- Pagination -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: -10.3833px; top: -16.8333px; background-color: rgb(255, 255, 255); transform: scale(16.7857);"></div></div></a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">12</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <!-- ... end Pagination -->
 
 </div>
 
