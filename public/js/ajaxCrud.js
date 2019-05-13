@@ -64,7 +64,7 @@ $(document).ready(function (e) {
             $('#btn-save').val('.edit-post');
             $('#ajax-crud-modal').modal('show');
             $('#user_id').val(data.user_id);
-            $('#content').val(data.content);
+            $('#content1').val(data.content);
             $('#postid').val(data.id);
             document.getElementById('filename_upload_3').innerHTML=data.file_1;
         });

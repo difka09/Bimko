@@ -404,7 +404,7 @@
         <div class="form-group">
             <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
             <input type="hidden" name="id" id="postid">
-            <textarea class="form-control" name="content" id="content" placeholder="Tulis status di sini.." required></textarea>
+            <textarea class="form-control" name="content" id="content1" placeholder="Tulis status di sini.." required></textarea>
         </div>
         <div class="add-options-message">
             <div class="image-upload">
