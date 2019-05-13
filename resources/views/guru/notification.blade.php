@@ -1,4 +1,5 @@
 @extends('guru.templates.wtsidebar')
+@section('pageTitle', 'Pemberitahuan')
 @section('content')
 
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
@@ -24,7 +25,7 @@
                     <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">anda</a>.
                     @endif
                     @if (((($allnotification->data['comment']['parent_id']) != (auth()->user()->id))) && (($allnotification->data['comment']['user_id']) != ($allnotification->data['comment']['parent_id'])))
-                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">{{$allnotification->data['comment']['parent_id']}}</a>.
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">{{$allnotification->data['comment']['post']['post_name']}}</a>.
                     @endif
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
                 </div>

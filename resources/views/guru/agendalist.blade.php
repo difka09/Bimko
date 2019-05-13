@@ -1,4 +1,5 @@
 @extends('guru.templates.defaultprofil')
+@section('pageTitle', 'Agenda')
 @section('content')
 
 <div class="container">

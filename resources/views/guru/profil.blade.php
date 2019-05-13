@@ -37,6 +37,8 @@
 		</div>
 	</div>
 </div>
+<?php $nameku = $user->name?>
+@section('pageTitle', 'Profil | '.$nameku.'')
 @section('content')
 
 <div class="container">

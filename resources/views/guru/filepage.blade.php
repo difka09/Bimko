@@ -18,6 +18,7 @@ button{
 </style>
 
 @endpush
+@section('pageTitle', 'Data File')
 @section('content')
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
 <div class="ui-block">

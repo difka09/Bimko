@@ -97,6 +97,7 @@ class GuruController extends Controller
             'file_2' => $file_2,
             'type' => 2,
             'file_3' => ($request->title."".substr($file_2, -4)),
+            'post_name' => auth()->user()->name,
         ]);
 
         return response()->json($data);
@@ -111,6 +112,7 @@ class GuruController extends Controller
         $file_1->content = $request->content;
         $file_1->user_id = $request->user_id;
         $file_1->type = 1;
+        $file_1->post_name = auth()->user()->name;
         $file_1->save();
         }
 
@@ -118,7 +120,8 @@ class GuruController extends Controller
         $data = Post::create([
             'content' => $request->content,
             'user_id' => $request->user_id,
-            'type' => 1
+            'type' => 1,
+            'post_name' => auth()->user()->name,
         ]);
 
     }
@@ -220,7 +223,7 @@ class GuruController extends Controller
 
         ]);
 
-        $data->load('user');
+        $data->load('user','post');
         $id = auth()->user()->id;
         $user = User::where('id','=',$id)->get();
 

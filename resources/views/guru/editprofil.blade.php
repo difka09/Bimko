@@ -13,6 +13,7 @@
 }
 </style>
 @endpush
+@section('pageTitle', 'Edit Profil')
 @section('content')
 
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
@@ -93,7 +94,7 @@
                         </div>
                         <div class="form-group label-floating">
                         <div class="photo-album-item" data-mh="album-item" style="height: 430px">
-								<div class="photo-item" style="height: 370px;max-height: 370px; width: 433.5px; max-width: 433.5px; display:inline-block">
+								<div class="photo-item" style="height: 370px;max-height: 370px;display:inline-block">
 									<img id="showImg" style="height: 100%;width: 100%" src="{{$user->getImage()}}" alt="photo">
 									<div class="overlay overlay-dark"></div>
 								</div>

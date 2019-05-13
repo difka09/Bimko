@@ -14,7 +14,7 @@
 }
 </style>
 @endpush
-
+@section('pageTitle', 'Beranda')
 @section('content')
 <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
     <div class="ui-block">

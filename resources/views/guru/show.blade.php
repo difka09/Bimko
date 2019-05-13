@@ -1,4 +1,10 @@
 @extends('guru.templates.defaultprofil')
+@if ($post->file_2)
+@section('pageTitle', 'File | '.str_limit($post->file_3,15).'')
+@else
+@section('pageTitle', 'Status | '.str_limit($post->content,15).'')
+@endif
+
 @section('content')
 
 <div class="container">

@@ -67,7 +67,7 @@ function makeNotificationTextDB(notification){
             }if(b = notification.data.comment.parent_id == me[0] ){
                 text += 'anda';
             }if((notification.data.comment.parent_id != me[0])&&(notification.data.comment.user_id !=notification.data.comment.parent_id )){
-            const name = notification.data.comment.parent_id;
+            const name = notification.data.comment.post.post_name;
             text += name;
         }
     }

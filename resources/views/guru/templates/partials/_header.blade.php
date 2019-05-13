@@ -3,13 +3,18 @@
 <header class="header" id="site-header">
 
         <div class="page-title">
-            <h6>Newsfeed</h6>
+            <h6> {{ request()->is('tes/123') ? 'Beranda' : '' }} </h6>
+            <h6> {{ request()->is('tes/123/a/files') ? 'data file' : '' }} </h6>
+            <h6> {{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }} </h6>
+            <h6> {{ request()->is('tes/123/profil/*') ? 'profil' : '' }} </h6>
+            <h6> {{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }} </h6>
+            <h6> {{ request()->is('allnotifications') ? 'pemberitahuan' : '' }} </h6>
         </div>
 
         <div class="header-content-wrapper">
             <form class="search-bar w-search notification-list friend-requests">
                 <div class="form-group with-button">
-                    <input style="text-align: left;margin-left: 1px;" class="form-control search-here" placeholder="Search here people or pages..." type="text">
+                    <input style="text-align: left;margin-left: 1px;" class="form-control search-here" placeholder="Cari user atau guru lain di sini..." type="text">
                     <button style="height: 60px;pointer-events: none" disabled>
                         <svg class="olymp-magnifying-glass-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon')}}"></use></svg>
                     </button>
@@ -19,7 +24,6 @@
             </form>
 
             <div class="control-block">
-                {{-- count notif badge --}}
                 <div class="control-icon more has-items dropdown-notifications">
                     <svg class="olymp-thunder-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-thunder-icon')}}"></use></svg>
                     @if (auth()->user()->unreadNotifications->count() > 20)
@@ -137,45 +141,51 @@
                         <a href="javascript:void(0)" class="view-all bg-primary all-read">Lihat Semua Pemberitahuan</a>
                     </div>
                 </div>
+                    <a class="page-title" style="padding:26px 26px 26px 26px;min-width: 0px;color:white;float: unset;text-align: center" href="{{Route('guru.index')}}"><span>Beranda</span></a>
+
 
                 <div class="author-page author vcard inline-items more">
-                    <div class="author-thumb">
-                        <img alt="author" src="{{asset('guru/img/author-page.jpg')}}" class="avatar">
-                        <span class="icon-status online"></span>
+                    <div class="author-thumb" style="max-height: 36px;max-width: 36px;">
+                        <img alt="author" style="max-height: 36px;max-width: 36px; width: 36px;height: 36px" src="{{auth()->user()->getImage()}}" class="avatar">
+                        {{-- <span class="icon-status online"></span> --}}
                         <div class="more-dropdown more-with-triangle">
                             <div class="mCustomScrollbar" data-mcs-theme="dark">
                                 <div class="ui-block-title ui-block-title-small">
-                                    <h6 class="title">Your Account</h6>
+                                    <h6 class="title">Akun Saya</h6>
                                 </div>
 
                                 <ul class="account-settings">
                                     <li>
-                                        <a href="36-FavPage-SettingsAndCreatePopup.html">
+                                        <a href="{{Route('guru.profil',auth()->user()->id)}}">
                                             <svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right" data-original-title="FAV PAGE"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-star-icon')}}"></use></svg>
                                                 <span>Profil</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="29-YourAccount-AccountSettings.html">
+                                        <a href="{{Route('guru.editprofil')}}">
                                             <svg class="olymp-menu-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-menu-icon')}}"></use></svg>
-                                                <span>Profile Settings</span>
+                                                <span>Edit Profil</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
                                             <svg class="olymp-logout-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-logout-icon')}}"></use></svg>
                                             <span>Log Out</span>
                                         </a>
                                     </li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <a href="02-ProfilePage.html" class="author-name fn">
+                    <a href="#" class="author-name fn">
                         <div class="author-title">
-                            James Spiegel <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg>
+                            {{auth()->user()->name}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg>
                         </div>
-                            <span class="author-subtitle">SPACE COWBOY</span>
+                        <span class="author-subtitle">{{auth()->user()->school->name}}</span>
                     </a>
                 </div>
             </div>

@@ -1,5 +1,12 @@
 <head>
-        <title>Newsfeed</title>
+        {{-- <h6> {{ request()->is('tes/123') ? 'Beranda' : '' }} </h6>
+
+        <title>{{ request()->is('tes/123') ? 'Beranda' : '' }}</title>
+        <title>{{ request()->is('tes/123/a/files') ? 'Data File' : '' }}</title>
+        <title>{{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }}</title>
+        <title>{{ request()->is('tes/123/profil/*') ? 'profil' : '' }}</title>
+        <title>{{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }}</title> --}}
+        <title>@yield('pageTitle')</title>
 
         <!-- Required meta tags always come first -->
         <meta charset="utf-8">
@@ -94,6 +101,13 @@ div.ex2 {
         .custome-title a:hover, .custome-title a:active {
             text-decoration: underline;
         }
+        .home-custome {
+        background: ('localhost:8000/images/maps/home.png');
+        height: 20px;
+        width: 20px;
+        display: block;
+        /* Other styles here */
+}
 </style>
         <!-- Main Styles CSS -->
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/main.min.css')}}">
