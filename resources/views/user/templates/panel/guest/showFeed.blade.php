@@ -47,6 +47,6 @@
     <div>
     </div>
 
-    {{ $feeds->links('vendor.pagination.adminlte') }}
+    {{ $feeds->links('vendor.pagination.default') }}
 </div>
 @endsection

@@ -24,7 +24,7 @@
             </div>
     </div>
     <div>
-            {{ $feednotifications->links('vendor.pagination.adminlte') }}
+            {{ $feednotifications->links('vendor.pagination.default') }}
     </div>
 </div>
 

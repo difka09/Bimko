@@ -30,7 +30,7 @@
 				</div>
         </div>
         <div>
-                {{ $feedcomments->links('vendor.pagination.adminlte') }}
+                {{ $feedcomments->links('vendor.pagination.default') }}
         </div>
 	</div>
 @endsection
