@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Feed;
 
 class NotificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->responders = Feed::where('status','=',0)->latest()->limit(4)->get();
+
+    }
     public function notifications()
     {
         return auth()->user()->unreadNotifications()->latest()->limit(20)->get()->toArray();
@@ -14,8 +20,10 @@ class NotificationController extends Controller
     public function allNotifications()
     {
         $allnotifications = auth()->user()->Notifications()->latest()->paginate(15);
+
         return view('guru.notification',[
             'allnotifications' => $allnotifications,
+            'responders' => $this->responders
         ]);
     }
 
