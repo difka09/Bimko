@@ -18,6 +18,7 @@ use App\Events\StatusLiked;
 use App\Notifications\NewNotif;
 use App\Notifications\UserCommented;
 use App\Models\Feed;
+use App\Models\Agreement;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -30,6 +31,7 @@ class GuruController extends Controller
         $date = new DateTime();
         $this->month = $date->format('m') - 1;
         $this->year = $date->format('Y');
+        $this->responders = Feed::where('status','=',0)->latest()->limit(4)->get();
     }
 
     public function home()
@@ -44,7 +46,8 @@ class GuruController extends Controller
         $notifications = $request->user()->unreadNotifications()->limit(20)->get()->toArray();
 
 
-        $agenda = Agenda::latest()->first();
+        $agenda = Agenda::latest()->where('start_At','>', Carbon::now()->subDays(0))->first();
+        // dd($agenda);
         if($agenda){
         $date = new Carbon($agenda->start_At);
         $now = Carbon::now();
@@ -84,6 +87,7 @@ class GuruController extends Controller
             'day' => $day,
             'name' => $name,
             'notifications' => $notifications,
+            'responders' => $this->responders,
 
         ]);
     }
@@ -337,6 +341,8 @@ class GuruController extends Controller
         return view('guru.editprofil',[
             'user' => $user,
             'notifications' => $notifications,
+            'responders' => $this->responders,
+
         ]);
     }
 
@@ -471,6 +477,7 @@ class GuruController extends Controller
         return view('guru.responder',[
         'feeds' => $feeds,
         'controller' => $this,
+        'responders' => $this->responders,
 
         ]);
     }
@@ -483,14 +490,28 @@ class GuruController extends Controller
         return response()->json($feed);
     }
 
-    public function updateFeed($id)
+    public function updateFeed(Request $request, $id)
     {
+        $date = new DateTime();
+        $newDate = $date->format('dmy');
+        $feed = Feed::find($id);
+        $data1 = Feed::find($id)->update([
+            'status' => $request->status,
+            'slug' => str_slug($feed->name." ".$newDate),
 
-        $data = Feed::find($id)->update([
-            'status' => 1,
         ]);
 
-        return response()->json($data);
+        if($request->status == 1)
+        {
+        Agreement::create([
+            'user_id' => auth()->user()->id,
+            'feed_id' => $request->feed_id,
+        ]);
+        }else{
+            $feed->agreement()->delete();
+        }
+
+        return response()->json($data1);
     }
 
 

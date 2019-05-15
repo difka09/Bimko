@@ -205,6 +205,7 @@
         </div>
         <div class="modal-body">
             <form id="notulensiForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+                @csrf
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Nama Rapat</label>
                 <input class="form-control" placeholder="" type="text" name="name" id="agenda_name" disabled>

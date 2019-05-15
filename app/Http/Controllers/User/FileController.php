@@ -10,10 +10,19 @@ use Illuminate\Support\Facades\Input;
 
 use DateTime;
 use DB;
-
+use App\Models\Feed;
 
 class FileController extends Controller
 {
+
+    public function __construct()
+    {
+    $date = new DateTime();
+    $this->month = $date->format('m') - 1;
+    $this->year = $date->format('Y');
+    $this->responders = Feed::where('status','=',0)->latest()->limit(4)->get();
+    }
+
 
     public function filePage(Request $request)
     {
@@ -43,6 +52,7 @@ class FileController extends Controller
         return view('guru.filepage', [
             'files' => $files,
             'notifications' => $notifications,
+            'responders' => $this->responders
             ]);
 
     }

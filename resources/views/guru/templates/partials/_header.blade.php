@@ -6,9 +6,11 @@
             <h6> {{ request()->is('tes/123') ? 'Beranda' : '' }} </h6>
             <h6> {{ request()->is('tes/123/a/files') ? 'data file' : '' }} </h6>
             <h6> {{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }} </h6>
+            <h6> {{ request()->is('tes/123/a/responder') ? 'permintaan responder' : '' }} </h6>
             <h6> {{ request()->is('tes/123/profil/*') ? 'profil' : '' }} </h6>
             <h6> {{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }} </h6>
             <h6> {{ request()->is('allnotifications') ? 'pemberitahuan' : '' }} </h6>
+
         </div>
 
         <div class="header-content-wrapper">

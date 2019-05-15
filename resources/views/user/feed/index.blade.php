@@ -33,7 +33,7 @@
                     <a href="#">{{$feed->user->name}}</a>
                   </li>
                     <?php
-                        $controller->tanggal($feed->created_at);
+                        $controller->tanggal($feed->agreement->created_at);
                     ?>
                   <li class="entry__meta-comments">
                     <i class="ui-comments"></i>

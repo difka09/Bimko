@@ -69,8 +69,9 @@
                         <div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
                             <ul class="profile-menu">
                                 <li>
-                                    <a style="text-align: center">{{$user->comments->count()}}</a>
-                                    <a style="text-align: center">Komentar</a>
+                                    <a href="{{route('guru.indexresponder')}}" style="text-align: center">{{$user->agreements->count()}}
+                                        <br>Menyetujui Artikel
+                                    </a>
                                 </li>
                                 <li>
                                     <a style="text-align: center">{{$user->comments->count()}}</a>

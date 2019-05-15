@@ -116,7 +116,11 @@ class UserController extends Controller
         // $user = User::find($id);
         $user->delete();
 
+
+        // caused di page kosong yg sudah dihapus harusnya back to page awal/route view tsb
         return back()->with('danger', 'User has been deleted');
+
+
     }
 
     public function destroyPermanent($id)

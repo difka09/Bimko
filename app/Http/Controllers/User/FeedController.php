@@ -153,10 +153,10 @@ class FeedController extends Controller
     public function show(Feed $feed)
     {
         $categories = Catfeed::get();
-
+        if($feed->status == 1){
         $feed->readby = $feed->readby + 1;
         $feed->save();
-
+        }
 
     $relates = $feed->catfeeds;
 

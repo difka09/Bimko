@@ -39,7 +39,7 @@
                             </h3>
                             <ul class="entry__meta">
                                 <?php
-                                    $controller->tanggal($popular->created_at);
+                                    $controller->tanggal($popular->agreement->created_at);
                                 ?>
                             </ul>
                           </div>
@@ -67,7 +67,7 @@
                             </h3>
                             <ul class="entry__meta">
                                 <?php
-                                    $controller->tanggal($latest->created_at);
+                                    $controller->tanggal($latest->agreement->created_at);
                                 ?>
                             </ul>
                           </div>

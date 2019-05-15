@@ -81,7 +81,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Agenda::class);
     }
 
-    public function agreement()
+    public function agreements()
     {
         return $this->hasMany(Agreement::class);
     }

@@ -110,6 +110,8 @@ Route::post('/allnotifications/read','NotificationController@allMarkAsRead')->na
 
 Route::get('tes/123/a/responder','User\GuruController@indexResponder')->name('guru.indexresponder');
 Route::get('tes/123/a/responder/{id}/show', 'User\GuruController@showFeed')->name('guru.showresponder');
+Route::put('tes/123/a/responder/{id}/update', 'User\GuruController@updateFeed')->name('guru.updatefeed');
+
 
 
 

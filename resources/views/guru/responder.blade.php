@@ -142,6 +142,9 @@
 </div>
 </div>
 @endif
+
+{{ $feeds->links() }}
+
 </div>
 
 <div class="modal fade show view-content" tabindex="-1" role="dialog" style="display:none; padding-right: 17px;">
@@ -175,30 +178,24 @@
             <h6 class="title" id="title-modal"></h6>
         </div>
         <div class="modal-body">
-            <form id="notulensiForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
-            <input type="hidden" id="feed_id" name="feed_id">
-            <div style="text-align: center">
-                <a data-dismiss="modal" class="btn btn-sm btn-border-think custom-color c-grey">Batalkan</a>
-                <a type="submit" style="color:white" class="btn btn-breez btn-sm agree-btn"></a>
-                <a type="submit" style="color:white" class="btn btn-primary btn-sm disagree-btn"></a>
-            </div>
-        </form>
+            <form class="responderForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" id="feed_id" name="feed_id">
+                <input type="hidden" name="status" class="statusyes">
+                <div style="text-align: center">
+                    <a data-dismiss="modal" class="btn btn-sm btn-border-think custom-color c-grey">Batalkan</a>
+                    <button type="submit" style="color:white" class="btn btn-breez btn-sm agree-btn"></button>
+                    <button type="submit" style="color:white" class="btn btn-primary btn-sm disagree-btn"></button>
+                </div>
+            </form>
         </div>
         </div>
     </div>
 </div>
 @endsection
-@push('select2css')
-    <link rel="stylesheet" href="{{ asset('guru/select2/dist/css/select2.min.css') }}">
-@endpush
+
 
 @push('scripts')
-<script src="{{ asset('guru/select2/dist/js/select2.full.min.js') }}"></script>
-<script>
-    $(function() {
-        $('.select2').select2()
-    });
-</script>
 <script>
     function myFunction() {
         var x = document.getElementById("snackbar");

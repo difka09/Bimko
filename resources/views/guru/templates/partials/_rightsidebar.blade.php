@@ -28,6 +28,11 @@
     </div>
     <!-- W-Activity-Feed -->
     <ul class="widget w-activity-feed notification-list">
+        @if ($files->count()==0)
+        <li>
+            Belum ada file yang diupload
+        </li>
+        @else
         @foreach ($files as $file)
         <li>
             <div class="author-thumb">
@@ -39,6 +44,7 @@
             </div>
         </li>
         @endforeach
+        @endif
     </ul>
     <!-- .. end W-Activity-Feed -->
 </div>
@@ -121,7 +127,7 @@
                 <svg class="olymp-close-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-close-icon')}}"></use></svg>
                 </a>
             <div class="modal-header">
-                <h6 class="title">Create an Event</h6>
+                <h6 class="title">Buat Agenda Rapat</h6>
             </div>
             <div class="modal-body">
                 <form action="{{Route('guru.addagenda')}}" method="POST">

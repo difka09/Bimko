@@ -10,15 +10,23 @@
         </div>
         <!-- W-Activity-Feed -->
         <ul class="widget w-activity-feed notification-list">
+            @if ($responders->count()==0)
+            <li>
+                Belum ada permintaan persetujuan artikel
+            </li>
+            @else
+            @foreach ($responders as $responder)
             <li>
                 <div class="author-thumb" id="author-thumb">
-                    <img src="{{asset('guru/img/avatar49-sm.jpg')}}" alt="author">
+                    <img src="{{$responder->user->getImage()}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">Marina Polson</a> commented on Jason Mark’s <a href="#" class="notification-link">photo.</a>.
+                    <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{$responder->name}}.</a>.
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
                 </div>
-            </li>
+           </li>
+           @endforeach
+           @endif
         </ul>
         <!-- .. end W-Activity-Feed -->
     </div>

@@ -4,7 +4,7 @@
         <!-- post content -->
         <div class="col-lg-8 blog__content mb-30">
 
-                <!-- Breadcrumbs -->
+            <!-- Breadcrumbs -->
                 <ul class="breadcrumbs">
                   <li class="breadcrumbs__item">
                     <a href="index.html" class="breadcrumbs__url"><i class="ui-home"></i></a>
@@ -16,7 +16,9 @@
 
                 <!-- standard post -->
                 <article class="entry">
-
+                    @if ($feed->status == 0)
+                        <a>Artikel tidak ditemukan</a>
+                    @else
                   <div class="single-post__entry-header entry__header">
                     <h1 class="single-post__entry-title">
                     {{ $feed->name }}
@@ -28,7 +30,7 @@
                         <a href="#" data-toggle="modal" style="cursor:pointer" data-target="#commentmodal{{$feed->user_id}}">{{$feed->user->name}}</a>
                       </li>
                         <?php
-                            $controller->tanggal($feed->created_at);
+                            $controller->tanggal($feed->agreement->created_at);
                         ?>
                       <li class="entry__meta-comments">
                         <i class="ui-comments"></i>
@@ -221,7 +223,10 @@
                     @endauth
 
                 </div> <!-- end comment form -->
+                @endif
+
               </div> <!-- end col -->
+
 
 @endsection
 

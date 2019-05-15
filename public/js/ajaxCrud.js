@@ -429,6 +429,7 @@ $(document).on('keyup', '.search-here', function(){
             var feed_id = $(this).data("id");
             $.get(urls[20] + '/' + feed_id + '/show', function(data){
                 console.log(data);
+                $('.statusyes').val(1);
                 $('.agree-btn').show();
                 $('.disagree-btn').hide();
                 $('.agree-btn').html("Setujui Artikel");
@@ -439,11 +440,12 @@ $(document).on('keyup', '.search-here', function(){
 
     });
 
-    //get for approve
+    //get for disapprove
     $('body').on('click', '#deny-article', function(){
         var feed_id = $(this).data("id");
         $.get(urls[20] + '/' + feed_id + '/show', function(data){
             console.log(data);
+            $('.statusyes').val(0);
             $('.agree-btn').hide();
             $('.disagree-btn').show();
             $('.disagree-btn').html("Tolak Artikel");
@@ -466,6 +468,33 @@ $(document).on('keyup', '.search-here', function(){
         });
 
     });
+
+    // update approve article
+    $('.responderForm').on('submit',(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        formData.append('_method', 'PUT');
+        var feed_id = $(".responderForm").find("input[name='feed_id']").val();
+
+        $.ajax({
+            dataType: 'json',
+            type:'POST',
+            url: urls[20] + '/' + feed_id+ '/update',
+            data: formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                console.log(data);
+                $('#responderForm').modal('hide');
+                location.reload();
+             },
+            error: function(data){
+                console.log('Error:' ,data);
+            }
+        });
+
+    }));
 
     // allmarkasRead
     $(document).on('click', '.all-read',function(){
