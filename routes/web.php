@@ -108,6 +108,10 @@ Route::post('/notifications', 'NotificationController@notifications')->name('gur
 Route::get('/allnotifications', 'NotificationController@allNotifications')->name('guru.allnotifications');
 Route::post('/allnotifications/read','NotificationController@allMarkAsRead')->name('guru.allnotificationread');
 
+Route::get('tes/123/a/responder','User\GuruController@indexResponder')->name('guru.indexresponder');
+Route::get('tes/123/a/responder/{id}/show', 'User\GuruController@showFeed')->name('guru.showresponder');
+
+
 
 
 Route::get('test', function () {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Feed extends Model
 {
     protected $fillable = [
-        'name', 'content', 'user_id', 'file', 'slug', 'readby',
+        'name', 'content', 'user_id', 'file', 'slug', 'readby', 'status'
     ];
 
     public function getRouteKeyName()
@@ -33,5 +33,9 @@ class Feed extends Model
     public function feedcomments()
     {
         return $this->hasMany(FeedComment::class);
+    }
+    public function agreement()
+    {
+        return $this->hasOne(Agreement::class);
     }
 }

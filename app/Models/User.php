@@ -81,6 +81,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Agenda::class);
     }
 
+    public function agreement()
+    {
+        return $this->hasMany(Agreement::class);
+    }
+
     public function isMurid()
     {
         return $this->hasRole('Murid');

@@ -27,8 +27,8 @@ class FeedController extends Controller
         $this->year = $date->format('Y');
 
         $this->maps = School::orderBy('name', 'asc')->get();
-        $this->populars = Feed::orderBy('readby', 'desc')->limit(4)->get();
-        $this->latests = Feed::orderBy('created_at', 'desc')->limit(4)->get();
+        $this->populars = Feed::orderBy('readby', 'desc')->where('status','=',1)->limit(4)->get();
+        $this->latests = Feed::orderBy('created_at', 'desc')->where('status','=',1)->limit(4)->get();
 
 
     }
@@ -36,7 +36,7 @@ class FeedController extends Controller
     public function indexFeed()
     {
         $categories = Catfeed::get();
-        $feeds = Feed::latest()->paginate(5);
+        $feeds = Feed::latest()->where('status','=',1)->paginate(5);
 
         // dd($latests);
 
@@ -57,7 +57,8 @@ class FeedController extends Controller
         $feeds = new Feed;
         if(request()->has('cari')){
             $feeds = $feeds->where([
-               ['name','LIKE',"%{$request->cari}%"],
+            ['name','LIKE',"%{$request->cari}%"],
+            ['status','=',1],
            ]);
        }
 
@@ -83,7 +84,7 @@ class FeedController extends Controller
 
         $feeds = Feed::whereHas('catfeeds', function($q) use ($id){
             $q->where('slug', $id);
-        })->latest()->paginate(5);
+        })->where('status','=',1)->latest()->paginate(5);
 
 
         $categories = Catfeed::get();
@@ -164,7 +165,10 @@ class FeedController extends Controller
             $q->where([
                 ['slug', $relate->slug]
                 ]);
-        })->where('slug','!=',$feed->slug)->latest()->limit(2)->get();
+        })->where([
+                ['slug','!=',$feed->slug],
+                ['status','=',1]
+            ])->latest()->limit(2)->get();
     }
 
         $feedcomments = DB::table('feedcomments')

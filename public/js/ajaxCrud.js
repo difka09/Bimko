@@ -424,6 +424,49 @@ $(document).on('keyup', '.search-here', function(){
 
     }));
 
+    //get for approve
+    $('body').on('click', '#approve-article', function(){
+            var feed_id = $(this).data("id");
+            $.get(urls[20] + '/' + feed_id + '/show', function(data){
+                console.log(data);
+                $('.agree-btn').show();
+                $('.disagree-btn').hide();
+                $('.agree-btn').html("Setujui Artikel");
+                $('#title-modal').html("Setujui artikel judul " +'"' +data.name+'"');
+                $('#feed_id').val(data.id);
+                $('.agree-modal').modal('show');
+            });
+
+    });
+
+    //get for approve
+    $('body').on('click', '#deny-article', function(){
+        var feed_id = $(this).data("id");
+        $.get(urls[20] + '/' + feed_id + '/show', function(data){
+            console.log(data);
+            $('.agree-btn').hide();
+            $('.disagree-btn').show();
+            $('.disagree-btn').html("Tolak Artikel");
+            $('#title-modal').html("Tolak artikel judul " +'"' +data.name+'"');
+            $('#feed_id').val(data.id);
+            $('.agree-modal').modal('show');
+        });
+
+    });
+
+     //get content
+     $('body').on('click', '#view-article', function(){
+        var feed_id = $(this).data("id");
+        $.get(urls[20] + '/' + feed_id + '/show', function(data){
+            var oldcontent = data.content;
+            $('#content-modal').html("Konten artikel " +'"' +data.name+'"');
+            $(".entry__img").attr("src",urls[5]+'/'+data.file)
+            document.getElementById('description').innerHTML=oldcontent;
+            $('.view-content').modal('show');
+        });
+
+    });
+
     // allmarkasRead
     $(document).on('click', '.all-read',function(){
         $.ajax({

@@ -1,10 +1,10 @@
 <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-12 col-12">
     <div class="ui-block">
         <div class="custome-title">
-            <a href="{{route('guru.filepage')}}">
+            <a href="{{route('guru.indexresponder')}}">
         <div class="ui-block-title">
             <h6 class="title">Permintaan Responder</h6>
-            <a href="{{route('guru.filepage')}}" class="more btn"><svg class="olymp-checked-calendar-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-checked-calendar-icon')}}"></use></svg></a>
+            <a href="{{route('guru.indexresponder')}}" class="more btn"><svg class="olymp-checked-calendar-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-checked-calendar-icon')}}"></use></svg></a>
         </div>
             </a>
         </div>

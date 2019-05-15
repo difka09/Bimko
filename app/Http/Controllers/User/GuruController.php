@@ -17,6 +17,7 @@ use Pusher\Pusher;
 use App\Events\StatusLiked;
 use App\Notifications\NewNotif;
 use App\Notifications\UserCommented;
+use App\Models\Feed;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -464,6 +465,34 @@ class GuruController extends Controller
         return response()->download($download);
     }
 
+    public function indexResponder()
+    {
+        $feeds = Feed::latest()->paginate(8);
+        return view('guru.responder',[
+        'feeds' => $feeds,
+        'controller' => $this,
+
+        ]);
+    }
+
+    public function showFeed($id)
+    {
+        $where = array ('id' => $id);
+        $feed = Feed::where($where)->first();
+
+        return response()->json($feed);
+    }
+
+    public function updateFeed($id)
+    {
+
+        $data = Feed::find($id)->update([
+            'status' => 1,
+        ]);
+
+        return response()->json($data);
+    }
+
 
     //konversi tanggal
     public function tanggal($tgl)//only date
@@ -482,5 +511,16 @@ class GuruController extends Controller
         $time = $date->format('d')." ".$month[$date->format('m') - 1]." ".$date->format('Y')." ".$date->format("H:i:s");
         echo '<li class="entry__meta-date"><i class="ui-date"></i>'.$time.'</li>';
     }
+
+    public function tanggalView($tgl)//only date
+    {
+        $date = new DateTime($tgl);
+        $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+        $time = $date->format('d')." ".$month[$date->format('m') - 1]." ".$date->format('Y');
+        echo $time;
+
+    }
+
+
 
 }
