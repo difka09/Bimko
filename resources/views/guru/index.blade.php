@@ -225,7 +225,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                    <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>
                     <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
                 <!-- ... end Comment Form  -->
@@ -256,9 +256,7 @@
 
 <script>
     function myFunction() {
-        var x = document.getElementById("snackbar");
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        $('.btn-comment-show').html("kirim..");
     }
 </script>
 

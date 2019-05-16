@@ -25,9 +25,9 @@ button{
     {{-- <form action="{{url()->current()}}"> --}}
     <form action="{{route('guru.filepage')}}" method="GET">
         <div class="ui-block-title">
-            <h6 class="title">Recent File</h6>
-            <input class="form-control" id="cari" name="cari" type="text" placeholder="Cari File Di sini..." >
-            <button type="submit" class="btn">Cari</button>
+            <h6 class="title">Kumpulan File</h6>
+            <input class="form-control" id="cari" name="cari" type="text" style="width: 80%" placeholder="Cari File Di sini..." >
+            <button type="submit" class="btn btn-sm" style="margin-left: 12%">cari</button>
             {{-- <a href="{{route('guru.filepage')}}?title=gdx">a</a> --}}
             <div class="btn-group bootstrap-select form-control without-border">
                 <select name="dropdownList" id="dropdownList" tabindex="-98" class="selectpicker form-control without-border" onchange="location=this.value;">
@@ -45,6 +45,11 @@ button{
         <!-- Notification List -->
     <div id=contentku>
         <ul class="notification-list">
+            @if ($files->count() == 0)
+            <li>
+                <a>File tidak ditemukan</a>
+            </li>
+            @endif
             @foreach ($files as $file)
             <li>
                 <div class="author-thumb" id="author-thumb">

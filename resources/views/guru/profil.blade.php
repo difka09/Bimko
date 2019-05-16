@@ -114,7 +114,7 @@
 <div class="container">
     <div class="row">
         <!-- Main Content -->
-        <div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+        <div class="col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
         @if($user->id == auth()->user()->id)
         <div class="ui-block">
                 <!-- News Feed Form  -->
@@ -318,7 +318,7 @@
                                 </div> --}}
                             </div>
                         </div>
-                        <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                        <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>
                         <div id="snackbar">Berhasil Berkomentar</div>
                     </form>
                     <!-- ... end Comment Form  -->
@@ -468,9 +468,7 @@
 
 <script>
     function myFunction() {
-        var x = document.getElementById("snackbar");
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        $('.btn-comment-show').html("kirim..");
     }
 </script>
 

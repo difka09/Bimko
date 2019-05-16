@@ -361,8 +361,8 @@ class GuruController extends Controller
             }
             if($user->file != "users/woman.gif"){
                 Storage::delete($user->file);
+                $file = $request->file('file')->store('users');
             }
-            $file = $request->file('file')->store('users');
         }
         if (!$request->hasFile('file') && $user->file) {
             $file = $user->file;

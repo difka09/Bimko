@@ -199,8 +199,11 @@ $(document).ready(function (e) {
                 var count ='<div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items"><svg class="olymp-speech-balloon-icon"><use xlink:href="'+urls[9]+'"></use></svg><span>'+data[2]+'</span></a></div></div>';
                 $('#comment'+post_id).prepend(comment);
                 $("#countcomment" + post_id).html(count);
-
+                $(".btn-comment-show").html("Tulis Komentar");
                 document.getElementById("comment-form"+post_id).reset();
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                 document.getElementById("btn-comment"+post_id).disabled = true,
                 document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
                 // $('#btn-comment').hide();
@@ -262,11 +265,14 @@ $(document).ready(function (e) {
                 // console.log([urls[5]])
                 post_id = data[0]['post_id'];
                 comment_id = data[0]['id'];
-
                 $("#comment"+post_id).load(location.href + " #comment"+post_id);
                 $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
+                $(".btn-comment-show").html("Tulis Komentar");
 
                 document.getElementById("comment-form-show").reset();
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                 document.getElementById("btn-comment"+post_id).disabled = true,
                 document.getElementById("btn-comment"+post_id).style.pointerEvents = "none";
                 // $('#btn-comment').hide();

@@ -113,7 +113,7 @@
                                 <a style="color:white" href="javascript:void(0)" class="btn btn-breez btn-sm" id="view-detail" data-id="{{$agenda->id}}">Lihat Rincian</a>
                                 @if ($agenda->status == 0)
                                 @if ($agenda->user_id == auth()->user()->id)
-                                <a style="color:white" class="btn btn-sm btn-border-think custom-color c-grey" id="edit-agenda" data-id="{{$agenda->id}}">Tulis Notulensi</a>
+                                <a style="color:white" class="btn btn-grey btn-sm" id="edit-agenda" data-id="{{$agenda->id}}">Tulis Notulensi</a>
                                 @endif
                                 @endif
                             </td>
