@@ -21,7 +21,7 @@ class CreateAgendasTable extends Migration
             $table->string('file')->nullable();
             $table->text('summary')->nullable();
             $table->integer('status')->default(0);
-            $table->timestamp('start_At');
+            $table->dateTime('start_At');
             $table->timestamps();
         });
     }

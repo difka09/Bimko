@@ -365,11 +365,20 @@ $(document).on('keyup', '.search-here', function(){
             var newdate = moment(new Date(data[0]['start_At'] )).format("DD/MM/YYYY");
             var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
             $('#view-agenda').modal('show');
+            document.getElementById("date").style.display = "block";
             $('#name').val(data[0]['name']);
+            document.getElementById("name").disabled = true;
             $('#date').val(newdate);
+            document.getElementById("date").disabled = true;
             $('#time').val(newtime);
+            document.getElementById("time").disabled = true;
             $('#place').val(data[0]['place']);
+            document.getElementById("place").disabled = true;
             $('#description').val(data[0]['description']);
+            document.getElementById("description").disabled = true;
+            document.getElementById("editdate").style.display = "none";
+            document.getElementById("notulen-input").style.display = "block";
+            document.getElementById("agenda-file").style.display = "block";
             if(data[0]['summary']!=null){
             $('#agenda_not').val(data[0]['summary']);
             }else{
@@ -416,6 +425,7 @@ $(document).on('keyup', '.search-here', function(){
             contentType: false,
             processData: false,
             success: function(data){
+                console.log(data);
                 $('#add-notulensi').modal('hide');
                 location.reload();
 
@@ -518,6 +528,135 @@ $(document).on('keyup', '.search-here', function(){
             }
         });
 });
+
+// validate date create
+$(function(){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+    month = '0' + month.toString();
+    if(day < 10)
+    day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' +day;
+    $('#txtDate').attr('min',maxDate);
+
+    $(document).on('keyup change', '#txtDate', function(){
+    if(document.getElementById("txtDate").value < maxDate)
+        document.getElementById("create-agenda-btn").style.pointerEvents = "none",
+        document.getElementById("create-agenda-btn").disabled = true;
+    if(document.getElementById("txtDate").value > maxDate)
+        document.getElementById("create-agenda-btn").disabled = false,
+        document.getElementById("create-agenda-btn").style.pointerEvents = "auto";
+
+    });
+
+    $('#editdate').attr('min',maxDate);
+
+    $(document).on('keyup change', '#editdate', function(){
+    if(document.getElementById("editdate").value < maxDate)
+        document.getElementById("update-agenda-btn").style.pointerEvents = "none",
+        document.getElementById("update-agenda-btn").disabled = true;
+    if(document.getElementById("editdate").value > maxDate)
+        document.getElementById("update-agenda-btn").disabled = false,
+        document.getElementById("update-agenda-btn").style.pointerEvents = "auto";
+
+    });
+
+
+});
+
+//delete agenda
+$('body').on('click', '.delete-agenda', function(){
+    var agenda_id = $(this).data("id");
+    console.log(agenda_id);
+    swal({
+        title: "Apakah kamu yakin akan hapus agenda ini ?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+            if(willDelete){
+                $.ajax({
+                    type: "DELETE",
+                    url: urls[15] + '/' + agenda_id,
+                    success: function(response){
+                        swal("Data telah terhapus", {
+                            icon: "success",
+                        });
+                        location.reload();
+                        // $("#data-post").load(location.href + " #data-post");
+                    },
+                    error: function(data){
+                        console.log('Error:' ,data);
+                    }
+                });
+            }
+        });
+
+});
+
+//get value edit agenda
+$('body').on('click', '.edit-detail', function(){
+    var agenda_id = $(this).data("id");
+    $.get(urls[15] + '/' + agenda_id + '/show', function(data){
+        var newdate = moment(new Date(data[0]['start_At'] )).format("YYYY-MM-DD");
+        var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
+        $('#view-agenda').modal('show');
+        $('#agendaid').val(data[0]['id']);
+        document.getElementById("editdate").style.display = "block";
+        $('#name').val(data[0]['name']);
+        document.getElementById("name").disabled = false;
+        $('#editdate').val(newdate);
+        document.getElementById("editdate").disabled = false;
+        $('#time').val(newtime);
+        document.getElementById("time").disabled = false;
+        $('#place').val(data[0]['place']);
+        document.getElementById("place").disabled = false;
+        $('#description').val(data[0]['description']);
+        document.getElementById("description").disabled = false;
+        document.getElementById("date").style.display = "none";
+        document.getElementById("notulen-input").style.display = "none";
+        document.getElementById("agenda-file").style.display = "none";
+    });
+
+});
+
+// update agendalist
+$('#edit-agendalist').on('submit',(function(e) {
+
+    e.preventDefault();
+    var formData = new FormData(this);
+    formData.append('_method', 'PUT');
+    var agenda_id = $("#view-agenda").find("input[name='agenda_id']").val();
+
+    $.ajax({
+        dataType: 'json',
+        type:'POST',
+        url: urls[15] + '/' + agenda_id+ '/updateAgendaList',
+        data: formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success: function(data){
+            console.log(data);
+            $('#view-agenda').modal('hide');
+            location.reload();
+
+            // location.href=urls[2]+ '/' +post_id;
+            // $("#khusus" + post_id).replaceWith(update1);
+         },
+        error: function(data){
+            console.log('Error:' ,data);
+            console.log(agenda_id);
+        }
+    });
+
+}));
 
 
 // $('div.author-thumb').on('mouseover', function() {

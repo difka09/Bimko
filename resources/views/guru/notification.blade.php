@@ -34,22 +34,24 @@
                 </span>
             </li>
             @endif
-            @endforeach
 
-
-            {{-- <li>
+            @if ($allnotification->type == "App\Notifications\UserAgenda")
+            <li>
                 <div class="author-thumb">
                     <img src="{{asset('guru/img/avatar5-sm.jpg')}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">Green Goo Rock</a> invited you to attend to his event Goo in <a href="#" class="notification-link">Gotham Bar</a>.
+                    <a href="#" class="h6 notification-friend">{{$allnotification->data['agenda']['creator']}}</a> Mengundang anda untuk menghadiri rapat <a href="" class="notification-link">"{{$allnotification->data['agenda']['name']}}"</a> di {{$allnotification->data['agenda']['place']}}
                     <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 5th at 6:43pm</time></span>
                 </div>
                 <span class="notification-icon">
                     <svg class="olymp-calendar-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-calendar-icon')}}"></use></svg>
                 </span>
 
-            </li> --}}
+            </li>
+            @endif
+            @endforeach
+
       </ul>
         <!-- ... end Notification List -->
     </div>

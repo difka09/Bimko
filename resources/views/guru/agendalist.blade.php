@@ -15,6 +15,13 @@
                             </a>
                         </li>
                     </ul>
+                    <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
+                        <ul class="more-dropdown">
+                            <li>
+                                <a data-target="#create-event" data-toggle="modal" href="#" >Buat Undangan Rapat</a>
+                            </li>
+                        </ul>
+                    </div>
                     {{-- <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a> --}}
                 </div>
             </div>
@@ -30,7 +37,8 @@
                 <div class="ui-block">
                     <table class="event-item-table event-item-table-fixed-width">
                         <thead>
-                        <h4 style="text-align: center;font-weight: bold;">Data rapat kosong, <a href="{{route('guru.index')}}">buat agenda disini</a></h4>
+                        <h4 style="text-align: center;font-weight: bold;">Data rapat kosong,<a data-target="#create-event" href="#" data-toggle="modal"> buat undangan rapat</a>
+                        </h4>
                         </thead>
                     </table>
                 </div>
@@ -65,6 +73,8 @@
                             </th>
                             <th class="users">
                                 Peserta
+                            </th>
+                            <th class="add-event">
                             </th>
                             <th class="add-event">
                             </th>
@@ -117,6 +127,23 @@
                                 @endif
                                 @endif
                             </td>
+                            <td class="add-event">
+                                    @if ($agenda->user_id == auth()->user()->id)
+                                <div class="more"><svg class="olymp-settings"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-settings')}}"></use></svg>
+                                    <ul class="more-dropdown">
+
+                                        @if ($agenda->status == 0)
+                                        <li>
+                                            <a href="javascript:void(0)" data-id="{{$agenda->id}}" class="edit-detail">Edit Undangan</a>
+                                        </li>
+                                        @endif
+                                        <li>
+                                            <a href="javascript:void(0)" class="delete-agenda" data-id="{{$agenda->id}}">Hapus Undangan</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -125,11 +152,14 @@
                 </div>
             </div>
         </div>
+        {{$agendas->links()}}
+
     </div>
 </div>
 </div>
 @endif
 <div id="snackbar">Berhasil menambahkan notulensi</div>
+
 
 <div class="modal fade show" id="view-agenda" tabindex="-1" role="dialog" aria-labelledby="create-event" style="display:none; padding-right: 17px;">
     <div class="modal-dialog window-popup create-event" role="document">
@@ -141,18 +171,19 @@
             <h6 class="title">Informasi Rapat</h6>
         </div>
         <div class="modal-body">
-            <form>
+            <form id="edit-agendalist" method="POST" action="javascript:void(0)">
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Nama Rapat</label>
-                <input class="form-control" placeholder="" type="text" name="name" id="name" disabled>
+                <input class="form-control" placeholder="" type="text" name="name" id="name" disabled required>
                 <span class="material-input"></span></div>
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Tempat</label>
-                <input class="form-control" placeholder="" value="" type="text" name="place" id="place" disabled>
+                <input class="form-control" placeholder="" value="" type="text" name="place" id="place" disabled required>
                 <span class="material-input"></span></div>
             <div class="form-group date-time-picker label-floating is-focused">
                 <label class="control-label">Tanggal</label>
                 <input name="date" id="date" disabled>
+                <input name="editdate" type="date" id="editdate" required>
             </div>
 
             <div class="row">
@@ -160,7 +191,7 @@
             <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="form-group label-floating is-focused" >
                 <label class="control-label">Waktu</label>
-                <input class="form-control" placeholder="" type="time" name="time" id="time" style="width: 120px" disabled>
+                <input class="form-control" placeholder="" type="time" name="time" id="time" style="width: 120px" disabled required>
                 <span class="material-input"></span>
             </div>
             </div>
@@ -169,26 +200,27 @@
 
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Deskripsi Rapat</label>
-                <textarea name="description" class="form-control" id="description" disabled>
+                <textarea name="description" class="form-control" id="description" disabled required>
                 </textarea>
                 <span class="material-input"></span>
             </div>
 
-            <div class="form-group label-floating is-focused">
+            <div class="form-group label-floating is-focused" id="notulen-input">
                 <label class="control-label">Notulensi Rapat</label>
                 <textarea name="agenda_not" class="form-control" id="agenda_not" disabled>
                 </textarea>
                 <span class="material-input"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="agenda-file">
             <svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg>
             <div id="filename_file"></div>
             <span class="material-input"></span>
             </div>
-
+            <input type="hidden" id="agendaid" name="agenda_id">
+            <input type="submit" class="btn btn-breez btn-lg full-width" id="update-agenda-btn" style="pointer-events: none" value="Edit Agenda" disabled>
         </div>
-    </form>
+        </form>
 
         </div>
     </div>
@@ -205,7 +237,10 @@
         </div>
         <div class="modal-body">
             <form id="notulensiForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+            {{-- <form method="post" action="{{Route('guru.updateagenda',$agenda->id)}}" enctype="multipart/form-data"> --}}
                 @csrf
+                @method("PUT")
+
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Nama Rapat</label>
                 <input class="form-control" placeholder="" type="text" name="name" id="agenda_name" disabled>
@@ -238,6 +273,57 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade show" id="create-event" tabindex="-1" role="dialog" aria-labelledby="create-event" style="display:none; padding-right: 17px;">
+        <div class="modal-dialog window-popup create-event" role="document">
+            <div class="modal-content">
+                <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+                <svg class="olymp-close-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-close-icon')}}"></use></svg>
+                </a>
+            <div class="modal-header">
+                <h6 class="title">Buat Agenda Rapat</h6>
+            </div>
+            <div class="modal-body">
+                <form action="{{Route('guru.addagenda')}}" method="POST">
+                    @csrf
+                <div class="form-group label-floating">
+                    <label class="control-label">Nama Rapat</label>
+                    <input class="form-control" placeholder="" type="text" name="name" required>
+                    <span class="material-input"></span></div>
+                <div class="form-group label-floating is-empty">
+                    <label class="control-label">Tempat</label>
+                    <input class="form-control" placeholder="" value="" type="text" name="place" required>
+                    <span class="material-input"></span></div>
+                <div class="form-group date-time-picker label-floating is-focused">
+                    <label class="control-label">Tanggal</label>
+                    <input name="date" type="date" id="txtDate" required>
+                </div>
+
+                <div class="row">
+
+                <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
+                <div class="form-group label-floating is-focused" >
+                    <label class="control-label">Waktu</label>
+                    <input class="form-control" placeholder="" type="time" name="time" style="width: 120px" required>
+                    <span class="material-input"></span>
+                </div>
+                </div>
+                </div>
+
+                <div class="form-group label-floating is-empty">
+                    <label class="control-label">Deskripsi Rapat</label>
+                    <textarea name="description" class="form-control">
+                    </textarea>
+                    <span class="material-input"></span>
+                </div>
+
+                <button type="submit" id="create-agenda-btn" class="btn btn-breez btn-lg full-width" style="pointer-events: none" disabled>Buat Rapat</button>
+            </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('select2css')
     <link rel="stylesheet" href="{{ asset('guru/select2/dist/css/select2.min.css') }}">

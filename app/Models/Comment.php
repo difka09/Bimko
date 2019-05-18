@@ -20,4 +20,20 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+
+    public function notifications()
+    {
+        return $this->morphTo();
+    }
+
+
+    // protected static function boot()
+    // {
+
+    // parent::boot();
+    // static::deleting(function ($comment){
+    //     $comment->notifications()->delete();
+
+    // });
+    // }
 }

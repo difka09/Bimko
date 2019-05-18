@@ -143,8 +143,9 @@
                         <a href="javascript:void(0)" class="view-all bg-primary all-read">Lihat Semua Pemberitahuan</a>
                     </div>
                 </div>
-                    <a class="page-title" style="padding:26px 26px 26px 26px;min-width: 0px;color:white;float: unset;text-align: center" href="{{Route('guru.index')}}"><span>Beranda</span></a>
-
+                <div class="home-title">
+                    <a class="page-title" style="padding:26px 26px 26px 26px;min-width: 0px;float: unset;text-align: center" href="{{Route('guru.index')}}"><span>Beranda</span></a>
+                </div>
 
                 <div class="author-page author vcard inline-items more">
                     <div class="author-thumb" style="max-height: 36px;max-width: 36px;">

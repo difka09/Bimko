@@ -250,7 +250,7 @@ class LoadController extends Controller
                             <textarea data-id="'.$post->id.'" class="form-control tgInput" name="message" id="text'.$post->id.'" placeholder=""></textarea>
                         </div>
                     </div>
-                    <button type="submit" onclick ="myFunction()" id="btn-comment'.$post->id.'" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
+                    <button type="submit" onclick ="myFunction(this)" id="btn-comment'.$post->id.'" data-id="'.$post->id.'" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>
                     <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
             </div>
@@ -395,8 +395,7 @@ class LoadController extends Controller
                             <textarea data-id="'.$post->id.'" class="form-control tgInput" name="message" id="text'.$post->id.'" placeholder=""></textarea>
                         </div>
                     </div>
-                    <button type="submit" onclick ="myFunction()" id="btn-comment'.$post->id.'" class="btn btn-md-2 btn-primary" style="pointer-events: none" disabled>Tulis Komentar</button>
-                    <div id="snackbar">Berhasil Berkomentar</div>
+                    <button type="submit" onclick ="myFunction(this)" id="btn-comment'.$post->id.'" data-id="'.$post->id.'" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>                    <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
             </div>
         </div>';

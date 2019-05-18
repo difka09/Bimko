@@ -95,18 +95,17 @@ div.ex2 {
 
 </style>
 <style>
-        .custome-title a:link, .custome-title a:visited {
-            color:green;
-        }
-        .custome-title a:hover, .custome-title a:active {
-            text-decoration: underline;
-        }
-        .home-custome {
-        background: ('localhost:8000/images/maps/home.png');
-        height: 20px;
-        width: 20px;
-        display: block;
-        /* Other styles here */
+    .custome-title a:link, .custome-title a:visited {
+        color:green;
+    }
+    .custome-title a:hover, .custome-title a:active {
+        text-decoration: underline;
+    }
+
+    .home-title span:hover, .home-title span:active {
+        color: orangered;
+    }
+
 }
 </style>
         <!-- Main Styles CSS -->

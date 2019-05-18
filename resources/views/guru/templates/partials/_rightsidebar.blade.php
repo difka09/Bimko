@@ -10,9 +10,11 @@
                 <img src="{{asset('guru/img/badge13.png')}}" alt="author">
             </div>
             <span>{{$day}}</span>
-            <a href="#" class="h4 title">{{$name}}</a>
+            <a class="h4 title">{{$name}}</a>
             {{-- <p>Klik Disini untuk mel</p> --}}
+            <div class="custome-title">
             <a style="color:white;font-weight: bold;" href="{{Route('guru.indexagenda')}}"><p>Informasi Rapat Lainnya >></p></a>
+            </div>
         </div>
     </div>
 </div>
@@ -142,7 +144,7 @@
                     <span class="material-input"></span></div>
                 <div class="form-group date-time-picker label-floating is-focused">
                     <label class="control-label">Tanggal</label>
-                    <input name="date" type="date" required>
+                    <input name="date" type="date" id="txtDate" required>
                     {{-- <span class="input-group-addon">
                     <svg class="olymp-calendar-icon icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-calendar-icon')}}"></use></svg>
                     </span> --}}
@@ -193,7 +195,7 @@
                     <span class="material-input"></span>
                 </div>
 
-                <button type="submit" class="btn btn-breez btn-lg full-width">Buat Rapat</button>
+                <button type="submit" id="create-agenda-btn" class="btn btn-breez btn-lg full-width" style="pointer-events: none" disabled>Buat Rapat</button>
             </div>
         </form>
 

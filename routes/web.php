@@ -101,7 +101,10 @@ Route::post('tes/123/a/agenda/store', 'User\GuruController@addAgenda')->name('gu
 Route::get('tes/123/a/agenda/','User\GuruController@indexAgenda')->name('guru.indexagenda');
 Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name('guru.showagenda');
 Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda');
+Route::put('tes/123/a/agenda/{id}/updateAgendaList', 'User\GuruController@updateAgendaList')->name('guru.updateAgendaList');
 Route::get('tes/123/a/agenda/{id}/download','User\GuruController@agendaDownload')->name('guru.agendadownload')->middleware('auth');
+Route::delete('tes/123/a/agenda/{id}', 'User\GuruController@deleteAgenda')->name('guru.deleteagenda')->middleware('auth');
+
 
 Route::post('notifications/read', 'NotificationController@markAsRead')->name('guru.notificationread');
 Route::post('/notifications', 'NotificationController@notifications')->name('guru.notifications');
@@ -116,11 +119,12 @@ Route::put('tes/123/a/responder/{id}/update', 'User\GuruController@updateFeed')-
 
 
 
-Route::get('test', function () {
-    event(new App\Events\StatusLiked('Someone',[2]));
-    return "Event has been sent!";
-});
+// Route::get('test', function () {
+//     event(new App\Events\StatusLiked('Someone',[2]));
+//     return "Event has been sent!";
+// });
 
+Route::get('test/{id}', 'User\GuruController@tes');
 
 
 

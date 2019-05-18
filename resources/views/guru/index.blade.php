@@ -212,7 +212,7 @@
                     @csrf
                     <div class="post__author author vcard inline-items">
                         <img src="{{auth()->user()->getImage()}}" alt="author">
-                        <div class="form-group with-icon-right ">
+                        <div class="form-group with-icon-right comment-id">
                             <input type="hidden" value="{{$post->id}}" name="post_id">
                             <input type="hidden" value="{{$post->user_id}}" name="parent_id">
                             <textarea data-id="{{$post->id}}" class="form-control" name="message" id="text{{$post->id}}" placeholder=""></textarea>
@@ -225,7 +225,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <button type="submit" onclick ="myFunction()" id="btn-comment{{$post->id}}" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>
+                    <button type="submit" onclick ="myFunction(this)" id="btn-comment{{$post->id}}" data-id="{{$post->id}}" class="btn btn-md-2 btn-primary btn-comment-show" style="pointer-events: none" disabled>Tulis Komentar</button>
                     <div id="snackbar">Berhasil Berkomentar</div>
                 </form>
                 <!-- ... end Comment Form  -->
@@ -255,9 +255,10 @@
 @push('scripts')
 
 <script>
-    function myFunction() {
-        $('.btn-comment-show').html("kirim..");
-    }
+function myFunction(getId) {
+    var idpost = $(getId).data('id');
+    $('#btn-comment'+idpost).html("kirim..");
+}
 </script>
 
 <script>
@@ -296,9 +297,9 @@ $(document).ready(function(){
     $(document).ready(function(){
         $(document).on('click','.btn-more-comment',function(){
             var id = $(this).data('id');
-            console.log(id);
+            // console.log(id);
             var post = $(this).data('post');
-            console.log(post);
+            // console.log(post);
             $("#btn-more-comment"+post).html("...");
             $.ajax({
                 url : urls[4],

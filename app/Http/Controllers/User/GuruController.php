@@ -19,6 +19,7 @@ use App\Notifications\NewNotif;
 use App\Notifications\UserCommented;
 use App\Models\Feed;
 use App\Models\Agreement;
+use App\Notifications\UserAgenda;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -212,7 +213,6 @@ class GuruController extends Controller
         $post->delete();
         $post->comments()->delete();
 
-
         return response()->json($post);
     }
 
@@ -267,7 +267,14 @@ class GuruController extends Controller
 
     public function deleteComment($id)
     {
-        $comment = Comment::find($id)->delete();
+
+        $comment = Comment::find($id);
+        $comment->delete();
+
+        // $a = $comment->user->notifications();
+        // $a->delete();
+        // $comment->user->notifications->delete();
+
     }
 
     public function download(Post $post)
@@ -275,12 +282,17 @@ class GuruController extends Controller
         $file = public_path() .'/images/'. $post->file_2;
         return response()->download($file);
     }
-    public function tes()
+    public function tes($id)
     {
-        $comments = new Comment();
-        $id = $comments->user_id = auth()->user()->id;
-        $user = User::where('id','=',$id)->get();
-        dd($user);
+        // $comments = new Comment();
+        // $id = $comments->user_id = auth()->user()->id;
+        // $user = User::where('id','=',$id)->get();
+        // dd($user);
+        $comment = Comment::find($id);
+
+        // dd($comment);
+        $a = DB::table('notifications')->where('data','==','\"comment_id\":'.$id)->get();
+        dd($a);
     }
 
     //notifikasi
@@ -402,7 +414,16 @@ class GuruController extends Controller
             'start_At' => $start_At
         ]);
 
-        return redirect()->route('guru.index');
+        // $data->load('user');
+
+        $users = User::whereHas('roles',function($q){
+            $q->where('name','Guru');
+        })->where('id','!=', auth()->user()->id)->get();
+
+        \Notification::send($users, new UserAgenda($data));
+
+
+        return redirect()->route('guru.indexagenda');
     }
 
     public function updateAgenda(Request $request, $id)
@@ -429,14 +450,14 @@ class GuruController extends Controller
 
         $users = User::find($request->user);
         $agenda->users()->sync($users);
-
+            // dd($data);
         return response()->json($data);
     }
 
     public function indexAgenda(Request $request)
     {
         $notifications = $request->user()->notifications;
-        $agendas = Agenda::latest()->get();
+        $agendas = Agenda::latest()->paginate(8);
         $users = User::whereHas('roles',function($q){
             $q->where('name','Guru');
         })->get();
@@ -469,6 +490,36 @@ class GuruController extends Controller
         $download = public_path() .'/images/'. $agenda->file;
 
         return response()->download($download);
+    }
+
+    public function deleteAgenda(Request $request,$id)
+    {
+        Storage::delete(Agenda::find($id)->file);
+        $agenda = Agenda::find($id);
+        $agenda->delete();
+
+        $users = User::find($request->user);
+        $agenda->users()->detach($users);
+
+        return response()->json($agenda);
+    }
+
+    public function updateAgendaList(Request $request, $id)
+    {
+        $newdate = Carbon::parse($request->editdate)->format('Y-m-d');
+        $time = Carbon::parse($request->time)->format('H:i:s');
+
+        $start_At = date('Y-m-d H:i:s', strtotime("$newdate $time"));
+
+        $data = Agenda::find($id)->update([
+            'name' => $request->name,
+            'place' => $request->place,
+            'description' => $request->description,
+            'start_At' => $start_At,
+
+        ]);
+
+        return response()->json($data);
     }
 
     public function indexResponder()

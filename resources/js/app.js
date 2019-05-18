@@ -4,7 +4,8 @@ window._= require('lodash');
 var notifications = [];
 
 const NOTIFICATION_TYPES = {
-    comment: 'App\\Notifications\\UserCommented'
+    comment: 'App\\Notifications\\UserCommented',
+    agenda: 'App\\Notifications\\UserAgenda'
 };
 
 $(document).ready(function() {
@@ -52,7 +53,12 @@ function showNotificationsDB(notifications, target){
 
 function makeNotificationDB(notification){
     var notificationText = makeNotificationTextDB(notification);
-    return '<li><div class="post__author author"><img src="'+urls[5]+'/'+notification.data.comment.user.file+'" alt="author"></div><div class="notification-event"><div><a class="h6 notification-friend">'+notification.data.comment.user.name+'</a> mengkomentari status <a href="javascript:void(0)" class="read-me notification-link" data-notifid="'+notification.id+'" data-postid="'+notification.data.comment.post_id+'">'+ notificationText +'</a></div> <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span></div><span class="notification-icon"><svg class="olymp-comments-post-icon"><use xlink:href="'+urls[17]+'"></use></svg></span></li>';
+    if(a = notification.type === NOTIFICATION_TYPES.comment){
+        return '<li><div class="post__author author"><img src="'+urls[5]+'/'+notification.data.comment.user.file+'" alt="author"></div><div class="notification-event"><div><a class="h6 notification-friend">'+notification.data.comment.user.name+'</a> mengkomentari status <a href="javascript:void(0)" class="read-me notification-link" data-notifid="'+notification.id+'" data-postid="'+notification.data.comment.post_id+'">'+ notificationText +'</a></div> <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span></div><span class="notification-icon"><svg class="olymp-comments-post-icon"><use xlink:href="'+urls[17]+'"></use></svg></span></li>';
+    }
+    if(a = notification.type === NOTIFICATION_TYPES.agenda){
+        return '<li><div class="post__author author"><img src="'+urls[5]+'/'+notification.data.agenda.id+'" alt="author"></div><div class="notification-event"><div><a class="h6 notification-friend">'+notification.data.agenda.creator+'</a> Mengundang anda untuk menghadiri rapat <a href="javascript:void(0)" class="read-me-agenda notification-link" data-notifid="'+notification.id+'" >"'+ notification.data.agenda.name +'" </a> di '+notification.data.agenda.place+'</div> <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span></div><span class="notification-icon"><svg class="olymp-calendar-icon"><use xlink:href="'+urls[21]+'"></use></svg></span></li>';
+    }
 
     // return '<li><div class="notification-event"><div><a href="javascript:void(0)" class="read-me notification-link" data-notifid="'+notification.id+'" data-postid="'+notification.data.comment.post_id+'">'+ notificationText +'</a></div></div></li>';
 }
@@ -71,6 +77,7 @@ function makeNotificationTextDB(notification){
             text += name;
         }
     }
+
     return text;
 }
 
@@ -91,6 +98,24 @@ $(document).on('click', '.read-me',function(){
             }
         });
 });
+
+$(document).on('click', '.read-me-agenda',function(){
+    var notif_id = $(this).data('notifid');
+    $.ajax({
+        url : urls[16],
+        method : "POST",
+        data : {notif_id:notif_id, _token:csrf_token[0]},
+        dataType : 'json',
+        success : function (data)
+        {
+            window.location.href= urls[15];
+        },
+        error: function(data){
+            console.log('Error:' ,data);
+        }
+    });
+});
+
 
 
 
