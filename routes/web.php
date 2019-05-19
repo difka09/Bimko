@@ -30,7 +30,11 @@ Route::post('siteadmin/login','Auth\LoginController@login')->name('login.admin')
 Route::get('/login', function(){
     return view('login');
 })->name('login')->middleware('guest');
-Route::post('login','Auth\LoginUsersController@login')->name('login.users');
+Route::get('/register', function(){
+    return view('register');
+})->name('register')->middleware('guest');
+Route::post('login/guru','Auth\LoginUsersController@login')->name('login.userguru');
+Route::post('login/murid','Auth\LoginMuridController@login')->name('login.usermurid');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Route::get('/populars','User\FeedController@SidebarIndex');
@@ -98,10 +102,11 @@ Route::get('/feed/category/{id}', 'User\FeedController@category')->name('feed.ca
 Route::get('/feed/a/cari','User\FeedController@search')->name('feed.search');
 
 Route::post('tes/123/a/agenda/store', 'User\GuruController@addAgenda')->name('guru.addagenda')->middleware('auth');
-Route::get('tes/123/a/agenda/','User\GuruController@indexAgenda')->name('guru.indexagenda');
-Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name('guru.showagenda');
-Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda');
-Route::put('tes/123/a/agenda/{id}/updateAgendaList', 'User\GuruController@updateAgendaList')->name('guru.updateAgendaList');
+Route::post('tes/123/a/agenda/detailstore', 'User\GuruController@AddDetail')->name('guru.AddDetail')->middleware('auth');
+Route::get('tes/123/a/agenda/','User\GuruController@indexAgenda')->name('guru.indexagenda')->middleware('auth');
+Route::get('tes/123/a/agenda/{id}/show', 'User\GuruController@showAgenda')->name('guru.showagenda')->middleware('auth');
+Route::put('tes/123/a/agenda/{id}/update', 'User\GuruController@updateAgenda')->name('guru.updateagenda')->middleware('auth');
+Route::put('tes/123/a/agenda/{id}/updateAgendaList', 'User\GuruController@updateAgendaList')->name('guru.updateAgendaList')->middleware('auth');
 Route::get('tes/123/a/agenda/{id}/download','User\GuruController@agendaDownload')->name('guru.agendadownload')->middleware('auth');
 Route::delete('tes/123/a/agenda/{id}', 'User\GuruController@deleteAgenda')->name('guru.deleteagenda')->middleware('auth');
 
@@ -124,7 +129,9 @@ Route::put('tes/123/a/responder/{id}/update', 'User\GuruController@updateFeed')-
 //     return "Event has been sent!";
 // });
 
-Route::get('test/{id}', 'User\GuruController@tes');
+Route::get('/web/tes/', 'User\GuruController@tes');
+
+
 
 
 

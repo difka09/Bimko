@@ -20,6 +20,7 @@ use App\Notifications\UserCommented;
 use App\Models\Feed;
 use App\Models\Agreement;
 use App\Notifications\UserAgenda;
+use App\Models\DetailAgenda;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -210,8 +211,9 @@ class GuruController extends Controller
         Storage::delete(Post::find($id)->file_2);
 
         $post = Post::find($id);
-        $post->delete();
-        $post->comments()->delete();
+        $post->comments()->forceDelete();
+        $post->forceDelete();
+
 
         return response()->json($post);
     }
@@ -269,7 +271,7 @@ class GuruController extends Controller
     {
 
         $comment = Comment::find($id);
-        $comment->delete();
+        $comment->forceDelete();
 
         // $a = $comment->user->notifications();
         // $a->delete();
@@ -282,17 +284,26 @@ class GuruController extends Controller
         $file = public_path() .'/images/'. $post->file_2;
         return response()->download($file);
     }
-    public function tes($id)
+    public function tes()
     {
         // $comments = new Comment();
         // $id = $comments->user_id = auth()->user()->id;
         // $user = User::where('id','=',$id)->get();
         // dd($user);
-        $comment = Comment::find($id);
+        // $detail = DetailAgenda::find(1);
+        // $user = User::onlyTrashed()->where('id', 19);
+        // dd($user);
+        $agenda = Agenda::withTrashed()->where('user_id', 20)->first();
+            if($agenda->detailAgenda->file){
+            Storage::delete($agenda->detailAgenda->file);
+        }
+dd($agenda);
 
-        // dd($comment);
-        $a = DB::table('notifications')->where('data','==','\"comment_id\":'.$id)->get();
-        dd($a);
+        // $comment = Comment::find($id);
+
+        // // dd($comment);
+        // $a = DB::table('notifications')->where('data','==','\"comment_id\":'.$id)->get();
+        // dd($a);
     }
 
     //notifikasi
@@ -389,7 +400,7 @@ class GuruController extends Controller
 
         $data = User::find($id)->update([
             'name' => $request->name,
-            'identity' => $request->identity,
+            'nip' => $request->nip,
             'grade' => $request->grade,
             'phone' => $request->phone,
             'password' => $newpassword,
@@ -426,31 +437,27 @@ class GuruController extends Controller
         return redirect()->route('guru.indexagenda');
     }
 
-    public function updateAgenda(Request $request, $id)
+    public function AddDetail(Request $request)
     {
-        $agenda = Agenda::find($id);
-
-        //get file
         $file = null;
         if ($request->hasFile('file')) {
-            if($agenda->file){
-                Storage::delete($agenda->file);
-            }
             $file = $request->file('file')->store('agendas');
         }
-        if (!$request->hasFile('file') && $agenda->file) {
-            $file = $agenda->file;
+        if (!$request->hasFile('file')) {
+            $file;
         }
 
-        $data = Agenda::find($id)->update([
+        $data = DetailAgenda::create([
             'summary' => $request->summary,
+            'agenda_id' => $request->agenda_id,
             'status' => 1,
             'file' => $file,
         ]);
 
+
         $users = User::find($request->user);
-        $agenda->users()->sync($users);
-            // dd($data);
+        $data->users()->sync($users);
+
         return response()->json($data);
     }
 
@@ -477,6 +484,7 @@ class GuruController extends Controller
 
         $where = array ('id' => $id);
         $agenda = Agenda::where($where)->first();
+        $agenda->load('detailAgenda');
 
         return response()->json([$agenda,$users]);
     }
@@ -487,20 +495,26 @@ class GuruController extends Controller
         $where = array ('id' => $id);
         $agenda = Agenda::where($where)->first();
 
-        $download = public_path() .'/images/'. $agenda->file;
+        $download = public_path() .'/images/'. $agenda->detailAgenda->file;
 
         return response()->download($download);
     }
 
     public function deleteAgenda(Request $request,$id)
     {
-        Storage::delete(Agenda::find($id)->file);
         $agenda = Agenda::find($id);
-        $agenda->delete();
+        $agenda->forceDelete();
+        if($agenda->detailAgenda){
+        $agenda->detailAgenda->forceDelete();
 
         $users = User::find($request->user);
-        $agenda->users()->detach($users);
 
+        $agenda->detailAgenda->users()->detach($users);
+
+        if($agenda->detailAgenda->file){
+            Storage::delete($agenda->detailAgenda->file);
+        }
+        }
         return response()->json($agenda);
     }
 

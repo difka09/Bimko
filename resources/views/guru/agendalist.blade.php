@@ -89,7 +89,7 @@
                                         <img src="{{asset('guru/img/avatar78-sm.jpg')}}" alt="author">
                                     </div> --}}
                                     <div class="author-date">
-                                    <a href="#" class="author-name h6">{{$agenda->creator}}</a> telah membuat undangan<br> rapat <a href="#"> {{$agenda->name}}</a>
+                                    <a href="#" class="author-name h6">{{$agenda->user->name}}</a> telah membuat undangan<br> rapat <a href="#"> {{$agenda->name}}</a>
                                     </div>
                                 </div>
                             </td>
@@ -110,19 +110,23 @@
                             </td>
                             <td class="users">
                                 <ul class="friends-harmonic">
-                                    @foreach ($agenda->users as $user)
+                                    @if ($agenda->detailAgenda == null)
+                                    @else
+                                    @foreach ($agenda->detailAgenda->users as $user)
                                     <li>
                                         <a title="{{$user->name}}" href="#">
                                             <img src="{{$user->getImage()}}" alt="friend">
                                         </a>
                                     </li>
                                     @endforeach
+                                    @endif
+
                                 </ul>
                             </td>
                             <td class="add-event">
                                 <a style="color:white" href="javascript:void(0)" class="btn btn-breez btn-sm" id="view-detail" data-id="{{$agenda->id}}">Lihat Rincian</a>
-                                @if ($agenda->status == 0)
                                 @if ($agenda->user_id == auth()->user()->id)
+                                @if ($agenda->detailAgenda == null)
                                 <a style="color:white" class="btn btn-grey btn-sm" id="edit-agenda" data-id="{{$agenda->id}}">Tulis Notulensi</a>
                                 @endif
                                 @endif
@@ -132,8 +136,8 @@
                                 <div class="more"><svg class="olymp-settings"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-settings')}}"></use></svg>
                                     <ul class="more-dropdown">
 
-                                        @if ($agenda->status == 0)
-                                        <li>
+                                        @if ($agenda->detailAgenda == null)
+                                            <li>
                                             <a href="javascript:void(0)" data-id="{{$agenda->id}}" class="edit-detail">Edit Undangan</a>
                                         </li>
                                         @endif
@@ -142,6 +146,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                @else
                                 @endif
                             </td>
                         </tr>
@@ -218,7 +223,7 @@
             <span class="material-input"></span>
             </div>
             <input type="hidden" id="agendaid" name="agenda_id">
-            <input type="submit" class="btn btn-breez btn-lg full-width" id="update-agenda-btn" style="pointer-events: none" value="Edit Agenda" disabled>
+            <input type="submit" class="btn btn-breez btn-lg full-width" id="update-agenda-btn" style="pointer-events: none;display:none" value="Edit Agenda" disabled>
         </div>
         </form>
 
@@ -239,8 +244,6 @@
             <form id="notulensiForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
             {{-- <form method="post" action="{{Route('guru.updateagenda',$agenda->id)}}" enctype="multipart/form-data"> --}}
                 @csrf
-                @method("PUT")
-
             <div class="form-group label-floating is-focused">
                 <label class="control-label">Nama Rapat</label>
                 <input class="form-control" placeholder="" type="text" name="name" id="agenda_name" disabled>

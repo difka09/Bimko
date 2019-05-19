@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 
-class LoginUsersController extends Controller
+class LoginMuridController extends Controller
 {
 
 
@@ -21,7 +21,7 @@ class LoginUsersController extends Controller
 
     public function username()
     {
-        return 'nip';
+        return 'nis';
     }
     protected function credentials(Request $request)
     {
@@ -31,14 +31,15 @@ class LoginUsersController extends Controller
     protected function sendFailedLoginResponse(Request $request)
     {
         throw ValidationException::withMessages([
-            $this->username() => [trans('auth.wronguserguru')],
+            $this->username() => [trans('auth.wrongusermurid')],
         ]);
     }
 
     protected function authenticated(Request $request, $user)
     {
-        if($user->hasRole('Guru')) {
-            return redirect()->route('guru.index');
+        if($user->hasRole('Murid')) {
+            return redirect()->route('guest.createfeed');
         }
+
     }
 }

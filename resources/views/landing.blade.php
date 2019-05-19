@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>HTML Template</title>
+	<title>Bimko | Landing</title>
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CVarela+Round" rel="stylesheet">
 	<!-- Bootstrap -->
@@ -57,17 +57,8 @@
 				<!--  Main navigation  -->
 				<ul class="main-nav nav navbar-nav navbar-right">
 					<li><a href="#home">Beranda</a></li>
-					<li><a href="#register">Daftar</a></li>
-					{{-- <li><a href="#portfolio">Portfolio</a></li>
-					<li><a href="#service">Services</a></li>
-					<li><a href="#pricing">Prices</a></li>
-					<li><a href="#team">Team</a></li>
-					<li class="has-dropdown"><a href="#blog">Blog</a>
-						<ul class="dropdown">
-							<li><a href="blog-single.html">blog post</a></li>
-						</ul>
-                    </li> --}}
-                    <li><a href="#about">Info kami</a></li>
+					<li><a href="#info">Info kami</a></li>
+                    <li><a href="#service">Info Layanan</a></li>
                     <li><a href="#map">Peta</a></li>
 
 				</ul>
@@ -90,7 +81,7 @@
 							</p>
                             <a href="{{ Route('feeds.index') }}" class="white-btn">Kunjungi Web Portal</a>
                             {{-- <button class="main-btn">Login Akun</button> --}}
-							<a href="{{Route('login.users')}}" class="main-btn" style="color:azure">Login Akun</a>
+							<a href="{{Route('register')}}" class="main-btn" style="color:azure">Daftar Akun</a>
 						</div>
 					</div>
 					<!-- /home content -->
@@ -105,74 +96,59 @@
 
 
     <!-- Contact -->
-	<div id="register" class="section md-padding">
+	<div id="info" class="section md-padding">
 
 		<!-- Container -->
 		<div class="container">
 
 			<!-- Row -->
 			<div class="row">
-
-				<!-- Section-header -->
-				<div class="section-header text-center">
-					<h2 class="title">Daftar Sebagai Responder</h2>
-				</div>
-				<!-- /Section-header -->
-
-				<!-- contact form -->
-				<div class="col-md-8 col-md-offset-2">
-                    <form class="contact-form" action="{{Route('guest.store')}}" method="POST">
-                        @csrf
-                        <div class="form-group {{ $errors->has('name') ? 'has-error' :'' }}">
-                        <input type="text" class="input" name="name" value="{{ old('name') }}" placeholder="Nama">
-                        @if ($errors->has('name'))
-                        <p class="help-block">
-                            {{ $errors->first('name') }}
-                        </p>
-                        @endif
+            <!-- Section header -->
+            <div class="section-header text-center">
+                <h2 class="title">Siapa Saja Bimko?</h2>
+            </div>
+                <!-- /Section header -->
+                <div class="col-md-10 col-md-offset-1">
+                <!-- number -->
+				<div class="col-sm-3 col-xs-6">
+                        <div class="number">
+                            <i class="fa fa-users"></i>
+                            <h3 class="Black-text"><span class="counter">{{$countResponder}}</span></h3>
+                            <span class="Black-text">Total Responder</span>
                         </div>
+                    </div>
+                    <!-- /number -->
 
-                        <div class="form-group {{ $errors->has('email') ? 'has-error' :'' }}">
-                        <input type="email" class="input" name="email" value="{{ old('email') }}" placeholder="Email">
-                        @if ($errors->has('email'))
-                        <p class="help-block">
-                            {{ $errors->first('email') }}
-                        </p>
-                        @endif
+                   <!-- number -->
+				<div class="col-sm-3 col-xs-6">
+                    <div class="number">
+                        <i class="fa fa-users"></i>
+                        <h3 class="Black-text"><span class="counter">{{$countGuru}}</span></h3>
+                        <span class="Black-text">Total Guru</span>
+                    </div>
+                </div>
+                <!-- /number -->
+
+                    <!-- number -->
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="number">
+                            <i class="fa fa-map-marker"></i>
+                            <h3 class="Black-text"><span class="counter">{{$countSchool}}</span></h3>
+                            <span class="Black-text">Sekolah</span>
                         </div>
+                    </div>
+                    <!-- /number -->
 
-                        <div class="form-group {{ $errors->has('password') ? 'has-error' :'' }}">
-                        <input type="password" class="input" name="password" placeholder="Kata sandi min 8 karakter">
-                        @if ($errors->has('password'))
-                        <p class="help-block">
-                            {{ $errors->first('password') }}
-                        </p>
-                        @endif
+                    <!-- number -->
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="number">
+                            <i class="fa fa-file"></i>
+                            <h3 class="Black-text"><span class="counter">{{$countArticle}}</span></h3>
+                            <span class="Black-text">Total Artikel</span>
                         </div>
-
-                        <div class="form-group {{ $errors->has('agency') ? 'has-error' :'' }}">
-                        <input type="text" class="input" name="agency" value="{{ old('agency') }}" placeholder="Instansi:Universitas Diponegoro">
-                        @if ($errors->has('agency'))
-                        <p class="help-block">
-                            {{ $errors->first('agency') }}
-                        </p>
-                        @endif
-                        </div>
-
-                        <div class="form-group {{ $errors->has('phone') ? 'has-error' :'' }}">
-                        <input type="number" class="input" name="phone" value="{{ old('phone') }}" placeholder="Nomor HP">
-                        @if ($errors->has('phone'))
-                        <p class="help-block">
-                            {{ $errors->first('phone') }}
-                        </p>
-                        @endif
-                        </div>
-
-						<button type="submit" class="main-btn">Daftar</button>
-					</form>
-				</div>
-				<!-- /contact form -->
-
+                    </div>
+                    <!-- /number -->
+                    </div>
 			</div>
 			<!-- /Row -->
 
@@ -183,7 +159,7 @@
 	<!-- /Contact -->
 
 	<!-- About -->
-	<div id="about" class="section md-padding bg-grey">
+	<div id="service" class="section md-padding bg-grey">
 
 		<!-- Container -->
 		<div class="container">
@@ -202,7 +178,7 @@
                         {{-- <h1 class="black-text">Sistem Informasi Guru BimKo Se-SMK Kabupaten Blora</h1> --}}
                         <p class="black-text">BimKo adalah tempat untuk berbagi informasi kuliah, pekerjaan, pengalaman, sarana konsultasi dengan guru BK.</p>
                         <p class="black-text">Di dalam Sistem Informasi ini terdapat alumni atau responder untuk memberikan informasi-informasi menarik seputar kuliah dan dunia kerja, murid untuk melihat informasi baru dan konsultasi dengan guru BK, dan guru BK untuk memberikan jawaban konsultasi.</p>
-                        <p class="black-text">untuk lebih lengkapnya bisa masuk <a href="{{Route('login.users')}}">disini</a><p>
+                        <p class="black-text">untuk lebih lengkapnya bisa masuk <a href="/login">disini</a><p>
 
                     </div>
                 </div>

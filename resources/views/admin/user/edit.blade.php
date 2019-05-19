@@ -59,18 +59,33 @@
                      @endif
                     </div>
                 </div> --}}
-
-                <div class="form-group {{ $errors->has('identity') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Nomor Identitas</label>
+                @if ($user->nip != 0)
+                <div class="form-group {{ $errors->has('nip') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">NIP</label>
                     <div class="col-sm-10">
-                    <input type="number" name="identity" class="form-control" value="{{ $user->identity ?? old('identity') }}" placeholder="NIS">
-                    @if ($errors->has('identity'))
+                    <input type="number" name="nip" class="form-control" value="{{ $user->nip ?? old('nip') }}" placeholder="NIP">
+                    @if ($errors->has('nip'))
                         <p class="help-block">
-                            {{ $errors->first('identity') }}
+                            {{ $errors->first('nip') }}
                         </p>
-                     @endif
+                        @endif
                     </div>
                 </div>
+                @endif
+                @if ($user->nis != 0)
+                <div class="form-group {{ $errors->has('nis') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">NIS</label>
+                    <div class="col-sm-10">
+                    <input type="number" name="nis" class="form-control" value="{{ $user->nis ?? old('nis') }}" placeholder="NIS">
+                    @if ($errors->has('nis'))
+                        <p class="help-block">
+                            {{ $errors->first('nis') }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
 
                 <div class="form-group {{ $errors->has('grade') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Kelas</label>

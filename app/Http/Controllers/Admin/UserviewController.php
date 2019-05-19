@@ -45,6 +45,23 @@ class UserviewController extends Controller
         ]);
     }
 
+    Public function indexGuest()
+    {
+        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->paginate(2);
+        $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->count();
+        // dd($checkusers);
+        if($checkusers == 0){
+            return view('admin.user.emptyPage', [
+                'users' => $users,
+                'checkusers' => $checkusers
+            ]);
+        }
+        return view('admin.user.index', [
+            'users' => $users,
+            'checkusers' => $checkusers
+        ]);
+    }
+
     public function createGuru()
     {
         return view('admin.user.createGuru');
@@ -57,7 +74,7 @@ class UserviewController extends Controller
 
     public function createGuest()
     {
-        return view('landing');
+        return view('admin.user.createGuest');
     }
 
     public function storeGuru(Request $request)
@@ -66,7 +83,7 @@ class UserviewController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'identity' => 'required|numeric',
+            'nip' => 'required|numeric|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
             'phone' => 'required|numeric',
             // 'file' => ''
@@ -76,7 +93,7 @@ class UserviewController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request['password']),
-            'identity' => $request->identity,
+            'nip' => $request->nip,
             'grade' => $request->grade,
             'phone' => $request->phone,
             'file' => 'users/woman.gif'
@@ -93,7 +110,7 @@ class UserviewController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'identity' => 'required|numeric',
+            'nis' => 'required|numeric|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
             'phone' => 'required|numeric',
             // 'file' => ''
@@ -103,13 +120,36 @@ class UserviewController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request['password']),
-            'identity' => $request->identity,
+            'nis' => $request->nis,
             'grade' => $request->grade,
             'phone' => $request->phone
         ]);
         $data->assignRole('Murid');
 
         return redirect()->route('user.murid')->with('success', 'User has been added');
+    }
+
+    public function storeGuest(Request $request)
+    {
+        $this->validate($request,[
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+            'agency' => 'required',
+            'phone' => 'required|numeric',
+            // 'file' => ''
+        ]);
+
+        $data = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'agency' => $request['agency'],
+            'phone' => $request['phone']
+        ]);
+        $data->assignRole('guest');
+
+        return redirect()->route('user.guest')->with('success', 'User has been added');
     }
 
     public function CountUser(){

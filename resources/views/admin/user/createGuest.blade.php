@@ -6,25 +6,12 @@
         <div class="box-header with-border">
             <h3 class="box-title">Tambah Guru</h3>
         </div>
-            <form action="{{ route('user.guru.store') }}" class="form-horizontal" method="POST">
+            <form action="{{Route('user.guest.store')}}" class="form-horizontal" method="POST">
                 @csrf
             <div class="box-body">
-                {{-- <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Name</label>
-                    <div class="col-sm-10">
-                    <input type="text" name="name" class="form-control" value="">
-                    </div>
-                </div> --}}
-
-                {{-- <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Instansi</label>
-                    <div class="col-sm-10">
-                    <input type="text" name="agency" class="form-control" value="Nama Sekolah">
-                    </div>
-                </div> --}}
 
                 <div class="form-group {{ $errors->has('name') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Name</label>
+                    <label for="" class="col-sm-2 control-label">Nama</label>
                     <div class="col-sm-10">
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Nama Lengkap">
                     @if ($errors->has('name'))
@@ -59,25 +46,13 @@
                     </div>
                 </div>
 
-                <div class="form-group {{ $errors->has('nip') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">NIP</label>
+                <div class="form-group {{ $errors->has('agency') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">Instansi</label>
                     <div class="col-sm-10">
-                    <input type="number" name="nip" class="form-control" value="{{ old('nip') }}" placeholder="NIP">
-                    @if ($errors->has('nip'))
+                    <input type="text" name="agency" class="form-control" value="{{ old('agency') }}" placeholder="Instansi">
+                    @if ($errors->has('agency'))
                         <p class="help-block">
-                            {{ $errors->first('nip') }}
-                        </p>
-                     @endif
-                    </div>
-                </div>
-
-                <div class="form-group {{ $errors->has('grade') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Kelas</label>
-                    <div class="col-sm-10">
-                    <input type="number" name="grade" class="form-control" value="{{ old('grade') }}" placeholder="10 - 12">
-                    @if ($errors->has('grade'))
-                        <p class="help-block">
-                            {{ $errors->first('grade') }}
+                            {{ $errors->first('agency') }}
                         </p>
                      @endif
                     </div>

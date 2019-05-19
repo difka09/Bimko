@@ -11,6 +11,8 @@
             <div class="box-body">
             <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
             <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
+            <a href="{{ route('user.guest.create') }}" class=" {{ request()->is('admin/guest') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
+
                 <table class="table table-bordered">
                     <tr>
                         <th style="width:15px">No</th>
@@ -27,7 +29,10 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>
+                            @if ($user->roleName != 'guest')
                             <a href="{{ route('user.edit', $user) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                            @else
+                            @endif
                             <button id="delete" data-title="{{ $user->name }}" href="{{route('user.destroy',$user) }}" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             <button id="reset" data-title="{{ $user->name }}" href="{{route('user.reset',$user) }}" class="btn btn-danger">reset</button>
                         </td>

@@ -9,7 +9,7 @@
             <h3 class="section-title">Artikel Terbaru</h3>
           </div>
         @csrf
-        @if ($feeds->count()==0)
+        @if (($feeds->count()==0))
         <a>Artikel tidak ditemukan, jika anda sebagai responder silahkan buat artikel <a href="{{Route('guest.createfeed')}}">disini</a></a>
         @endif
           @foreach ($feeds as $feed)

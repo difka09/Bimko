@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'identity', 'agency', 'grade', 'phone', 'file', 'school_id'
+        'name', 'email', 'password', 'identity', 'agency', 'grade', 'phone', 'file', 'school_id', 'nis', 'nip',
     ];
     protected $dates = ['deleted_at'];
 
@@ -78,7 +78,12 @@ class User extends Authenticatable
 
     public function agendas()
     {
-        return $this->belongsToMany(Agenda::class);
+        return $this->hasMany(Agenda::class);
+    }
+
+    public function detailAgendas()
+    {
+        return $this->belongsToMany(DetailAgenda::class);
     }
 
     public function agreements()

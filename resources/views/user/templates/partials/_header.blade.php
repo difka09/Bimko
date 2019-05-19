@@ -76,7 +76,7 @@
               </a> --}}
         <ul class="nav__menu">
             @guest
-                <li><a href="{{Route('login.users')}}">Register/Login</a></li>
+                <li><a href="/login">Register/Login</a></li>
             @endguest
 
             @auth

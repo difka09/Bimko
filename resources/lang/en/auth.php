@@ -16,7 +16,8 @@ return [
     'failed' => 'These credentials do not match our records.',
     'wrong' => 'Email atau password salah, silahkan cek kembali',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'wronguser' => 'Nomor identitas atau password salah, silahkan cek kembali',
+    'wrongusermurid' => 'NIS atau password salah, silahkan cek kembali',
+    'wronguserguru' => 'NIP atau password salah, silahkan cek kembali',
 
 
 ];

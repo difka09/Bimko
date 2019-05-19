@@ -26,8 +26,14 @@
                         <div class="row" style="padding-left:20px;padding-right:20px">
                             <div class="col-md-12">
                                 <div class="form-group label-floating">
-                                <label for="">Nomor Identitas</label>
-                                <input type="text" class="form-control" name="identity" value="{{$user->identity}}" disabled>
+                                @if ($user->nis != 0)
+                                <label for="">NIS</label>
+                                <input type="text" class="form-control" name="nis" value="{{$user->nis}}" disabled>
+                                @endif
+                                @if ($user->nip != 0)
+                                <label for="">NIP</label>
+                                <input type="text" class="form-control" name="nip" value="{{$user->nip}}" disabled>
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -62,16 +68,17 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Trash Data Murid</h3>
+                <h3 class="box-title">Trash Semua Data User</h3>
             </div>
             <div class="box-body">
-                <a href="{{ route('user.index') }}" class="btn btn-primary">Data User</a>
+                {{-- <a href="{{ route('user.index') }}" class="btn btn-primary">Data User</a> --}}
                 <a href="{{ route('user.restoreall') }}" class="btn btn-primary">Restore All</a>
                 <table class="table table-bordered">
                     <tr>
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                    @foreach ($users as $user)
@@ -79,6 +86,15 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
+                        @if ($user->isGuru())
+                        <td><span class="label label-info">Guru</span></td>
+                        @endif
+                        @if ($user->isGuest())
+                        <td><span class="label label-success">Responder</span></td>
+                        @endif
+                        @if ($user->isMurid())
+                        <td><span class="label label-default">Murid</span></td>
+                        @endif
                         <td>
                             <button type="button" data-toggle="modal" class="btn btn-success" data-target="#yourModal{{$user->id}}"><i class="fa fa-eye"></i> lihat</button>
                             {{-- <button type="button" data-toggle="modal" class="btn btn-success" data-target="#yourModal" value="{{ route('user.trash.show', $user->id) }}"><i class="fa fa-eye"></i> lihat</button> --}}

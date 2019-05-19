@@ -362,6 +362,7 @@ $(document).on('keyup', '.search-here', function(){
     $('body').on('click', '#view-detail', function(){
         var agenda_id = $(this).data("id");
         $.get(urls[15] + '/' + agenda_id + '/show', function(data){
+            document.getElementById("update-agenda-btn").style.display = "none";
             var newdate = moment(new Date(data[0]['start_At'] )).format("DD/MM/YYYY");
             var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
             $('#view-agenda').modal('show');
@@ -379,17 +380,23 @@ $(document).on('keyup', '.search-here', function(){
             document.getElementById("editdate").style.display = "none";
             document.getElementById("notulen-input").style.display = "block";
             document.getElementById("agenda-file").style.display = "block";
-            if(data[0]['summary']!=null){
-            $('#agenda_not').val(data[0]['summary']);
+            if(data[0]['detail_agenda']!=null){
+            if(data[0]['detail_agenda']['summary']!=null){
+            $('#agenda_not').val(data[0]['detail_agenda']['summary']);
+            }
             }else{
             $('#agenda_not').val('rapat belum dilaksanakan');
             }
-            if(data[0]['file']!=null){
-            document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[0]['file']+'</a>';
+            if(data[0]['detail_agenda']!=null){
+                if(data[0]['detail_agenda']['file']!=null){
+            document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[0]['detail_agenda']['file']+'</a>';
             }else{
             document.getElementById('filename_file').innerHTML="File belum diupload";
             }
-            console.log(data[0]['file']);
+            }else{
+            document.getElementById('filename_file').innerHTML="File belum diupload";
+            }
+            // console.log(data[0]['detail_agenda']['file']);
             // $('#postid').val(data.id);
         });
 
@@ -403,7 +410,6 @@ $(document).on('keyup', '.search-here', function(){
             $('#agenda_id').val(data[0]['id']);
             $('#add-notulensi').modal('show');
             $('#agenda_name').val(data[0]['name']);
-            $('#summary-notulensi').val(data[0]['summary']);
         });
 
     });
@@ -412,15 +418,14 @@ $(document).on('keyup', '.search-here', function(){
     $('#notulensiForm').on('submit',(function(e) {
 
         e.preventDefault();
-        var formData = new FormData(this);
-        formData.append('_method', 'PUT');
         var agenda_id = $("#add-notulensi").find("input[name='agenda_id']").val();
+        var data = new FormData($(this)[0]);
 
         $.ajax({
             dataType: 'json',
             type:'POST',
-            url: urls[15] + '/' + agenda_id+ '/update',
-            data: formData,
+            url: urls[15] +'/detailstore',
+            data: data,
             cache:false,
             contentType: false,
             processData: false,
@@ -572,7 +577,6 @@ $(function(){
 //delete agenda
 $('body').on('click', '.delete-agenda', function(){
     var agenda_id = $(this).data("id");
-    console.log(agenda_id);
     swal({
         title: "Apakah kamu yakin akan hapus agenda ini ?",
         icon: "warning",
@@ -607,6 +611,7 @@ $('body').on('click', '.edit-detail', function(){
         var newdate = moment(new Date(data[0]['start_At'] )).format("YYYY-MM-DD");
         var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
         $('#view-agenda').modal('show');
+        document.getElementById("update-agenda-btn").style.display = "block";
         $('#agendaid').val(data[0]['id']);
         document.getElementById("editdate").style.display = "block";
         $('#name').val(data[0]['name']);

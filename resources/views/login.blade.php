@@ -39,20 +39,20 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
-                <p class="forgot"><a href="/#register">Belum punya akun? Daftar Disini</a></p>
+                <p class="forgot"><a href="/register">Belum punya akun? Daftar Disini</a></p>
                 <button type="submit" class="button button-block">Log In</button>
                 </form>
             </div>
 
             <div id="login-murid" style="display:none" >
                 <h1>Login Untuk Siswa</h1>
-                <form action="{{Route('login.users')}}" method="post">
+                <form action="{{Route('login.usermurid')}}" method="post">
                     @csrf
                 <div class="field-wrap">
                 <label>
                     NIS<span class="req">*</span>
                 </label>
-                <input type="number"required autocomplete="off" name="identity"/>
+                <input type="number"required autocomplete="off" name="nis"/>
                 </div>
                 <div class="field-wrap">
                 <label>
@@ -60,9 +60,9 @@
                 </label>
                 <input type="password"required autocomplete="off" name="password"/>
                 </div>
-                @if ($errors->has('identity'))
+                @if ($errors->has('nis'))
                 <span style="color:azure" class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('identity') }}</strong>
+                    <strong>{{ $errors->first('nis') }}</strong>
                 </span>
                 @endif
                 <p>
@@ -72,13 +72,13 @@
 
             <div id="login-guru" style="display:none">
                 <h1>Login Untuk Guru</h1>
-                <form action="{{Route('login.users')}}" method="post">
+                <form action="{{Route('login.userguru')}}" method="post">
                     @csrf
                     <div class="field-wrap">
                     <label>
                         NIP<span class="req">*</span>
                     </label>
-                    <input type="number"required autocomplete="off" name="identity"/>
+                    <input type="number"required autocomplete="off" name="nip"/>
                     </div>
                     <div class="field-wrap">
                     <label>
@@ -86,9 +86,9 @@
                     </label>
                     <input type="password"required autocomplete="off" name="password"/>
                     </div>
-                    @if ($errors->has('identity'))
+                    @if ($errors->has('nip'))
                     <span style="color:azure" class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('identity') }}</strong>
+                        <strong>{{ $errors->first('nip') }}</strong>
                     </span>
                     @endif
                     <p>

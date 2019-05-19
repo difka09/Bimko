@@ -159,6 +159,8 @@
                         @endif
                         @endforeach
                         @auth
+                        @if (auth()->user()->isAdmin())
+                        @else
                         <div id="form-comment">
                             <form id="form-{{$feedcomment->id}}" class="comment-form" method="post" action="{{route('reply.store')}}" style="display:none" data-parentuser="{{$feedcomment->user_id}}">
                               @csrf
@@ -176,6 +178,7 @@
                           </form>
                         </div>
                         @endauth
+                        @endif
                       </ul>
                     </div>
 
@@ -189,10 +192,12 @@
                 <div id="respond" class="comment-respond">
                     @guest
                     <div class="title-wrap">
-                        <p>Silahkan <a href="{{Route('login.users')}}"><strong>login</strong></a> untuk berkomentar!!</p>
+                        <p>Silahkan <a href="/login"><strong>login</strong></a> untuk berkomentar!!</p>
                     </div>
                     @endguest
                     @auth
+                    @if (auth()->user()->isAdmin())
+                    @else
                     <div class="title-wrap">
                         <h5 class="comment-respond__title uppercase">Tinggalkan Komentar</h5>
                     </div>
@@ -220,6 +225,7 @@
                             <button type="submit" class="btn btn-lg btn-color btn-button">Kirim Komentar</button>
                             </p>
                         </form>
+                    @endif
                     @endauth
 
                 </div> <!-- end comment form -->

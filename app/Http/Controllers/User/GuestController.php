@@ -89,7 +89,7 @@ class GuestController extends Controller
 
     public function deleteFeed(Feed $feed)
     {
-        $feed->delete();
+        $feed->forceDelete();
         $catfeeds = Catfeed::find($feed->catfeed);
         $feed->catfeeds()->detach($catfeeds);
 

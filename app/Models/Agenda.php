@@ -3,19 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Agenda extends Model
 {
+    use SoftDeletes;
+
 
     protected $fillable = [
-        'name', 'place', 'user_id', 'file', 'summary', 'start_At','status', 'creator', 'description'
+        'name', 'place', 'user_id', 'file', 'start_At', 'creator', 'description'
     ];
 
-    protected $dates = ['start_At'];
+    protected $dates = ['start_At','deleted_at'];
 
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function detailAgenda()
+    {
+        return $this->hasOne(DetailAgenda::class);
     }
 
     // public function setDate($datetimepicker, $time)

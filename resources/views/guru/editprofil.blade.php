@@ -49,7 +49,7 @@
 
                         <div class="form-group label-floating is-select">
                                 <label class="control-label">NIP</label>
-                                <input class="form-control" placeholder="" type="number" name="identity" value="{{$user->identity}}">
+                                <input class="form-control" placeholder="" type="number" name="nip" value="{{$user->nip}}">
                             <span class="material-input"></span>
                         </div>
 

@@ -27,6 +27,9 @@ Route::get('/murid','UserviewController@indexMurid')->name('user.murid');
 Route::get('/murid/create','UserviewController@createMurid')->name('user.murid.create');
 Route::post('/murid','UserviewController@storeMurid')->name('user.murid.store');
 
+Route::get('/guest','UserviewController@indexGuest')->name('user.guest');
+Route::get('/guest/create','UserviewController@createGuest')->name('user.guest.create');
+Route::post('/murid','UserviewController@storeGuest')->name('user.guest.store');
 
 Route::put('user/reset/{user}', 'UserController@resetPassword')->name('user.reset');
 

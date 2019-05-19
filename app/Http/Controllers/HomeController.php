@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\School;
+use App\Models\Userview;
+use App\Models\Feed;
 
 class HomeController extends Controller
 {
@@ -17,6 +19,11 @@ class HomeController extends Controller
     {
         $this->middleware('guest');
         $this->maps = School::orderBy('name', 'asc')->get();
+        $this->countArticle = Feed::where('status','=',1)->count();
+        $this->countSchool = School::count();
+        $this->countResponder = Userview::orderby('name','asc')->where('roleName','=','guest')->count();
+        $this->countGuru = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->count();
+
 
     }
 
@@ -24,7 +31,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('landing',[
-            'maps' => $this->maps
+            'maps' => $this->maps,
+            'countArticle' => $this->countArticle,
+            'countSchool' => $this->countSchool,
+            'countResponder' => $this->countResponder,
+            'countGuru' => $this->countGuru,
         ]);
     }
 

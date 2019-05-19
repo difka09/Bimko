@@ -59,13 +59,13 @@
                     </div>
                 </div>
 
-                <div class="form-group {{ $errors->has('identity') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Nomor Identitas</label>
+                <div class="form-group {{ $errors->has('nis') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">NIS</label>
                     <div class="col-sm-10">
-                    <input type="number" name="identity" class="form-control" value="{{ old('identity') }}" placeholder="NIS">
-                    @if ($errors->has('identity'))
+                    <input type="number" name="nis" class="form-control" value="{{ old('nis') }}" placeholder="NIS">
+                    @if ($errors->has('nis'))
                         <p class="help-block">
-                            {{ $errors->first('identity') }}
+                            {{ $errors->first('nis') }}
                         </p>
                      @endif
                     </div>
