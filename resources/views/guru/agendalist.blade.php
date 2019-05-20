@@ -307,7 +307,7 @@
                 <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
                 <div class="form-group label-floating is-focused" >
                     <label class="control-label">Waktu</label>
-                    <input class="form-control" placeholder="" type="time" name="time" style="width: 120px" required>
+                    <input class="form-control" placeholder="" type="time" name="time" id="txtTime" style="width: 120px" required>
                     <span class="material-input"></span>
                 </div>
                 </div>

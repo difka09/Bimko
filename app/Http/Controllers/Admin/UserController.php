@@ -14,12 +14,15 @@ use App\Models\Agenda;
 use App\Models\DetailAgenda;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Storage;
+use App\Models\School;
+use App\Models\FeedComment;
+use App\Models\FeedNotification;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('name', 'asc')->paginate(2);
+        $users = User::orderBy('name', 'asc')->paginate(8);
         // dd($users);
         return view('admin.user.index', [
             'users' => $users
@@ -66,9 +69,10 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // $user = User::find($id);
+        $schools = School::get();
         return view('admin.user.edit',[
-            'user' => $user
+            'user' => $user,
+            'schools' => $schools,
         ]);
     }
 
@@ -81,28 +85,32 @@ class UserController extends Controller
             $this->validate($request,[
                 'name' => 'required',
                 'email' => 'required|email',
-                'nis' => 'required|numeric|unique:users',
+                'nis' => 'required|numeric|unique:users,nis,'.$user->id,
                 'grade' => 'required|numeric|min:10|max:12',
                 'phone' => 'required|numeric',
+                'school_id' => 'required',
                 // 'file' => ''
             ]);
-
             $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'nis' => $request->nis,
             'grade' => $request->grade,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'school_id' => $request->school_id,
         ]);
-        return redirect()->route('user.murid')->with('info', 'User has been edited');
+        return redirect()->route('user.murid')->with('info', 'User Murid berhasil di edit');
 
         }else if($users->roleName == 'Guru'){
             $this->validate($request,[
                 'name' => 'required',
                 'email' => 'required|email',
-                'nip' => 'required|numeric|unique:users',
+                'nip' => 'required|numeric|unique:users,nip,'.$user->id,
                 'grade' => 'required|numeric|min:10|max:12',
                 'phone' => 'required|numeric',
+                'school_id' => 'required',
+                'gender' => 'required',
+
                 // 'file' => ''
             ]);
             $user->update([
@@ -110,9 +118,12 @@ class UserController extends Controller
                 'email' => $request->email,
                 'nip' => $request->nip,
                 'grade' => $request->grade,
-                'phone' => $request->phone
+                'phone' => $request->phone,
+                'school_id' => $request->school_id,
+                'gender' => $request->gender,
+
             ]);
-        return redirect()->route('user.guru')->with('info', 'User has been edited');
+        return redirect()->route('user.guru')->with('info', 'User Guru berhasil di edit');
 
         }
 
@@ -136,7 +147,7 @@ class UserController extends Controller
         $user->update([
             'password' => Hash::make($request['password']),
         ]);
-        return back()->with('info', 'Password has been reset');
+        return back()->with('info', 'Password berhasil direset');
     }
 
     public function destroy(User $user)
@@ -147,10 +158,12 @@ class UserController extends Controller
         $user->feeds()->delete();
         $user->comments()->delete();
         $user->agendas()->delete();
+        $user->feedcomments()->delete();
+        $user->feednotifications()->delete();
 
 
         // caused di page kosong yg sudah dihapus harusnya back to page awal/route view tsb
-        return back()->with('danger', 'User has been deleted');
+        return back()->with('danger', 'User telah dihapus sementara, silahkan cek menu trash ');
 
 
     }
@@ -160,28 +173,48 @@ class UserController extends Controller
         $user = User::onlyTrashed()->where('id', $id);
         $user1 = User::withTrashed()->where('id', $id)->first();
 
+        if($agenda = Agenda::withTrashed()->where('user_id', $id)->first() !=null )
+        {
         $agenda = Agenda::withTrashed()->where('user_id', $id)->first();
-        if($agenda->detailAgenda->file){
-            Storage::delete($agenda->detailAgenda->file);
-            $agenda->detailAgenda->users()->detach();
-            $agenda->detailAgenda->forceDelete();
-
-
+            if($agenda->detailAgenda->file ){
+                Storage::delete($agenda->detailAgenda->file);
+                $agenda->detailAgenda->users()->detach();
+                $agenda->detailAgenda->forceDelete();
+            }
         }
+        if($posts = Post::withTrashed()->where('user_id', $id)->get() != null)
+        {
+        $posts = Post::withTrashed()->where('user_id', $id)->get();
+            foreach($posts as $post){
+                Storage::delete($post->file_1);
+                Storage::delete($post->file_2);
+            }
+        }
+
+        if($feeds = Feed::withTrashed()->where('user_id', $id)->get() != null)
+        {
+        $feeds = Feed::withTrashed()->where('user_id', $id)->get();
+            foreach($feeds as $feed){
+                Storage::delete($feed->file);
+            }
+        }
+
         $user1->posts()->forceDelete();
-        $user1->feeds()->forceDelete();
         $user1->comments()->forceDelete();
+        $user1->feeds()->forceDelete();
+        $user1->feedcomments()->forceDelete();
+        $user1->feednotifications()->forceDelete();
         $user1->agendas()->forceDelete();
-        $user1->detailAgendas()->forceDelete();
+        // $user1->detailAgendas()->forceDelete();
 
         $user->forceDelete();
 
-        return back()->with('danger', 'User has been deleted permanently');
+        return back()->with('danger', 'User telah dihapus secara permanen');
     }
 
     public function viewTrash()
     {
-        $users = User::onlyTrashed()->paginate(2);
+        $users = User::onlyTrashed()->paginate(8);
         return view('admin.user.trash', [
             'users' => $users
         ]);
@@ -194,6 +227,8 @@ class UserController extends Controller
         $user->restore();
         Post::withTrashed()->restore();
         Feed::withTrashed()->restore();
+        FeedComment::withTrashed()->restore();
+        FeedNotification::withTrashed()->restore();
         Comment::withTrashed()->restore();
         Agenda::withTrashed()->restore();
         DetailAgenda::withTrashed()->restore();
@@ -207,6 +242,13 @@ class UserController extends Controller
         $user->restore();
         $feed = Feed::onlyTrashed()->where('user_id',$id);
         $feed->restore();
+
+        $feedcomment = FeedComment::onlyTrashed()->where('user_id',$id);
+        $feedcomment->restore();
+
+        $feednotification = FeedNotification::onlyTrashed()->where('user_id',$id);
+        $feednotification->restore();
+
         $comment = Comment::onlyTrashed()->where('user_id',$id);
         $comment->restore();
 
@@ -216,7 +258,7 @@ class UserController extends Controller
         $agenda = Agenda::onlyTrashed()->where('user_id',$id);
         $agenda->restore();
 
-        return back()->with('success', 'Data telah restored');
+        return back()->with('success', 'Data telah di restore');
     }
 
     public function trashShow($id)

@@ -4,7 +4,7 @@
 <div class="col-md-5 col-md-offset-3">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title">Tambah Guru</h3>
+            <h3 class="box-title">Tambah Responder</h3>
         </div>
             <form action="{{Route('user.guest.store')}}" class="form-horizontal" method="POST">
                 @csrf
@@ -79,7 +79,7 @@
 
         </div>
         <div class="box-footer">
-            <a href="{{ route('user.index') }}" class="btn btn-default">Batal</a>
+            <a href="{{ URL::previous() }}" class="btn btn-default">Batal</a>
             <button type="submit" class="btn btn-info pull-right">Simpan</button>
         </div>
         </form>

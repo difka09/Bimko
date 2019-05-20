@@ -22,7 +22,7 @@
                 </div>
                 <div class="notification-event">
                     <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{$responder->name}}.</a>.
-                    <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
+                    <span class="notification-date"><time class="entry-date updated" datetime="{{$responder->created_at}}"></time></span>
                 </div>
            </li>
            @endforeach

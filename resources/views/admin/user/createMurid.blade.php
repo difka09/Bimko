@@ -71,6 +71,22 @@
                     </div>
                 </div>
 
+                <div class="form-group {{ $errors->has('school_id') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">Sekolah</label>
+                    <div class="col-sm-10">
+                    <select name="school_id" class="form-control">
+                        @foreach ($schools as $school)
+                        <option value="{{$school->id}}">{{$school->name}}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('school_id'))
+                        <p class="help-block">
+                            {{ $errors->first('school_id') }}
+                        </p>
+                    @endif
+                    </div>
+                </div>
+
                 <div class="form-group {{ $errors->has('grade') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Kelas</label>
                     <div class="col-sm-10">
@@ -104,7 +120,7 @@
 
         </div>
         <div class="box-footer">
-            <a href="{{ route('user.index') }}" class="btn btn-default">Batal</a>
+            <a href="{{ URL::previous() }}" class="btn btn-default">Batal</a>
             <button type="submit" class="btn btn-info pull-right">Simpan</button>
         </div>
         </form>

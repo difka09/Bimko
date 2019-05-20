@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Userview;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\School;
+use App\Models\Catfeed;
 
 class UserviewController extends Controller
 {
     Public function indexGuru()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->paginate(2);;
+        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->paginate(8);;
         $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->count();
 
         if($checkusers == 0){
@@ -30,7 +31,7 @@ class UserviewController extends Controller
 
     Public function indexMurid()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Murid')->paginate(2);
+        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Murid')->paginate(8);
         $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Murid')->count();
         // dd($checkusers);
         if($checkusers == 0){
@@ -47,7 +48,7 @@ class UserviewController extends Controller
 
     Public function indexGuest()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->paginate(2);
+        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->paginate(8);
         $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->count();
         // dd($checkusers);
         if($checkusers == 0){
@@ -64,12 +65,15 @@ class UserviewController extends Controller
 
     public function createGuru()
     {
-        return view('admin.user.createGuru');
+        $schools = School::get();
+        return view('admin.user.createGuru',['schools' => $schools]);
     }
 
     public function createMurid()
     {
-        return view('admin.user.createMurid');
+        $schools = School::get();
+
+        return view('admin.user.createMurid',['schools' => $schools]);
     }
 
     public function createGuest()
@@ -81,38 +85,59 @@ class UserviewController extends Controller
     {
         $this->validate($request,[
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'nip' => 'required|numeric|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
             'phone' => 'required|numeric',
-            // 'file' => ''
+            'school_id' => 'required',
+            'gender' => 'required',
         ]);
+        if($request->gender == 2){
+            $data = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request['password']),
+                'nip' => $request->nip,
+                'grade' => $request->grade,
+                'phone' => $request->phone,
+                'file' => 'users/woman.png',
+                'school_id' => $request->school_id,
+                'gender' => $request->gender,
 
-        $data = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request['password']),
-            'nip' => $request->nip,
-            'grade' => $request->grade,
-            'phone' => $request->phone,
-            'file' => 'users/woman.gif'
+            ]);
+        }
+        elseif($request->gender == 1)
+        {
+            $data = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request['password']),
+                'nip' => $request->nip,
+                'grade' => $request->grade,
+                'phone' => $request->phone,
+                'file' => 'users/man.png',
+                'school_id' => $request->school_id,
+                'gender' => $request->gender,
 
-        ]);
+            ]);
+        }
+
         $data->assignRole('Guru');
 
-        return redirect()->route('user.guru')->with('success', 'User has been added');
+        return redirect()->route('user.guru')->with('success', 'User Guru berhasil ditambahkan');
     }
 
     public function storeMurid(Request $request)
     {
         $this->validate($request,[
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'nis' => 'required|numeric|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
             'phone' => 'required|numeric',
+            'school_id' => 'required',
             // 'file' => ''
         ]);
 
@@ -122,11 +147,13 @@ class UserviewController extends Controller
             'password' => Hash::make($request['password']),
             'nis' => $request->nis,
             'grade' => $request->grade,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'school_id' => $request->school_id,
+
         ]);
         $data->assignRole('Murid');
 
-        return redirect()->route('user.murid')->with('success', 'User has been added');
+        return redirect()->route('user.murid')->with('success', 'User Murid berhasil ditambahkan');
     }
 
     public function storeGuest(Request $request)
@@ -149,7 +176,7 @@ class UserviewController extends Controller
         ]);
         $data->assignRole('guest');
 
-        return redirect()->route('user.guest')->with('success', 'User has been added');
+        return redirect()->route('user.guest')->with('success', 'User Responder berhasil ditambahkan');
     }
 
     public function CountUser(){
@@ -160,6 +187,72 @@ class UserviewController extends Controller
             'guru' => $guru,
             'murid' => $murid
         ]);
+    }
+
+        Public function indexCategory()
+        {
+            $users = Catfeed::latest()->paginate(8);
+            $categories = Catfeed::latest()->paginate(8);
+
+            $checkcategories = Catfeed::count();
+            if($checkcategories == 0){
+                return view('admin.user.emptyPage', [
+                    'users' => $users,
+                    'checkcategories' => $checkcategories
+                ]);
+            }
+            return view('admin.user.indexCategory', [
+                'categories' => $categories,
+                'checkcategories' => $checkcategories
+            ]);
+        }
+
+        public function createCategory()
+        {
+            return view('admin.user.createCategory');
+        }
+
+        public function storeCategory(Request $request)
+        {
+            $this->validate($request,[
+                'name' => 'required|unique:catfeeds',
+            ]);
+
+            Catfeed::create([
+                'name' => $request['name'],
+                'slug' => str_slug($request->name)
+
+            ]);
+
+            return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan');
+        }
+
+        public function destroyCategory(Catfeed $category)
+        {
+            $category->delete();
+
+            return redirect()->route('category.index')->with('danger', 'Category berhasil di hapus');
+        }
+
+        public function editCategory(Catfeed $category)
+        {
+        return view('admin.user.editCategory',[
+            'category' => $category,
+        ]);
+        }
+
+    public function updateCategory(Request $request, Catfeed $category)
+    {
+        $this->validate($request,[
+            'name' => 'required|unique:catfeeds,name,'.$category->id,
+        ]);
+
+        $category->update([
+        'name' => $request->name,
+        'slug' => str_slug($request->name)
+        ]);
+
+        return redirect()->route('category.index')->with('info', 'Kategori berhasil diedit');
     }
 
 }

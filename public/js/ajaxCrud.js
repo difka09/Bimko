@@ -189,13 +189,17 @@ $(document).ready(function (e) {
             processData: false,
             success:function(data){
                 // console.log(data);
+                var created = data[0]['created_at']
+                var ago = moment(created);
+                var timeAgo = ago.fromNow();
+                // console.log(timeAgo);
                 // console.log([urls[5]])
                 post_id = data[0]['post_id'];
                 comment_id = data[0]['id'];
                 // $("#comment"+post_id).load(location.href + " #comment"+post_id);
                 // $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
 
-                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="'+urls[14]+'/'+data[0]['user_id']+'">'+data[1][0]['name']+'</a> <div class="post__date"><time class="published" datetime="2004-07-24T18:18">38 mins ago</time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="'+urls[14]+'/'+data[0]['user_id']+'">'+data[1][0]['name']+'</a> <div class="post__date"><time datetime="'+data[0]['created_at']+'" class="published"></time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
                 var count ='<div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items"><svg class="olymp-speech-balloon-icon"><use xlink:href="'+urls[9]+'"></use></svg><span>'+data[2]+'</span></a></div></div>';
                 $('#comment'+post_id).prepend(comment);
                 $("#countcomment" + post_id).html(count);
@@ -546,8 +550,20 @@ $(function(){
     if(day < 10)
     day = '0' + day.toString();
 
+    var hours = dtToday.getHours();
+    var minutes = dtToday.getMinutes();
+    if(hours < 10 )
+    hours = '0' + hours.toString();
+    if(minutes < 10)
+    minutes = '0' +minutes.toString();
+
+
     var maxDate = year + '-' + month + '-' +day;
     $('#txtDate').attr('min',maxDate);
+
+    var maxTime = hours+':'+minutes
+    // $('#txtTime').attr('min',maxTime);
+
 
     $(document).on('keyup change', '#txtDate', function(){
     if(document.getElementById("txtDate").value < maxDate)
@@ -557,6 +573,14 @@ $(function(){
         document.getElementById("create-agenda-btn").disabled = false,
         document.getElementById("create-agenda-btn").style.pointerEvents = "auto";
 
+    });
+    $(document).on('keyup change', '#txtTime', function(){
+        if(document.getElementById("txtDate").value == maxDate && document.getElementById("txtTime").value > maxTime)
+        document.getElementById("create-agenda-btn").disabled = false,
+        document.getElementById("create-agenda-btn").style.pointerEvents = "auto";
+        if(document.getElementById("txtDate").value == maxDate && document.getElementById("txtTime").value < maxTime)
+        document.getElementById("create-agenda-btn").disabled = true,
+        document.getElementById("create-agenda-btn").style.pointerEvents = "none";
     });
 
     $('#editdate').attr('min',maxDate);
@@ -568,7 +592,16 @@ $(function(){
     if(document.getElementById("editdate").value > maxDate)
         document.getElementById("update-agenda-btn").disabled = false,
         document.getElementById("update-agenda-btn").style.pointerEvents = "auto";
+    });
 
+    $(document).on('keyup change', '#time', function(){
+        console.log(maxTime);
+        if(document.getElementById("editdate").value == maxDate && document.getElementById("time").value > maxTime)
+        document.getElementById("update-agenda-btn").disabled = false,
+        document.getElementById("update-agenda-btn").style.pointerEvents = "auto";
+        if(document.getElementById("editdate").value == maxDate && document.getElementById("time").value < maxTime)
+        document.getElementById("update-agenda-btn").style.pointerEvents = "none",
+        document.getElementById("update-agenda-btn").disabled = true;
     });
 
 
@@ -662,6 +695,17 @@ $('#edit-agendalist').on('submit',(function(e) {
     });
 
 }));
+
+$(document).ready(function() {
+    var interval = setInterval(function() {
+    $('time').each(function(i, e) {
+        var time = moment($(e).attr('datetime'));
+
+         $(e).html('<span>' + time.fromNow() + '</span>');
+
+    });
+},1000);
+});
 
 
 // $('div.author-thumb').on('mouseover', function() {

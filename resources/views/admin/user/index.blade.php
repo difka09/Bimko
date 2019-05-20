@@ -11,7 +11,7 @@
             <div class="box-body">
             <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
             <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
-            <a href="{{ route('user.guest.create') }}" class=" {{ request()->is('admin/guest') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
+            <a href="{{ route('user.guest.create') }}" class=" {{ request()->is('admin/guest') ? '' : 'hidden' }} btn btn-primary">Tambah Responder</a>
 
                 <table class="table table-bordered">
                     <tr>

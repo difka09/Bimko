@@ -35,8 +35,7 @@ class LoadController extends Controller
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="'.Route('guru.profil',$comment->user->id).'">'.$comment->user->name.'</a>
                             <div class="post__date">
-                                <time class="published" datetime="2004-07-24T18:18">
-                                    38 mins ago
+                                <time class="published" datetime="'.$comment->created_at.'>
                                 </time>
                             </div>
                         </div>';
@@ -44,7 +43,7 @@ class LoadController extends Controller
                         $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                         <ul class="more-dropdown">
                                 <li>
-                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
                                 </li>
                         </ul>
                         </div>';
@@ -92,8 +91,7 @@ class LoadController extends Controller
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="'.Route('guru.profil',$comment->user->id).'">'.$comment->user->name.'</a>
                             <div class="post__date">
-                                <time class="published" datetime="2004-07-24T18:18">
-                                    38 mins ago
+                                <time class="published" datetime="'.$comment->created_at.'">
                                 </time>
                             </div>
                         </div>';
@@ -101,7 +99,7 @@ class LoadController extends Controller
                         $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                         <ul class="more-dropdown">
                                 <li>
-                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Comment</a>
+                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
                                 </li>
                         </ul>
                         </div>';
@@ -154,9 +152,7 @@ class LoadController extends Controller
                 <div class="author-date">
                     <a class="h6 post__author-name fn" href="'.route('guru.profil',$post->user->id).'">'.$post->user->name.'</a>
                     <div class="post__date">
-                        <time class="published" datetime="2004-07-24T18:18">
-                            <a href="'.route('guru.show',$post).'">9 hours ago</a>
-                        </time>
+                        <a href="'.route('guru.show',$post).'"><time class="published" datetime="'.$post->created_at.'"></time></a>
                     </div>
                 </div>';
 
@@ -212,8 +208,7 @@ class LoadController extends Controller
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="'.route('guru.profil',$comment->user->id).'">'.$comment->user->name.'</a>
                             <div class="post__date">
-                                <time class="published" datetime="2004-07-24T18:18">
-                                    38 mins ago
+                                <time class="published" datetime="'.$comment->created_at.'">
                                 </time>
                             </div>
                         </div>';
@@ -221,7 +216,7 @@ class LoadController extends Controller
                 $output .='<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                 <ul class="more-dropdown">
                     <li>
-                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Comment</a>
+                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Komentar</a>
                     </li>
                 </ul>
                 </div>';
@@ -299,9 +294,7 @@ class LoadController extends Controller
                 <div class="author-date">
                     <a class="h6 post__author-name fn" href="'.route('guru.profil',$post->user->id).'">'.$post->user->name.'</a>
                     <div class="post__date">
-                        <time class="published" datetime="2004-07-24T18:18">
-                            <a href="'.route('guru.show',$post).'">9 hours ago</a>
-                        </time>
+                    <a href="'.route('guru.show',$post).'"><time class="published" datetime="'.$post->created_at.'"></time></a>
                     </div>
                 </div>';
 
@@ -357,8 +350,7 @@ class LoadController extends Controller
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="'.route('guru.profil',$comment->user->id).'">'.$comment->user->name.'</a>
                             <div class="post__date">
-                                <time class="published" datetime="2004-07-24T18:18">
-                                    38 mins ago
+                                <time class="published" datetime="'.$comment->created_at.'">
                                 </time>
                             </div>
                         </div>';
@@ -366,7 +358,7 @@ class LoadController extends Controller
                 $output .='<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                 <ul class="more-dropdown">
                     <li>
-                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Comment</a>
+                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Komentar</a>
                     </li>
                 </ul>
                 </div>';

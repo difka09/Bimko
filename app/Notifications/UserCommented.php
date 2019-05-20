@@ -45,6 +45,7 @@ class UserCommented extends Notification
         return [
             'id' => $this->id,
             'read_at' => null,
+            'created_at' => $this->comment->created_at,
             'data' => [
                 'comment' => $this->comment,
             ]

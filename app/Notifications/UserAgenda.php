@@ -45,6 +45,7 @@ class UserAgenda extends Notification
         return [
             'id' => $this->id,
             'read_at' => null,
+            'created_at' => $this->agenda->created_at,
             'data' => [
                 'agenda' => $this->agenda,
             ]

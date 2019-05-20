@@ -29,7 +29,14 @@ Route::post('/murid','UserviewController@storeMurid')->name('user.murid.store');
 
 Route::get('/guest','UserviewController@indexGuest')->name('user.guest');
 Route::get('/guest/create','UserviewController@createGuest')->name('user.guest.create');
-Route::post('/murid','UserviewController@storeGuest')->name('user.guest.store');
+Route::post('/guest','UserviewController@storeGuest')->name('user.guest.store');
+
+Route::get('/categories','UserviewController@indexCategory')->name('category.index');
+Route::get('/categories/create','UserviewController@createCategory')->name('user.category.create');
+Route::get('/categories/{category}','UserviewController@editCategory')->name('category.edit');
+Route::put('/categories/{category}','UserviewController@updateCategory')->name('category.update');
+Route::delete('/categories/{category}','UserviewController@destroyCategory')->name('category.destroy');
+Route::post('/categories','UserviewController@storeCategory')->name('user.category.store');
 
 Route::put('user/reset/{user}', 'UserController@resetPassword')->name('user.reset');
 

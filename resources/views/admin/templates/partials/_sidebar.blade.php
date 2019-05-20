@@ -16,7 +16,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{ request()->is('admin/home') ? 'active' : '' }}"><a href="{{ route('admin.index') }}"><i class="fa fa-home"></i> <span>Home</span></a></li>
-        <li class="{{ request()->is('admin/guru') ? 'active' : '' }} treeview {{ request()->is('admin/murid') ? 'active' : '' }} treeview {{ request()->is('admin/school') ? 'active' : '' }} treeview  {{ request()->is('admin/guest') ? 'active' : '' }} treeview" >
+        <li class="{{ request()->is('admin/guru') ? 'active' : '' }} treeview {{ request()->is('admin/murid') ? 'active' : '' }} treeview {{ request()->is('admin/school') ? 'active' : '' }} treeview  {{ request()->is('admin/guest') ? 'active' : '' }} treeview {{ request()->is('admin/categories') ? 'active' : '' }} treeview"  >
           <a href="#">
             <i class=" fa fa-book"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -28,6 +28,8 @@
             <li class="{{ request()->is('admin/murid') ? 'active' : '' }}"><a href="{{ route('user.murid') }}"><i class="fa fa-chevron-right"></i> Data Murid </a></li>
             <li class="{{ request()->is('admin/guest') ? 'active' : '' }}"><a href="{{ route('user.guest') }}"><i class="fa fa-chevron-right"></i> Data Responder </a></li>
             <li class="{{ request()->is('admin/school') ? 'active' : '' }}"><a href="{{ route('school.index') }}"><i class="fa fa-chevron-right"></i> Data Sekolah </a></li>
+            <li class="{{ request()->is('admin/categories') ? 'active' : '' }}"><a href="{{ route('category.index') }}"><i class="fa fa-chevron-right"></i> Data Kategori </a></li>
+
           </ul>
         </li>
         {{-- <li class="treeview">

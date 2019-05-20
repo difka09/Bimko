@@ -218,10 +218,10 @@
 
                     <input type="hidden" value="{{$user->id}}" name="id">
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-                        <button class="btn btn-secondary btn-lg full-width">Restore all Attributes</button>
+                        {{-- <button class="btn btn-secondary btn-lg full-width">Restore all Attributes</button> --}}
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-                        <button type="submit" class="btn btn-primary btn-lg full-width">Save all Changes</button>
+                        <button type="submit" class="btn btn-primary btn-lg full-width">Simpan Perubahan Informasi</button>
                     </div>
                 </div>
             </form>

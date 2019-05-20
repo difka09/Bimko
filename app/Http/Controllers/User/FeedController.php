@@ -79,7 +79,10 @@ class FeedController extends Controller
     }
 
     public function category($id)
-    {
+    {   if($category_name = Catfeed::where('slug',$id)->count() == 0)
+        {
+            return view('errors.404');
+        }
         $category_name = Catfeed::where('slug',$id)->select('name')->get();
 
         $feeds = Feed::whereHas('catfeeds', function($q) use ($id){

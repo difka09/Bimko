@@ -57,7 +57,7 @@ button{
                 </div>
                 <div class="notification-event">
                     <a href="{{route('guru.profil',$file->user->id)}}" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="{{route('guru.show',$file)}}" class="notification-link">{{$file->file_3}}</a>
-                    <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+                    <span class="notification-date"><time class="entry-date updated" datetime="{{$file->created_at}}"></time></span>
                 </div>
                 <span class="notification-icon">
                     <a href="{{route('guru.show',$file)}}" class="btn btn-blue btn-sm">Lihat</a>

@@ -47,7 +47,6 @@ class GuruController extends Controller
         $posts = Post::latest()->limit(5)->get();
         $notifications = $request->user()->unreadNotifications()->limit(20)->get()->toArray();
 
-
         $agenda = Agenda::latest()->where('start_At','>', Carbon::now()->subDays(0))->first();
         // dd($agenda);
         if($agenda){
@@ -378,11 +377,15 @@ dd($agenda);
         //get file_1
         $file = null;
         if ($request->hasFile('file')) {
-            if($user->file == "users/woman.gif")
+            if($user->file == "users/woman.png")
             {
-                $file = $user->file;
+                $file = $request->file('file')->store('users');
             }
-            if($user->file != "users/woman.gif"){
+            elseif($user->file == "users/man.png")
+            {
+                $file = $request->file('file')->store('users');
+            }
+            else{
                 Storage::delete($user->file);
                 $file = $request->file('file')->store('users');
             }
@@ -425,7 +428,7 @@ dd($agenda);
             'start_At' => $start_At
         ]);
 
-        // $data->load('user');
+        $data->load('user');
 
         $users = User::whereHas('roles',function($q){
             $q->where('name','Guru');

@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'identity', 'agency', 'grade', 'phone', 'file', 'school_id', 'nis', 'nip',
+        'name', 'email', 'password', 'identity', 'agency', 'grade', 'phone', 'file', 'school_id', 'nis', 'nip', 'gender'
     ];
     protected $dates = ['deleted_at'];
 
@@ -74,6 +74,11 @@ class User extends Authenticatable
     public function feedcomments()
     {
         return $this->hasMany(FeedComment::class);
+    }
+
+    public function feednotifications()
+    {
+        return $this->hasMany(FeedNotification::class);
     }
 
     public function agendas()

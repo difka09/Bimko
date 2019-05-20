@@ -8,7 +8,7 @@
                     <h3 class="box-title">Data</h3>
                 </div>
                 <div class="box-body">
-                    Data kosong atau data belum diisi, Klik  <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }}">Tambah Data</a> <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} ">Tambah Data</a> untuk menambahkan data
+                    Data kosong atau data belum diisi, Klik  <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }}">Tambah Data</a> <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} ">Tambah Data</a> <a href="{{ route('user.guest.create') }}" class=" {{ request()->is('admin/guest') ? '' : 'hidden' }} ">Tambah Data</a> <a href="{{ route('user.category.create') }}" class=" {{ request()->is('admin/categories') ? '' : 'hidden' }} ">Tambah Data</a> untuk menambahkan data
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@
     <div class="custome-title">
     <a href="{{route('guru.filepage')}}">
     <div class="ui-block-title">
-        <h6 class="title">Recent File Upload</h6>
+        <h6 class="title">Terakhir File Upload</h6>
         <a href="{{route('guru.filepage')}}" class="more btn"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg></a>
     </div>
     </a>
@@ -42,7 +42,7 @@
             </div>
             <div class="notification-event">
                 <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->title}}{{substr(($file->file_2),-4)}}</a>
-                <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
+            <span class="notification-date"><time class="entry-date updated" datetime="{{$file->created_at}}"></time></span>
             </div>
         </li>
         @endforeach
@@ -155,7 +155,7 @@
                 <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
                 <div class="form-group label-floating is-focused" >
                     <label class="control-label">Waktu</label>
-                    <input class="form-control" placeholder="" type="time" name="time" style="width: 120px" required>
+                    <input class="form-control" placeholder="" type="time" name="time" id="txtTime" style="width: 120px" required>
                     <span class="material-input"></span>
                 </div>
                 </div>
