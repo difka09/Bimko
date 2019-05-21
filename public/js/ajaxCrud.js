@@ -8,6 +8,16 @@ $(document).ready(function (e) {
 //post statusform
     $('#statusForm').on('submit',(function(e) {
     e.preventDefault();
+    var fileku = $('#file_1').val();
+    if(fileku!='')
+    {
+        $('.size_error').html("");
+        var file_size = $('#file_1')[0].files[0].size;
+        if(file_size > 5097000) {
+            $('.size_error').html("maksimal ukuran file 5MB")
+            return false;
+        }
+    }
     var formData = new FormData(this);
     var formURL = $('#statusForm').attr("action");
     $.ajax({
@@ -36,6 +46,12 @@ $(document).ready(function (e) {
             alert("file kosong, silahkan pilih file");
         }
     e.preventDefault();
+    $('.size1_error').html("");
+    var file_size = $('#file_2')[0].files[0].size;
+    if(file_size > 5097000) {
+        $('.size1_error').html("maksimal ukuran file 5MB")
+        return false;
+    }
     var formData = new FormData(this);
     var formURL = $('#uploadForm').attr("action");
 
@@ -89,6 +105,16 @@ $(document).ready(function (e) {
     // $('body').on('click', '#btn-save1', function(){
     $('#updateForm1').on('submit',(function(e) {
         e.preventDefault();
+        var fileku = $('#file_3').val();
+        if(fileku!='')
+        {
+            $('.size3_error').html("");
+            var file_size = $('#file_3')[0].files[0].size;
+            if(file_size > 5097000) {
+                $('.size3_error').html("maksimal ukuran file 5MB")
+                return false;
+            }
+        }
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
         var post_id = $("#ajax-crud-modal").find("input[name='id']").val();
@@ -116,8 +142,18 @@ $(document).ready(function (e) {
 
 //  update post2
     $('#updateForm2').on('submit',(function(e) {
-
+        var fileku = $('#file_4').val();
+        if(fileku=='')
+        {
+            alert("file kosong, silahkan pilih file");
+        }
         e.preventDefault();
+        $('.size4_error').html("");
+        var file_size = $('#file_4')[0].files[0].size;
+        if(file_size > 5097000) {
+            $('.size4_error').html("maksimal ukuran file 5MB")
+            return false;
+        }
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
         var post_id = $("#ajax-crud-modal2").find("input[name='id']").val();
@@ -707,6 +743,9 @@ $(document).ready(function() {
 },1000);
 });
 
+// function validate(){
+
+// }
 
 // $('div.author-thumb').on('mouseover', function() {
 //     document.getElementById("image").style.display = "inline";

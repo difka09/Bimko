@@ -152,6 +152,7 @@
                                     <label for="file_1">
                                     <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
                                     <div id="filename_upload_1"></div>
+                                    <span class="size_error" style="color:red"></span>
                                     </label>
                                 </a>
                                 <input type="file" name="file_1" id="file_1">
@@ -179,6 +180,7 @@
                                         <label for="file_2">
                                         <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
                                         <div id="filename_upload"></div>
+                                        <span class="size1_error" style="color:red"></span>
                                         </label>
                                     </a>
                                     <input type="file" name="file_2" id="file_2" nonvalidate>
@@ -412,9 +414,10 @@
                 <label for="file_3">
                 <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
                 <div id="filename_upload_3"></div>
+                <span class="size3_error" style="color:red"></span>
                 </label>
             </a>
-            <input type="file" name="file_1" id="file_3">
+            <input accept="image/x-png,image/gif,image/jpeg" type="file" name="file_1" id="file_3">
             </div>
             <button type="submit" id="btn-save1" class="btn btn-primary btn-md-2 btn-save1">Edit Post</button>
         </div>
@@ -447,6 +450,7 @@
                     {{-- <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg> --}}
                     <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
                     <div id="filename_upload_4"></div>
+                    <span class="size4_error" style="color:red"></span>
                     </label>
                 </a>
                 <input type="file" name="file_2" id="file_4">

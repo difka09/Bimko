@@ -56,9 +56,10 @@
                                 <label for="file_1">
                                 <svg class="olymp-multimedia-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-multimedia-icon')}}"></use></svg>
                                 <div id="filename_upload_1"></div>
+                                <span class="size_error" style="color:red"></span>
                                 </label>
                             </a>
-                            <input type="file" name="file_1" id="file_1">
+                            <input accept="image/x-png,image/gif,image/jpeg" type="file" name="file_1" id="file_1">
                             <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post Status</button>
                         </div>
                         </div>
@@ -86,6 +87,7 @@
                                     <label for="file_2">
                                     <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
                                     <div id="filename_upload"></div>
+                                    <span class="size1_error" style="color:red"></span>
                                     </label>
                                 </a>
                                 <input type="file" name="file_2" id="file_2" nonvalidate>
