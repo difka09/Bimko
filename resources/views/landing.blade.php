@@ -56,7 +56,8 @@
 
 				<!--  Main navigation  -->
 				<ul class="main-nav nav navbar-nav navbar-right">
-					<li><a href="#home">Beranda</a></li>
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="/login">Login</a></li>
 					<li><a href="#info">Info kami</a></li>
                     <li><a href="#service">Info Layanan</a></li>
                     <li><a href="#map">Peta</a></li>

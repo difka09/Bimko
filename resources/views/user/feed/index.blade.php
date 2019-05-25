@@ -43,6 +43,7 @@
               </div>
               <div class="entry__excerpt">
                   <p align="justify">{!! str_limit($feed->content,200) !!}</p>
+                  <a href="{{ Route('feeds.show', $feed) }}">Baca Selengkapnya..</a>
               </div>
             </div>
           </article>

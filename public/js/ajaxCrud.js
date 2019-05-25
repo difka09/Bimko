@@ -735,7 +735,9 @@ $('#edit-agendalist').on('submit',(function(e) {
 $(document).ready(function() {
     var interval = setInterval(function() {
     $('time').each(function(i, e) {
+        moment.locale('id');
         var time = moment($(e).attr('datetime'));
+        // var time = moment();
 
          $(e).html('<span>' + time.fromNow() + '</span>');
 

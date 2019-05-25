@@ -18,7 +18,8 @@
 <script src="{{asset('guru/js/smooth-scroll.js')}}"></script>
 <script src="{{asset('guru/js/selectize.js')}}"></script>
 <script src="{{asset('guru/js/swiper.jquery.js')}}"></script>
-<script src="{{asset('guru/js/moment.js')}}"></script>
+{{-- <script src="{{asset('guru/js/moment.js')}}"></script> --}}
+<script src="{{asset('guru/js/moment-with-locales.js')}}"></script>
 <script src="{{asset('guru/js/daterangepicker.js')}}"></script>
 <script src="{{asset('guru/js/simplecalendar.js')}}"></script>
 <script src="{{asset('guru/js/fullcalendar.js')}}"></script>
