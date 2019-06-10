@@ -40,6 +40,7 @@
         text-decoration: none;
         transition: ease all 0.3s;
         position:fixed;
+        z-index: 100;
         right: 30px;
         bottom: 30px;
         border: none;

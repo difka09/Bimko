@@ -14,6 +14,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         @stack('select2css')
+        @stack('customizecss')
 
         <!-- Main Font -->
         <script src="{{asset('guru/js/webfontloader.min.js')}}"></script>

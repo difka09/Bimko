@@ -131,7 +131,7 @@
                               if($feedreply->parent_id == $feedcomment->id) $qtyReply++;
                           }
                           ?>
-                          <a class="comment-reply reply" style="cursor: pointer" data-id="{{$feedcomment->id}}" >Reply <span><strong>({{$qtyReply}})</strong></span></a>
+                          <a class="comment-reply reply" style="cursor: pointer" data-id="{{$feedcomment->id}}" >balasan <span><strong>({{$qtyReply}})</strong></span></a>
 
                           {{-- <button id="tombol_show" href="#" class="comment-reply">Reply</button> --}}
                         </div>
@@ -168,7 +168,7 @@
                               <input type="hidden" value="{{$feedcomment->id}}" name="parent_id">
                               <input type="hidden" value="{{$feed->id}}" name="feed_id">
                               <p class="comment-form-comment">
-                              <textarea id="comment" name="message" rows="5" required="required" placeholder="Comment*"></textarea>
+                              <textarea id="comment" name="message" rows="5" required="required" placeholder="Balas Komentar*"></textarea>
                               </p>
                               <p class="comment-form-submit">
                               <button type="submit" class="btn btn-lg btn-color btn-button">Balas Komentar</button>

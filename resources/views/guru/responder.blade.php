@@ -160,7 +160,6 @@
             <div class="form-group label-floating is-focused">
                 <img src="" alt="" class="entry__img">
                 <div id="description"></div>
-                </textarea>
                 <span class="material-input"></span>
             </div>
         </div>

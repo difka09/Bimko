@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
-
+use App\Models\Question;
+use App\Models\Answer;
 
 class LoadController extends Controller
 {
@@ -180,7 +181,7 @@ class LoadController extends Controller
             <div id="khusus'.$post->id.'">
                 <p>'.$post->content.'</p>';
             if ($post->file_2){
-            $output .='<div class="post-thumb"><a href="'.route('guru.download',$post).'"><svg class="olymp-blog-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon').'"></use></svg><span>'.$post->title.''.substr(($post->file_2),-4).'</span></a>
+            $output .='<div class="post-thumb"><a href="'.route('guru.download',$post).'"><svg class="olymp-blog-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon').'"></use></svg><span>'.$post->file_3.'</span></a>
             </div>';
             }
             elseif($post->file_1){
@@ -322,7 +323,7 @@ class LoadController extends Controller
             <div id="khusus'.$post->id.'">
                 <p>'.$post->content.'</p>';
             if ($post->file_2){
-            $output .='<div class="post-thumb"><a href="'.route('guru.download',$post).'"><svg class="olymp-blog-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon').'"></use></svg><span>'.$post->title.''.substr(($post->file_2),-4).'</span></a>
+            $output .='<div class="post-thumb"><a href="'.route('guru.download',$post).'"><svg class="olymp-blog-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon').'"></use></svg><span>'.$post->file_3.'</span></a>
             </div>';
             }
             elseif($post->file_1){
@@ -404,6 +405,134 @@ class LoadController extends Controller
 
         }
     }
+
+    public function showQuestion(Request $request, $id)
+    {
+        $data1 = Question::where('parent', $id)->orderBy('id', 'asc')->get();
+        $data2 = Answer::where('question_id', $id)->orderBy('id', 'asc')->get();
+        $question = Question::where('id', $request->id)->get()->first();
+        $firstanswer = Answer::where('question_id', $id)->orderBy('id','asc')->get()->first();
+        $answers = Answer::where([
+            ['question_id', $id],
+            ['parent', $id]
+            ])->orderBy('id', 'asc')->get();
+
+        $output = '';
+        $output .='<div class="modal-header" id="modal-header">
+        <h6 class="title" id="title-modal">Detail pesan konseling "'.$question->name.'"</h6>
+        </div>
+        <div class="modal-body" style="height:250px">
+        <img src="" alt="" class="entry__img">
+            <ul class="chat" id="chat">';
+        $output .='<li class="left clearfix"><span class="chat-img pull-left">
+            <img src="http://placehold.it/50/55C1E7/fff&text=m" alt="User Avatar" class="img-circle" />
+                </span>
+            <div class="chat-body clearfix">
+                <strong class="primary-font">murid:</strong> <small class="pull-right text-muted" datetime="'.$question->created_at.'">
+                </small>
+                <p>
+                    '.$question->content.'
+                </p>
+            </div>
+        </li>';
+        if(!$answers->isEmpty())
+        {
+            foreach($answers as $answer)
+            {
+                $output .='
+                    <li class="right clearfix"><span class="chat-img pull-right">
+                    <img src="http://placehold.it/50/FA6F57/fff&text=G" alt="User Avatar" class="img-circle" />
+                </span>
+                    <div class="chat-body clearfix">
+                            <small class=" text-muted" datetime="'.$answer->created_at.'"></small>
+                            <strong class="pull-right primary-font">Guru: </strong>
+                        <p>
+                            '.$answer->message.'
+                        </p>
+                    </div>
+                </li>';
+            }
+
+        }
+
+        if(!$data1->isEmpty())
+        {
+            foreach($data1 as $d1)
+            {
+                $output .='<li class="left clearfix"><span class="chat-img pull-left">
+                <img src="http://placehold.it/50/55C1E7/fff&text=m" alt="User Avatar" class="img-circle" />
+                    </span>
+                <div class="chat-body clearfix">
+                    <strong class="primary-font">murid:</strong> <small class="pull-right text-muted" datetime="'.$d1->created_at.'"></small>
+                    <p>
+                        '.$d1->content.'
+                    </p>
+                </div>
+            </li>';
+            if(!$data2->isEmpty())
+            {
+                foreach($data2 as $d2){
+                    if($d2->parent == $d1->id)
+                {
+                    $output .='
+                    <li class="right clearfix"><span class="chat-img pull-right">
+                    <img src="http://placehold.it/50/FA6F57/fff&text=G" alt="User Avatar" class="img-circle" />
+                </span>
+                    <div class="chat-body clearfix">
+                            <small class=" text-muted" datetime="'.$d2->created_at.'"></small>
+                            <strong class="pull-right primary-font">Guru: </strong>
+                        <p>
+                            '.$d2->message.'
+                        </p>
+                    </div>
+                </li>';
+
+                }
+            }
+        }
+    }
 }
+    $output .= '</ul></div>';
+    if($question->status == 0)
+    {
+    if($firstanswer){
+    if(auth()->user()->id == $firstanswer->user_id)
+    {
+        $output .='<div class="modal-footer" id="modal-footer">
+        <form action="'.Route('guru.addanswer').'" class="input-group" method="POST">';
+        $csrf = $request->session()->token();
+        $output .='<input type="hidden" name="_token" value="'.$csrf.'">
+            <input type="hidden" name="question_id" value="'.$question->id.'">
+            <input name="message"  type="text" class="input-sm" placeholder="Jawab pesan disini..." / required>
+            <button class="btn btn-primary" type="submit">Kirim</button>
+        </form>
+        </div>';
+    }
+    else
+    {
+        $output .='<div class="modal-footer" id="modal-footer">
+            <a style="weight:bold">Konseling sedang berlangsung dengan guru lain</a>
+        </div>';
+    }
+    }
+    else
+    {
+        $output .='<div class="modal-footer" id="modal-footer">
+        <form action="'.Route('guru.addanswer').'" class="input-group" method="POST">';
+        $csrf = $request->session()->token();
+        $output .='<input type="hidden" name="_token" value="'.$csrf.'">
+            <input type="hidden" name="question_id" value="'.$question->id.'">
+            <input name="message"  type="text" class="input-sm" placeholder="Jawab pesan disini..." / required>
+            <button class="btn btn-primary" type="submit">Kirim</button>
+        </form>
+        </div>';
+    }
+
+    }
+            echo $output;
+    }
+
+}
+
 
 

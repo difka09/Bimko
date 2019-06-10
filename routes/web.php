@@ -61,14 +61,31 @@ Route::get('register-gagal/redirect', function(){
 Route::post('/','HomeController@storeGuest')->name('guest.store');
 Route::get('/', 'HomeController@index')->name('guest.landing');
 
-Route::get('guest/createfeed', 'User\FeedController@create')->middleware('auth', 'role:Murid,guest')->name('guest.createfeed');
-Route::get('guest/profil', 'User\GuestController@showUser')->middleware('auth', 'role:Murid,guest')->name('guest.showuser');
-Route::put('guest/profil/update','User\GuestController@updateUser')->middleware('auth', 'role:Murid,guest')->name('guest.updateprofil');
-Route::get('guest/showfeed','User\GuestController@showFeed')->middleware('auth', 'role:Murid,guest')->name('guest.showfeed');
-Route::delete('hapus/feed/{feed}','User\GuestController@deleteFeed')->middleware('auth', 'role:Murid,guest')->name('guest.deletefeed');
-Route::get('guest/showcomment','User\GuestController@showComment')->middleware('auth', 'role:Murid,guest')->name('guest.showcomment');
-Route::delete('hapus/comment/{feedcomment}','User\GuestController@deleteComment')->middleware('auth', 'role:Murid,guest')->name('guest.deletecomment');
-Route::get('guest/shownotification','User\GuestController@showNotification')->middleware('auth', 'role:Murid,guest')->name('guest.shownotification');
+// guest
+Route::get('guest/createfeed', 'User\FeedController@create')->middleware('auth', 'role:guest')->name('guest.createfeed');
+Route::get('guest/profil', 'User\GuestController@showUser')->middleware('auth', 'role:guest')->name('guest.showuser');
+Route::put('guest/profil/update','User\GuestController@updateUser')->middleware('auth', 'role:guest')->name('guest.updateprofil');
+Route::get('guest/showfeed','User\GuestController@showFeed')->middleware('auth', 'role:guest')->name('guest.showfeed');
+Route::delete('hapus/feed/{feed}','User\GuestController@deleteFeed')->middleware('auth', 'role:guest')->name('guest.deletefeed');
+Route::get('guest/showcomment','User\GuestController@showComment')->middleware('auth', 'role:guest')->name('guest.showcomment');
+Route::delete('hapus/comment/{feedcomment}','User\GuestController@deleteComment')->middleware('auth', 'role:guest')->name('guest.deletecomment');
+Route::get('guest/shownotification','User\GuestController@showNotification')->middleware('auth', 'role:guest')->name('guest.shownotification');
+
+// murid
+
+Route::get('murid/createquestion', 'User\MuridController@createQuestion')->middleware('auth', 'role:Murid')->name('murid.createquestion');
+Route::get('murid/profil', 'User\MuridController@showUser')->middleware('auth', 'role:Murid')->name('murid.showuser');
+Route::put('murid/profil/update','User\MuridController@updateUser')->middleware('auth', 'role:Murid')->name('murid.updateprofil');
+Route::get('murid/show/{question}','User\MuridController@showQuestion')->middleware('auth', 'role:Murid')->name('murid.showquestion');
+Route::get('murid/daftar-pesan','User\MuridController@listQuestion')->middleware('auth', 'role:Murid')->name('murid.listquestion');
+Route::delete('hapus/question/{question}','User\MuridController@deleteQuestion')->middleware('auth', 'role:Murid')->name('murid.deletequestion');
+Route::get('murid/showcomment','User\MuridController@showComment')->middleware('auth', 'role:Murid')->name('murid.showcomment');
+Route::delete('hapus/comment/{feedcomment}','User\MuridController@deleteComment')->middleware('auth', 'role:Murid')->name('murid.deletecomment');
+Route::get('murid/shownotification','User\MuridController@showNotification')->middleware('auth', 'role:Murid')->name('murid.shownotification');
+Route::post('murid1/post','User\MuridController@addQuestion')->middleware('auth', 'role:Murid')->name('murid.addquestion');
+Route::post('murid2/post','User\MuridController@addmoreQuestion')->middleware('auth', 'role:Murid')->name('murid.addmorequestion');
+
+
 
 Route::get('tes/123','User\GuruController@index')->middleware('auth')->name('guru.index');
 
@@ -119,6 +136,14 @@ Route::post('/allnotifications/read','NotificationController@allMarkAsRead')->na
 Route::get('tes/123/a/responder','User\GuruController@indexResponder')->name('guru.indexresponder');
 Route::get('tes/123/a/responder/{id}/show', 'User\GuruController@showFeed')->name('guru.showresponder');
 Route::put('tes/123/a/responder/{id}/update', 'User\GuruController@updateFeed')->name('guru.updatefeed');
+
+// murid
+Route::post('tes/123/a/pesan-konseling/{id}/show', 'User\GuruController@showQuestion')->name('guru.showmurid');
+Route::get('tes/123/a/pesan-konseling','User\GuruController@indexMurid')->name('guru.indexmurid');
+Route::put('tes/123/a/pesan-konseling/{id}/update','User\GuruController@updatePesan')->name('guru.updatequestion');
+Route::post('tes/123/a/pesan-konseling/show/{id}','User\LoadController@showQuestion')->name('guru.showquestion');
+Route::post('tes/123/a/pesan-konseling/post','User\GuruController@addAnswer')->name('guru.addanswer');
+
 
 
 

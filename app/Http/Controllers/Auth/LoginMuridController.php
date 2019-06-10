@@ -38,7 +38,7 @@ class LoginMuridController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if($user->hasRole('Murid')) {
-            return redirect()->route('guest.createfeed');
+            return redirect()->route('murid.showuser');
         }
 
     }

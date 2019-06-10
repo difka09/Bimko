@@ -143,16 +143,16 @@ $(document).ready(function (e) {
 //  update post2
     $('#updateForm2').on('submit',(function(e) {
         var fileku = $('#file_4').val();
-        if(fileku=='')
+
+        if(fileku!='')
         {
-            alert("file kosong, silahkan pilih file");
-        }
         e.preventDefault();
         $('.size4_error').html("");
         var file_size = $('#file_4')[0].files[0].size;
         if(file_size > 5097000) {
             $('.size4_error').html("maksimal ukuran file 5MB")
             return false;
+        }
         }
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
@@ -732,6 +732,56 @@ $('#edit-agendalist').on('submit',(function(e) {
 
 }));
 
+//get for closed conseling
+    $('body').on('click', '.close-question', function(){
+        var question_id = $(this).data("id");
+        $.post(urls[22] + '/' + question_id + '/show', function(data){
+            console.log(data);
+            $("button").addClass("btn-green");
+            $('.close-btn').html("Tutup Pesan Konseling");
+            $('#title-close').html("Tutup Pesan Konseling " +'"' +data.name+'"');
+            $('#question_id').val(data.id);
+            $('.closeconselingModal').modal('show');
+        });
+
+});
+
+ // update close conseling
+ $('.closeForm').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    formData.append('_method', 'PUT');
+    var question_id = $(".closeForm").find("input[name='question_id']").val();
+
+    $.ajax({
+        dataType: 'json',
+        type:'POST',
+        url: urls[22] + '/' + question_id+ '/update',
+        data: formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success: function(data){
+            console.log(data);
+            $('#closeForm').modal('hide');
+            location.reload();
+         },
+        error: function(data){
+            console.log('Error:' ,data);
+        }
+    });
+
+}));
+
+$(document).ready(function() {
+    var interval = setInterval(function() {
+    $('small').each(function(i, e) {
+        moment.locale('id');
+        var time = moment($(e).attr('datetime'));
+            $(e).html('<span>' + time.fromNow() + '</span>');
+    });
+},1000);
+});
 $(document).ready(function() {
     var interval = setInterval(function() {
     $('time').each(function(i, e) {

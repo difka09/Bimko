@@ -18,10 +18,11 @@
             @foreach ($responders as $responder)
             <li>
                 <div class="author-thumb" id="author-thumb">
-                    <img src="{{$responder->user->getImage()}}" alt="author">
+                    {{-- <img src="{{$responder->user->getImage()}}" alt="author"> --}}
+                    <img src="http://placehold.it/64/0000FF/fff&text=R" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{$responder->name}}.</a>.
+                    <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{str_limit($responder->name,10)}}</a>.
                     <span class="notification-date"><time class="entry-date updated" datetime="{{$responder->created_at}}"></time></span>
                 </div>
            </li>
@@ -33,24 +34,32 @@
 
     <div class="ui-block">
         <div class="custome-title">
-            <a href="{{route('guru.filepage')}}">
+            <a href="{{route('guru.indexmurid')}}">
         <div class="ui-block-title">
-            <h6 class="title">Permintaan Pesan Murid</h6>
-            <a href="{{route('guru.filepage')}}" class="more btn"><svg class="olymp-comments-post-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"></use></svg></a>
+            <h6 class="title">Permintaan Konseling</h6>
+            <a href="{{route('guru.indexmurid')}}" class="more btn"><svg class="olymp-comments-post-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-comments-post-icon')}}"></use></svg></a>
         </div>
             </a>
         </div>
         <!-- W-Activity-Feed -->
         <ul class="widget w-activity-feed notification-list">
+            @if ($murids->count()==0)
+            <li>
+                Belum ada permintaan pesan konseling
+            </li>
+            @else
+            @foreach ($murids as $murid)
             <li>
                 <div class="author-thumb">
-                    <img src="{{asset('guru/img/avatar49-sm.jpg')}}" alt="author">
+                    <img src="http://placehold.it/64/55C1E7/fff&text=M" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">Marina Polson</a> commented on Jason Mark’s <a href="#" class="notification-link">photo.</a>.
-                    <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
+                    <a href="#" class="h6 notification-friend">{{$murid->user->name}}</a> telah mengirimkan permintaan konseling <a href="#" class="notification-link">{{str_limit($murid->name,10)}}</a>.
+                    <span class="notification-date"><time class="entry-date updated" datetime="{{$murid->created_at}}"></time></span>
                 </div>
             </li>
+            @endforeach
+            @endif
         </ul>
             <!-- .. end W-Activity-Feed -->
     </div>

@@ -74,8 +74,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a style="text-align: center">{{$user->comments->count()}}</a>
-                                    <a style="text-align: center">Menjawab</a>
+                                    <a href="{{route('guru.indexmurid')}}" style="text-align: center">{{$answer}}
+                                        <br>Menjawab Konseling
+                                    </a>
                                 </li>
                             </ul>
 						</div>
@@ -231,7 +232,7 @@
                             <p>{{$post->content}}</p>
                             @if ($post->file_2)
                         <div class="post-thumb">
-                            <a href="{{route('guru.download',$post)}}"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg><span>{{$post->title}}{{substr(($post->file_2),-4)}}</span></a>
+                            <a href="{{route('guru.download',$post)}}"><svg class="olymp-blog-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-blog-icon')}}"></use></svg><span>{{$post->file_3}}</span></a>
                         </div>
                         @elseif($post->file_1)
                             <img src="{{$post->getImage1()}}" alt="author" width="770" height="520">

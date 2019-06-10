@@ -21,6 +21,8 @@ use App\Models\Feed;
 use App\Models\Agreement;
 use App\Notifications\UserAgenda;
 use App\Models\DetailAgenda;
+use App\Models\Question;
+use App\Models\Answer;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -34,6 +36,10 @@ class GuruController extends Controller
         $this->month = $date->format('m') - 1;
         $this->year = $date->format('Y');
         $this->responders = Feed::where('status','=',0)->latest()->limit(4)->get();
+        $this->murids = Question::where([
+            ['status','=',0],
+            ['parent','=',null]
+            ])->latest()->limit(4)->get();
     }
 
     public function home()
@@ -89,6 +95,8 @@ class GuruController extends Controller
             'name' => $name,
             'notifications' => $notifications,
             'responders' => $this->responders,
+            'murids' => $this->murids,
+
 
         ]);
     }
@@ -102,7 +110,7 @@ class GuruController extends Controller
             'user_id' => $request->user_id,
             'file_2' => $file_2,
             'type' => 2,
-            'file_3' => ($request->title."".substr($file_2, -4)),
+            'file_3' => ($request->title."".substr($file_2, -5)),
             'post_name' => auth()->user()->name,
         ]);
 
@@ -199,7 +207,7 @@ class GuruController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'file_2' => $file_2,
-            'file_3' => ($request->title."".substr($file_2, -4)),
+            'file_3' => ($request->title."".substr($file_2, -5)),
         ]);
         return response()->json($data);
     }
@@ -346,11 +354,13 @@ dd($agenda);
             ['user_id','=',$user->id],
         ])->count();
 
+        $answer = Answer::where('user_id', '=', $user->id)->distinct('question_id')->pluck('question_id')->count();
         return view('guru.profil',[
             'user' => $user,
             'posts' => $posts,
             'status' => $status,
             'file' => $file,
+            'answer' => $answer,
             'notifications' => $notifications,
         ]);
     }
@@ -364,6 +374,7 @@ dd($agenda);
             'user' => $user,
             'notifications' => $notifications,
             'responders' => $this->responders,
+            'murids' => $this->murids,
 
         ]);
     }
@@ -546,6 +557,8 @@ dd($agenda);
         'feeds' => $feeds,
         'controller' => $this,
         'responders' => $this->responders,
+        'murids' => $this->murids,
+
 
         ]);
     }
@@ -563,12 +576,21 @@ dd($agenda);
         $date = new DateTime();
         $newDate = $date->format('dmy');
         $feed = Feed::find($id);
+        if($feed->status == 0){
         $data1 = Feed::find($id)->update([
-            'status' => $request->status,
+            'status' => 1,
             'slug' => str_slug($feed->name." ".$newDate),
 
         ]);
+        }
+        else
+        {
+            $data1 = Feed::find($id)->update([
+                'status' => 0,
+                'slug' => str_slug($feed->name." ".$newDate),
 
+            ]);
+        }
         if($request->status == 1)
         {
         Agreement::create([
@@ -580,6 +602,66 @@ dd($agenda);
         }
 
         return response()->json($data1);
+    }
+
+    public function indexMurid()
+    {
+        $questions = Question::where('parent','=', null)->latest()->paginate(8);
+
+        return view('guru.murid',[
+            'controller' => $this,
+            'responders' => $this->responders,
+            'murids' => $this->murids,
+            'questions' => $questions,
+            ]);
+    }
+    public function addAnswer(Request $request)
+    {
+        $parent_id = Question::where('parent', $request->question_id)->latest()->select('id')->get()->first();
+        if($parent_id !== null)
+        {
+            Answer::create([
+                'user_id' => auth()->user()->id,
+                'parent' => $parent_id->id,
+                'question_id' => $request->question_id,
+                'message' => $request->message,
+            ]);
+            return redirect()->back()->with('success-guru', 'Berhasil menjawab pesan');
+        }
+        else
+        {
+            Answer::create([
+                'user_id' => auth()->user()->id,
+                'parent' => $request->question_id,
+                'question_id' => $request->question_id,
+                'message' => $request->message,
+            ]);
+            return redirect()->back()->with('success-guru', 'Berhasil menjawab pesan');
+        }
+
+    }
+
+    public function updatePesan(Request $request, $id)
+    {
+        $question = Question::find($id);
+        if($question->status == 0){
+        $data = Question::find($id)->update([
+            'status' => 1,
+        ]);
+        }
+        else
+        {
+            $data = Question::find($id)->update([
+                'status' => 0,
+            ]);
+        }
+        return response()->json($data);
+    }
+
+    public function showQuestion($id)
+    {
+        $question = Question::where('id', $id)->get()->first();
+        return response()->json($question);
     }
 
 
