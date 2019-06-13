@@ -5,34 +5,59 @@
       <div class="container relative">
         <div class="flex-parent">
 
-          {{-- <!-- Side Menu Button -->
-          <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+          <!-- Side Menu Button -->
+          <button class="nav-icon-toggle d-lg-none" id="nav-icon-toggle" aria-label="Open side menu">
             <span class="nav-icon-toggle__box">
               <span class="nav-icon-toggle__inner"></span>
             </span>
-          </button> <!-- end Side menu button --> --}}
+          </button> <!-- end Side menu button -->
+          <header class="sidenav sidenav--is-open d-lg-none" id="sidenav">
+
+                <!-- close -->
+                <div class="sidenav__close d-lg-none">
+                  <button class="sidenav__close-button" id="sidenav__close-button" aria-label="close sidenav">
+                    <i class="ui-close sidenav__close-icon"></i>
+                  </button>
+                </div>
+
+                <!-- Nav -->
+                <nav class="sidenav__menu-container d-lg-none">
+                  <ul class="sidenav__menu" role="menubar">
+                    <li>
+                      <a href="" class="sidenav__menu-link sidenav__menu-link-category">Beranda</a>
+                    </li>
+                    <li>
+                      <a href="#" class="sidenav__menu-link">Kategori</a>
+                      <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                      <ul class="sidenav__menu-dropdown">
+                        @foreach ($categories as $category)
+                            <li><a href="{{Route('feed.category',$category->slug)}}" data-id="{{$category->id}}" class="sidenav__menu-link">{{$category->name}}</a></li>
+                        @endforeach
+                      </ul>
+                    </li>
+                    <li>
+                        <a href="{{Route('feed.info')}}" class="sidenav__menu-link sidenav__menu-link-category">Tentang Kami</a>
+                    </li>
+                  </ul>
+                </nav>
+
+              </header>
 
           <!-- Mobile logo -->
-          <a href="index.html" class="logo logo--mobile d-lg-none">
-            <img class="logo__img" src="{{asset('user/img/logo_mobile.png')}}" srcset="{{asset('user/img/logo_mobile.png')}} 1x, {{asset('user/img/logo_mobile@2x.png')}} 2x" alt="logo">
+          <a href="/feed" class="logo logo--mobile d-lg-none" style="color:white">
+            BIMKO
           </a>
-
           <!-- Nav-wrap -->
           <nav class="flex-child nav__wrap d-none d-lg-block">
             <ul class="nav__menu">
 
-              <li class="active">
-                <a href="/feed">Beranda</a>
-              </li>
+              <li class="{{request()->is('feed') ? 'active' : ''}} "><a href="/feed">Beranda</a></li>
 
-              <li class="nav__dropdown">
+              <li class="{{request()->is('feed/category/*') ? 'active' : ''}} nav__dropdown">
                 <a href="#">Kategori</a>
                 <ul class="nav__dropdown-menu">
                 @foreach ($categories as $category)
                 <li><a href="{{Route('feed.category',$category->slug)}}" data-id="{{$category->id}}">{{$category->name}}</a></li>
-                  {{-- <li><a href="{{Route('feed.category')}}">Hiburan</a></li>
-                  <li><a href="{{Route('feed.category')}}">Info Kuliah</a></li>
-                  <li><a href="{{Route('feed.category')}}">Info Iklan</a></li> --}}
                   @endforeach
                 </ul>
               </li>
@@ -56,8 +81,8 @@
                 </ul>
               </li> --}}
 
-              <li>
-                <a href="#">Tentang Kami</a>
+              <li class="{{request()->is('feed/tentang-kami') ? 'active' : ''}}">
+                <a href="{{Route('feed.info')}}">Tentang Kami</a>
               </li>
 
             </ul> <!-- end menu -->
@@ -88,18 +113,18 @@
                 <ul class="nav__dropdown-menu">
                     </a></li>
                     @if (auth()->user()->isGuru())
-                    <li><a class="dropdown-item" href="{{ route('guru.index') }}">
-                            Home
+                    <li><a class="dropdown-item" href="{{ route('guru.profil',auth()->user()->id)}}">
+                            Profil
                     </a></li>
                     @endif
                     @if (auth()->user()->isGuest())
                     <li><a class="dropdown-item" href="{{ route('guest.showuser') }}">
-                        Home
+                        Profil
                     </a></li>
                     @endif
                     @if (auth()->user()->isMurid())
                     <li><a class="dropdown-item" href="{{ route('murid.showuser') }}">
-                        Home
+                        profil
                     </a></li>
                     @endif
                   <li><a class="dropdown-item" href="{{ route('logout') }}"

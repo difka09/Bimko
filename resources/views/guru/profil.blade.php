@@ -142,9 +142,9 @@
                         <form id="statusForm" method="post" action="{{route('guru.addstatus')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group with-icon label-floating is-empty">
-                                <label class="control-label">Share what you are thinking here...</label>
+                                <label class="control-label">Apa yang anda pikirkan hari ini...</label>
                                 <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
-                                <textarea class="form-control" name="content" id="content" placeholder="" required></textarea>
+                                <textarea class="form-control" name="content" id="content" placeholder=""></textarea>
                                 {{-- <div class="error-message" style="color:red"></div> --}}
                             </div>
                             <div class="add-options-message">
@@ -168,9 +168,9 @@
                                 @csrf
                                 <div class="form-group with-icon label-floating is-empty">
                                     {{-- <label class="control-label">Share what you are thinking here...</label> --}}
-                                    <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
+                                    <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" >
                                     <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
-                                    <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" required></textarea>
+                                    <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" ></textarea>
                                     {{-- <div style="color:red" class="error-message"></div> --}}
 
 
@@ -206,7 +206,7 @@
                             <div class="author-date">
                                 <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user->id)}}">{{$post->user->name}}</a>
                                 <div class="post__date">
-                                    <a href="{{route('guru.show',$post)}}"><time class="published" datetime="{{$post->created_at}}"></time></a>
+                                    <a href="{{route('guru.show',$post)}}" style="color:#888DA8"><time class="published" datetime="{{$post->created_at}}"></time></a>
                                 </div>
                             </div>
                             @if ($post->user_id == auth()->user()->id)
@@ -222,7 +222,7 @@
                                     </li>
                                     @endif
                                     <li>
-                                        <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Delete Post</a>
+                                        <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Hapus Kiriman</a>
                                     </li>
                                 </ul>
                             </div>
@@ -275,7 +275,7 @@
                                 <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                 <ul class="more-dropdown">
                                         <li>
-                                        <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
+                                        <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Hapus Komentar</a>
                                         </li>
                                 </ul>
                                 </div>
@@ -347,28 +347,32 @@
     <div class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-12 col-12">
         <div class="ui-block">
             <div class="ui-block-title">
-                <h6 class="title">Profile Intro</h6>
+                @if ($user->gender == 2)
+                <h6 class="title"><i class="fa fa-female" title="perempuan"></i> &nbsp;&nbsp;&nbsp; Profil</h6>
+                @else
+                <h6 class="title"><i class="fa fa-male" title="laki-laki"></i> &nbsp;&nbsp;&nbsp; Profil</h6>
+                @endif
             </div>
             <div class="ui-block-content">
                 <!-- W-Personal-Info -->
                 <ul class="widget w-personal-info item-block">
                     <li>
-                        <span class="title">About Me:</span>
-                        <span class="text">Hi, I’m James, I’m 36 and I work as a Digital Designer for the  “Daydreams” Agency in Pier 56.</span>
+                        <span class="title">Informasi diri:</span>
+                        <span class="text">Hi, Saya {{$user->name}} sebagai guru bk di {{$user->school->name}} dan mengajar siswa kelas {{$user->grade}}</span>
                     </li>
                     <li>
-                        <span class="title">Favourite TV Shows:</span>
-                        <span class="text">Breaking Good, RedDevil, People of Interest, The Running Dead, Found,  American Guy.</span>
+                        <span class="title">NIP:</span>
+                        <span class="text">{{$user->nip}}</span>
                     </li>
                     <li>
-                        <span class="title">Favourite Music Bands / Artists:</span>
-                        <span class="text">Iron Maid, DC/AC, Megablow, The Ill, Kung Fighters, System of a Revenge.</span>
+                        <span class="title">Telepon:</span>
+                        <span class="text">{{$user->phone}}</span>
                     </li>
                 </ul>
                 <!-- .. end W-Personal-Info -->
 
                 <!-- W-Socials -->
-                <div class="widget w-socials">
+                {{-- <div class="widget w-socials">
                     <h6 class="title">Other Social Networks:</h6>
                     <a href="#" class="social-item bg-facebook">
                         <svg class="svg-inline--fa fa-facebook-f fa-w-9" aria-hidden="true" data-prefix="fab" data-icon="facebook-f" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" data-fa-i2svg=""><path fill="currentColor" d="M76.7 512V283H0v-91h76.7v-71.7C76.7 42.4 124.3 0 193.8 0c33.3 0 61.9 2.5 70.2 3.6V85h-48.2c-37.8 0-45.1 18-45.1 44.3V192H256l-11.7 91h-73.6v229"></path></svg><!-- <i class="fab fa-facebook-f" aria-hidden="true"></i> -->
@@ -382,7 +386,7 @@
                         <svg class="svg-inline--fa fa-dribbble fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="dribbble" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119.252 8 8 119.252 8 256s111.252 248 248 248 248-111.252 248-248S392.748 8 256 8zm163.97 114.366c29.503 36.046 47.369 81.957 47.835 131.955-6.984-1.477-77.018-15.682-147.502-6.818-5.752-14.041-11.181-26.393-18.617-41.614 78.321-31.977 113.818-77.482 118.284-83.523zM396.421 97.87c-3.81 5.427-35.697 48.286-111.021 76.519-34.712-63.776-73.185-116.168-79.04-124.008 67.176-16.193 137.966 1.27 190.061 47.489zm-230.48-33.25c5.585 7.659 43.438 60.116 78.537 122.509-99.087 26.313-186.36 25.934-195.834 25.809C62.38 147.205 106.678 92.573 165.941 64.62zM44.17 256.323c0-2.166.043-4.322.108-6.473 9.268.19 111.92 1.513 217.706-30.146 6.064 11.868 11.857 23.915 17.174 35.949-76.599 21.575-146.194 83.527-180.531 142.306C64.794 360.405 44.17 310.73 44.17 256.323zm81.807 167.113c22.127-45.233 82.178-103.622 167.579-132.756 29.74 77.283 42.039 142.053 45.189 160.638-68.112 29.013-150.015 21.053-212.768-27.882zm248.38 8.489c-2.171-12.886-13.446-74.897-41.152-151.033 66.38-10.626 124.7 6.768 131.947 9.055-9.442 58.941-43.273 109.844-90.795 141.978z"></path></svg><!-- <i class="fab fa-dribbble" aria-hidden="true"></i> -->
                         Dribbble
                     </a>
-                </div>
+                </div> --}}
                 <!-- ... end W-Socials -->
             </div>
         </div>
@@ -407,7 +411,7 @@
         <div class="form-group">
             <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
             <input type="hidden" name="id" id="postid">
-            <textarea class="form-control" name="content" id="content1" placeholder="Tulis status di sini.." required></textarea>
+            <textarea class="form-control" name="content" id="content1" placeholder="Tulis status di sini.."></textarea>
         </div>
         <div class="add-options-message">
             <div class="image-upload">
@@ -441,8 +445,8 @@
             <div class="form-group">
                 <input type="hidden" name="user_id" id="user_id2" value="{{auth()->user()->id}}">
                 <input type="hidden" name="id" id="postid2">
-                <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none" required>
-                <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file" required></textarea>
+                <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none">
+                <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file"></textarea>
             </div>
             <div class="add-options-message">
                 <div class="image-upload">

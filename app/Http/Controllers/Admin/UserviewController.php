@@ -182,10 +182,14 @@ class UserviewController extends Controller
     public function CountUser(){
         $guru = Userview::All()->where('roleName', '=', 'Guru')->count();
         $murid = Userview::All()->where('roleName', '=', 'Murid')->count();
+        $responder = Userview::All()->where('roleName', '=', 'guest')->count();
+        $school = School::all()->count();
         // dd($users);
         return view('admin.index', [
             'guru' => $guru,
-            'murid' => $murid
+            'murid' => $murid,
+            'responder' => $responder,
+            'school' => $school
         ]);
     }
 

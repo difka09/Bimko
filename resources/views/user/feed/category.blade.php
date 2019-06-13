@@ -1,4 +1,5 @@
   @extends('user.templates.default')
+  @section('pageTitle', 'Bimko | Kategori : '.$category_name[0]['name'].'')
   @section('content')
   <!-- Posts -->
     <div class="col-lg-8 blog__content mb-30">
@@ -43,6 +44,7 @@
               </div>
               <div class="entry__excerpt">
                   <p align="justify">{!! str_limit($feed->content,200) !!}</p>
+                  <a href="{{ Route('feeds.show', $feed) }}">Baca Selengkapnya..</a>
               </div>
             </div>
           </article>

@@ -116,12 +116,15 @@ class FeedController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required|unique:feeds',
             'content' => 'required',
-            'catfeed' => 'required'
+            'catfeed' => 'required',
+            'file' => 'image|mimes:jpeg,bmp,jpg,png|max:5024'
         ],[
             'name.unique'  => '*Judul telah digunakan, gunakan judul lain',
             'name.required'  => '*Judul artikel kosong',
             'content.required' => '*konten artikel kosong',
-            'catfeed.required' => '*kategori artikel kosong'
+            'catfeed.required' => '*kategori artikel kosong',
+            'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
+            'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
         ]);
 
         if($validate->fails())
@@ -152,6 +155,18 @@ class FeedController extends Controller
         return redirect()->route('guest.showfeed')->with('msg', 'Berhasil Menambahkan Artikel, Akan tampil setelah disetujui admin (1x24jam)');
     }
 
+    public function info()
+    {
+        $categories = Catfeed::get();
+        return view('user.feed.info', [
+            'categories' => $categories,
+            'populars' => $this->populars,
+            'latests' => $this->latests,
+            'maps' => $this->maps,
+            'controller' => $this
+        ]);
+    }
+
 
     public function show(Feed $feed)
     {
@@ -173,19 +188,13 @@ class FeedController extends Controller
                 ['status','=',1]
             ])->latest()->limit(2)->get();
     }
+        $feedcomments = FeedComment::where('feedcomments.feed_id', $feed->id)
+                                    ->where('parent_id','==', '0')
+                                    ->orderBy('id', 'ASC')->get();
 
-        $feedcomments = DB::table('feedcomments')
-                                                ->where('feedcomments.feed_id', $feed->id)
-                                                ->where('parent_id','==', '0')
-                                                ->join('users', 'users.id', '=', 'feedcomments.user_id')
-                                                ->orderBy('feedcomments.id', 'DESC')->get(['feedcomments.*', 'users.name', 'users.email', 'users.phone', 'users.agency', 'users.file as userphoto']);
-                                                // dd($feedcomments);
-        $feedreplies = DB::table('feedcomments')
-                                                ->where('feedcomments.feed_id', $feed->id)
-                                                ->where('parent_id','!=', '0')
-                                                ->join('users', 'users.id', '=', 'feedcomments.user_id')
-                                                ->orderBy('feedcomments.id', 'DESC')->get(['feedcomments.*', 'users.name', 'users.email', 'users.phone', 'users.agency', 'users.file as userphoto']);
-
+        $feedreplies = FeedComment::where('feedcomments.feed_id', $feed->id)
+                                    ->where('parent_id','!=', '0')
+                                    ->orderBy('id', 'ASC')->get();
 
          return view('user.feed.show',[
             'feed' => $feed,
@@ -203,6 +212,20 @@ class FeedController extends Controller
 
     public function addComment(Request $request)
     {
+
+        $validate = Validator::make($request->all(), [
+            'message' => 'required',
+        ],[
+            'message.required' => '*komentar tidak boleh kosong'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         $feedcomment = new FeedComment;
         $feedcomment->user_id = Auth::user()->id;
         $feedcomment->feed_id = $request->feed_id;
@@ -223,6 +246,19 @@ class FeedController extends Controller
 
     public function reply(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'message' => 'required',
+        ],[
+            'message.required' => '*balasan komentar tidak boleh kosong'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         $feedcomment = new FeedComment;
         $feedcomment->user_id = Auth::user()->id;
         $feedcomment->feed_id = $request->feed_id;

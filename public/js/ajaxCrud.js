@@ -27,12 +27,20 @@ $(document).ready(function (e) {
         cache:false,
         contentType: false,
         processData: false,
-        success:function(result){
+        success:function(data){
+            // console.log(data);
             location.reload();
 
         },
         error: function(data){
-            console.log(data);
+            var error = data.responseJSON.errors;
+                swal({
+                    title: "gagal posting status",
+                    text: error,
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
+                });
         }
             });
     }));
@@ -48,8 +56,8 @@ $(document).ready(function (e) {
     e.preventDefault();
     $('.size1_error').html("");
     var file_size = $('#file_2')[0].files[0].size;
-    if(file_size > 5097000) {
-        $('.size1_error').html("maksimal ukuran file 5MB")
+    if(file_size > 20097000) {
+        $('.size1_error').html("maksimal ukuran file 20MB")
         return false;
     }
     var formData = new FormData(this);
@@ -67,7 +75,14 @@ $(document).ready(function (e) {
 
         },
         error: function(data){
-            console.log(data);
+                var error = data.responseJSON.errors;
+                    swal({
+                        title: "gagal upload file",
+                        text: error,
+                        icon: "error",
+                        buttons: true,
+                        dangerMode: true,
+                    });
         }
          });
     }));
@@ -134,7 +149,14 @@ $(document).ready(function (e) {
                 // $("#khusus"+post_id).load(location.href + " #khusus"+post_id);
             },
             error: function(data){
-                console.log('Error:' ,data);
+                var error = data.responseJSON.errors;
+                    swal({
+                        title: "gagal posting status",
+                        text: error,
+                        icon: "error",
+                        buttons: true,
+                        dangerMode: true,
+                    });
             }
         });
 
@@ -149,8 +171,8 @@ $(document).ready(function (e) {
         e.preventDefault();
         $('.size4_error').html("");
         var file_size = $('#file_4')[0].files[0].size;
-        if(file_size > 5097000) {
-            $('.size4_error').html("maksimal ukuran file 5MB")
+        if(file_size > 20097000) {
+            $('.size4_error').html("maksimal ukuran file 20MB")
             return false;
         }
         }
@@ -174,8 +196,15 @@ $(document).ready(function (e) {
 
                 // $("#khusus" + post_id).replaceWith(update1);
              },
-            error: function(data){
-                console.log('Error:' ,data);
+             error: function(data){
+                var error = data.responseJSON.errors;
+                    swal({
+                        title: "gagal upload file",
+                        text: error,
+                        icon: "error",
+                        buttons: true,
+                        dangerMode: true,
+                    });
             }
         });
 
@@ -204,7 +233,7 @@ $(document).ready(function (e) {
                             // $("#data-post").load(location.href + " #data-post");
                         },
                         error: function(data){
-                            console.log('Error:' ,data);
+                            // console.log('Error:' ,data);
                         }
                     });
                 }
@@ -235,7 +264,7 @@ $(document).ready(function (e) {
                 // $("#comment"+post_id).load(location.href + " #comment"+post_id);
                 // $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
 
-                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="'+urls[14]+'/'+data[0]['user_id']+'">'+data[1][0]['name']+'</a> <div class="post__date"><time datetime="'+data[0]['created_at']+'" class="published"></time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Delete Comment</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="'+urls[14]+'/'+data[0]['user_id']+'">'+data[1][0]['name']+'</a> <div class="post__date"><time datetime="'+data[0]['created_at']+'" class="published"></time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Hapus Komentar</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
                 var count ='<div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items"><svg class="olymp-speech-balloon-icon"><use xlink:href="'+urls[9]+'"></use></svg><span>'+data[2]+'</span></a></div></div>';
                 $('#comment'+post_id).prepend(comment);
                 $("#countcomment" + post_id).html(count);
@@ -249,7 +278,7 @@ $(document).ready(function (e) {
                 // $('#btn-comment').hide();
             },
             error: function(data){
-                console.log(data);
+                // console.log(data);
             }
         });
     }));
@@ -282,7 +311,7 @@ $(document).ready(function (e) {
                             // $("#countcomment"+idpost).load(location.href + "#countcomment"+idpost);
                         },
                         error: function(data){
-                            console.log('Error:' ,data);
+                            // console.log('Error:' ,data);
                         }
                     });
                 }
@@ -318,7 +347,7 @@ $(document).ready(function (e) {
                 // $('#btn-comment').hide();
             },
             error: function(data){
-                console.log(data);
+                // console.log(data);
             }
         });
     }));
@@ -347,7 +376,7 @@ $(document).ready(function (e) {
                             $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
                         },
                         error: function(data){
-                            console.log('Error:' ,data);
+                            // console.log('Error:' ,data);
                         }
                     });
                 }
@@ -370,7 +399,7 @@ $(document).ready(function (e) {
 //for loadmore index
 $(document).on('keyup', '.tgInput', function(){
         var id = $(this).data("id");
-        console.log(id);
+        // console.log(id);
     if($.trim(this.value).length > 0)
         document.getElementById("btn-comment"+id).style.pointerEvents = "auto",
         document.getElementById("btn-comment"+id).disabled = false;
@@ -390,12 +419,12 @@ $(document).on('keyup', '.search-here', function(){
             url: urls[13],
             data:{'search':$value},
             success:function(data){
-                $('#im-here').html(data);
+                $('.im-here').html(data);
             }
         });
         else
         var noresult = '';
-        $('#im-here').html(noresult);
+        $('.im-here').html(noresult);
     });
 
     //get value agenda list
@@ -456,7 +485,17 @@ $(document).on('keyup', '.search-here', function(){
 
     // add notulensi
     $('#notulensiForm').on('submit',(function(e) {
+        var fileku = $('#file').val();
 
+        if(fileku!='')
+        {
+            $('.size_error').html("");
+            var file_size = $('#file')[0].files[0].size;
+            if(file_size > 20097000) {
+                $('.size_error').html("maksimal ukuran file 20MB")
+                return false;
+            }
+        }
         e.preventDefault();
         var agenda_id = $("#add-notulensi").find("input[name='agenda_id']").val();
         var data = new FormData($(this)[0]);
@@ -470,16 +509,22 @@ $(document).on('keyup', '.search-here', function(){
             contentType: false,
             processData: false,
             success: function(data){
-                console.log(data);
+                // console.log(data);
                 $('#add-notulensi').modal('hide');
                 location.reload();
 
                 // location.href=urls[2]+ '/' +post_id;
                 // $("#khusus" + post_id).replaceWith(update1);
              },
-            error: function(data){
-                console.log('Error:' ,data);
-                console.log(agenda_id);
+             error: function(data){
+                var error = data.responseJSON.errors;
+                    swal({
+                        title: "gagal upload file",
+                        text: error,
+                        icon: "error",
+                        buttons: true,
+                        dangerMode: true,
+                    });
             }
         });
 
@@ -489,7 +534,7 @@ $(document).on('keyup', '.search-here', function(){
     $('body').on('click', '#approve-article', function(){
             var feed_id = $(this).data("id");
             $.get(urls[20] + '/' + feed_id + '/show', function(data){
-                console.log(data);
+                // console.log(data);
                 $('.statusyes').val(1);
                 $('.agree-btn').show();
                 $('.disagree-btn').hide();
@@ -505,7 +550,7 @@ $(document).on('keyup', '.search-here', function(){
     $('body').on('click', '#deny-article', function(){
         var feed_id = $(this).data("id");
         $.get(urls[20] + '/' + feed_id + '/show', function(data){
-            console.log(data);
+            // console.log(data);
             $('.statusyes').val(0);
             $('.agree-btn').hide();
             $('.disagree-btn').show();
@@ -546,12 +591,12 @@ $(document).on('keyup', '.search-here', function(){
             contentType: false,
             processData: false,
             success: function(data){
-                console.log(data);
+                // console.log(data);
                 $('#responderForm').modal('hide');
                 location.reload();
              },
             error: function(data){
-                console.log('Error:' ,data);
+                // console.log('Error:' ,data);
             }
         });
 
@@ -569,7 +614,7 @@ $(document).on('keyup', '.search-here', function(){
                 window.location.href= urls[18];
             },
             error: function(data){
-                console.log('Error:' ,data);
+                // console.log('Error:' ,data);
             }
         });
 });
@@ -631,7 +676,7 @@ $(function(){
     });
 
     $(document).on('keyup change', '#time', function(){
-        console.log(maxTime);
+        // console.log(maxTime);
         if(document.getElementById("editdate").value == maxDate && document.getElementById("time").value > maxTime)
         document.getElementById("update-agenda-btn").disabled = false,
         document.getElementById("update-agenda-btn").style.pointerEvents = "auto";
@@ -665,7 +710,7 @@ $('body').on('click', '.delete-agenda', function(){
                         // $("#data-post").load(location.href + " #data-post");
                     },
                     error: function(data){
-                        console.log('Error:' ,data);
+                        // console.log('Error:' ,data);
                     }
                 });
             }
@@ -717,7 +762,7 @@ $('#edit-agendalist').on('submit',(function(e) {
         contentType: false,
         processData: false,
         success: function(data){
-            console.log(data);
+            // console.log(data);
             $('#view-agenda').modal('hide');
             location.reload();
 
@@ -725,8 +770,8 @@ $('#edit-agendalist').on('submit',(function(e) {
             // $("#khusus" + post_id).replaceWith(update1);
          },
         error: function(data){
-            console.log('Error:' ,data);
-            console.log(agenda_id);
+            // console.log('Error:' ,data);
+            // console.log(agenda_id);
         }
     });
 
@@ -736,7 +781,7 @@ $('#edit-agendalist').on('submit',(function(e) {
     $('body').on('click', '.close-question', function(){
         var question_id = $(this).data("id");
         $.post(urls[22] + '/' + question_id + '/show', function(data){
-            console.log(data);
+            // console.log(data);
             $("button").addClass("btn-green");
             $('.close-btn').html("Tutup Pesan Konseling");
             $('#title-close').html("Tutup Pesan Konseling " +'"' +data.name+'"');
@@ -762,12 +807,14 @@ $('#edit-agendalist').on('submit',(function(e) {
         contentType: false,
         processData: false,
         success: function(data){
-            console.log(data);
+            // console.log(data);
             $('#closeForm').modal('hide');
             location.reload();
+            // document.getElementById("alert-success-close").innerHTML = "Berhasil menyelesaikan konseling";
+            // document.getElementById("alert-success-close").style.display = "block";
          },
         error: function(data){
-            console.log('Error:' ,data);
+            // console.log('Error:' ,data);
         }
     });
 

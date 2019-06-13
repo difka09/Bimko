@@ -67,7 +67,7 @@
 				<div class="page-404-content">
 					<img src="{{asset('guru/img/404.png')}}" alt="photo">
 					<div class="crumina-module crumina-heading align-center">
-						<h2 class="h1 heading-title">A <span class="c-primary">Bimko Developer</span> Maaf, Halaman yang anda cari tidak ditemukan</h2>
+						<h2 class="h1 heading-title"> <span class="c-primary">Bimko Developer</span> Maaf, Halaman yang anda cari tidak ditemukan</h2>
                         <p class="heading-text">Mungkin konten yang anda cari telah dihapus silahkan kembali ke <a href="{{Route('guru.index')}}">beranda</a>
 						</p>
 					</div>

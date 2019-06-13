@@ -121,7 +121,7 @@
               </div>
               <div class="col-lg-5 order-lg-1 text-md-center">
                 <span class="copyright">
-                  &copy; 2017 AhaMag | Made by <a href="http://deothemes.com">DeoThemes</a>
+                  &copy; 2019 | Developed by <a href="http://fb.me/difka.satria">Difka</a>
                 </span>
               </div>
             </div>

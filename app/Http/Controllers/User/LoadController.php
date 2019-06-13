@@ -21,7 +21,7 @@ class LoadController extends Controller
         $id = $request->id;
         $postid = $request->post;
         $posts = Post::find($postid);
-        $comments = $posts->comments()->where('id', '<', $id)->take(2)->get();
+        $comments = $posts->comments()->where('id', '<', $id)->take(4)->get();
 
         if(!$comments->isEmpty())
         {
@@ -44,7 +44,7 @@ class LoadController extends Controller
                         $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                         <ul class="more-dropdown">
                                 <li>
-                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
+                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Hapus Komentar</a>
                                 </li>
                         </ul>
                         </div>';
@@ -77,7 +77,7 @@ class LoadController extends Controller
         $id = $request->id;
         $postid = $request->post;
         $posts = Post::find($postid);
-        $comments = $posts->comments()->where('id', '<', $id)->take(2)->get();
+        $comments = $posts->comments()->where('id', '<', $id)->take(4)->get();
 
         if(!$comments->isEmpty())
         {
@@ -100,7 +100,7 @@ class LoadController extends Controller
                         $output .= '<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                         <ul class="more-dropdown">
                                 <li>
-                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
+                                <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Hapus Komentar</a>
                                 </li>
                         </ul>
                         </div>';
@@ -153,7 +153,7 @@ class LoadController extends Controller
                 <div class="author-date">
                     <a class="h6 post__author-name fn" href="'.route('guru.profil',$post->user->id).'">'.$post->user->name.'</a>
                     <div class="post__date">
-                        <a href="'.route('guru.show',$post).'"><time class="published" datetime="'.$post->created_at.'"></time></a>
+                        <a href="'.route('guru.show',$post).'" style="color:#888DA8"><time class="published" datetime="'.$post->created_at.'"></time></a>
                     </div>
                 </div>';
 
@@ -171,7 +171,7 @@ class LoadController extends Controller
                 </li>';
                 }
                 $output .='<li>
-                <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="'.$post->id.'">Delete Post</a>
+                <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="'.$post->id.'">Hapus Komentar</a>
                 </li>
                     </ul>
                 </div>';
@@ -217,7 +217,7 @@ class LoadController extends Controller
                 $output .='<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                 <ul class="more-dropdown">
                     <li>
-                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Komentar</a>
+                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Hapus Komentar</a>
                     </li>
                 </ul>
                 </div>';
@@ -279,7 +279,7 @@ class LoadController extends Controller
         $posts = Post::where([
             ['id','<',$id],
             ['user_id','=',$user]
-            ])->latest()->limit(2)->get();
+            ])->latest()->limit(4)->get();
         // dd($posts);
 
         if(!$posts->isEmpty())
@@ -295,7 +295,7 @@ class LoadController extends Controller
                 <div class="author-date">
                     <a class="h6 post__author-name fn" href="'.route('guru.profil',$post->user->id).'">'.$post->user->name.'</a>
                     <div class="post__date">
-                    <a href="'.route('guru.show',$post).'"><time class="published" datetime="'.$post->created_at.'"></time></a>
+                    <a href="'.route('guru.show',$post).'" style="color:#888DA8"><time class="published" datetime="'.$post->created_at.'"></time></a>
                     </div>
                 </div>';
 
@@ -313,7 +313,7 @@ class LoadController extends Controller
                 </li>';
                 }
                 $output .='<li>
-                <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="'.$post->id.'">Delete Post</a>
+                <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="'.$post->id.'">Hapus Kiriman</a>
                 </li>
                     </ul>
                 </div>';
@@ -359,7 +359,7 @@ class LoadController extends Controller
                 $output .='<div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon').'"></use></svg>
                 <ul class="more-dropdown">
                     <li>
-                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Delete Komentar</a>
+                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'.$comment->post_id.'" data-id="'.$comment->id.'">Hapus Komentar</a>
                     </li>
                 </ul>
                 </div>';

@@ -1,4 +1,5 @@
   @extends('user.templates.default')
+  @section('pageTitle', 'Bimko | Beranda')
   @section('content')
   <!-- Posts -->
     <div class="col-lg-8 blog__content mb-30">

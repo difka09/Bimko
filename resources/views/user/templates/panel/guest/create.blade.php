@@ -12,7 +12,7 @@
         <form class="col-12" action="{{ route('feed.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
             <input class="col-8 input-main" type="text" name="name" placeholder="Judul Artikel" value="{{ old('name') }}">
-            <input class="col-8 input-main" type="file" name="file" placeholder="Foto" required>
+            <input class="col-8 input-main" type="file" name="file" placeholder="gambar">
             <input type="hidden" name="user_id" value="{{auth::user()->id}}">
             {{-- <div class="form-group {{ $errors->has('catfeed') ? 'has-error' :'' }}"> --}}
                 <label for="" class="col-8 control-label">Kategori : </label>

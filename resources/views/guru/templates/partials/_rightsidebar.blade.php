@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
                     <input type="hidden" name="id" id="postid">
-                    <textarea class="form-control" name="content" id="content1" placeholder="Tulis status di sini.." required></textarea>
+                    <textarea class="form-control" name="content" id="content1" placeholder="Tulis status di sini.."></textarea>
                 </div>
                 <div class="add-options-message">
                     <div class="image-upload">
@@ -99,8 +99,8 @@
                     <div class="form-group">
                         <input type="hidden" name="user_id" id="user_id2" value="{{auth()->user()->id}}">
                         <input type="hidden" name="id" id="postid2">
-                        <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none" required>
-                        <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file" required></textarea>
+                        <input class="form-control" placeholder="Tulis nama file.." type="text" name="title" id="title2" style="border:none">
+                        <textarea class="form-control" name="content" id="content2" placeholder="deskripsi file"></textarea>
                     </div>
                     <div class="add-options-message">
                         <div class="image-upload">

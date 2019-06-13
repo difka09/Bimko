@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                @if ($user->gender != 0)
+                @if ($user->gender!=0)
                 <div class="form-group {{ $errors->has('gender') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Jenis Kelamin</label>
                     <div class="col-sm-10">

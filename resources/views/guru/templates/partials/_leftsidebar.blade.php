@@ -19,7 +19,7 @@
             <li>
                 <div class="author-thumb" id="author-thumb">
                     {{-- <img src="{{$responder->user->getImage()}}" alt="author"> --}}
-                    <img src="http://placehold.it/64/0000FF/fff&text=R" alt="author">
+                    <img src="http://placehold.it/64/006400/fff&text=R" alt="author">
                 </div>
                 <div class="notification-event">
                     <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{str_limit($responder->name,10)}}</a>.
@@ -51,7 +51,7 @@
             @foreach ($murids as $murid)
             <li>
                 <div class="author-thumb">
-                    <img src="http://placehold.it/64/55C1E7/fff&text=M" alt="author">
+                    <img src="http://placehold.it/64/55C1E7/fff&text={{substr($murid->user->name,0,2)}}" alt="author">
                 </div>
                 <div class="notification-event">
                     <a href="#" class="h6 notification-friend">{{$murid->user->name}}</a> telah mengirimkan permintaan konseling <a href="#" class="notification-link">{{str_limit($murid->name,10)}}</a>.

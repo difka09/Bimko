@@ -7,15 +7,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
-use DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\Agenda;
-use Pusher\Pusher;
-use App\Events\StatusLiked;
-use App\Notifications\NewNotif;
+// use Pusher\Pusher;
+// use App\Events\StatusLiked;
+// use App\Notifications\NewNotif;
 use App\Notifications\UserCommented;
 use App\Models\Feed;
 use App\Models\Agreement;
@@ -23,6 +22,10 @@ use App\Notifications\UserAgenda;
 use App\Models\DetailAgenda;
 use App\Models\Question;
 use App\Models\Answer;
+// use Intervention\Image\ImageManager;
+// use Intervention\Image\Image;
+use App\Models\School;
+use Illuminate\Support\Facades\Validator;
 
 // use Image;
 // use Intervention\Image\Exception\NotReadableException;
@@ -103,6 +106,28 @@ class GuruController extends Controller
 
     public function addPost(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'title' => 'required',
+            'content' => 'required',
+            'file_2' => 'required|max:20024',
+
+        ],[
+            'title.required'  => '*Judul file kosong',
+            'content.required' => '*Deskripsi file kosong',
+            'file_2.required' => '*file tidak ada',
+            'file_2.max' => 'maksimal file berukuran 20mb',
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return response()->json(array(
+                'success' => false,
+                'errors' => $error
+            ), 400);
+        }
+
+
         $file_2 = $request->file('file_2')->store('posts');
         $data = Post::create([
             'title' => $request->title,
@@ -115,10 +140,30 @@ class GuruController extends Controller
         ]);
 
         return response()->json($data);
+
     }
 
     public function addStatus(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'content' => 'required',
+            'file_1' => 'image|mimes:jpeg,bmp,jpg,png|max:5024',
+        ],[
+            'content.required' => '*status kosong',
+            'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
+            'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)',
+            'file_1.max' => 'maksimal gambar berukuran 5mb'
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return response()->json(array(
+                'success' => false,
+                'errors' => $error
+            ), 400);
+        }
+
         if ($request->hasFile('file_1')) {
         $upload = $request->file('file_1')->store('posts');
         $file_1 = new Post;
@@ -139,7 +184,7 @@ class GuruController extends Controller
         ]);
 
     }
-
+    // $file_path = asset('images/' . $this->file_1);
     return response()->json();
     }
 
@@ -167,6 +212,25 @@ class GuruController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        $validate = Validator::make($request->all(), [
+            'content' => 'required',
+            'file_1' => 'image|mimes:jpeg,bmp,jpg,png|max:5024',
+        ],[
+            'content.required' => '*status kosong',
+            'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
+            'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)',
+            'file_1.max' => '*maksimal gambar berukuran 5mb'
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return response()->json(array(
+                'success' => false,
+                'errors' => $error
+            ), 400);
+        }
+
         $post = Post::find($id);
 
         //get file_1
@@ -189,6 +253,25 @@ class GuruController extends Controller
 
     public function updatePost(Request $request, $id)
     {
+        $validate = Validator::make($request->all(), [
+            'title' => 'required',
+            'content' => 'required',
+            'file_2' => 'max:20024'
+        ],[
+            'title.required'  => '*Judul file kosong',
+            'content.required' => '*Deskripsi file kosong',
+            'file_2.max' => 'maksimal file berukuran 20mb'
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return response()->json(array(
+                'success' => false,
+                'errors' => $error
+            ), 400);
+        }
+
         $post = Post::find($id);
 
         //get file_2
@@ -290,6 +373,7 @@ class GuruController extends Controller
     {
         $file = public_path() .'/images/'. $post->file_2;
         return response()->download($file);
+
     }
     public function tes()
     {
@@ -369,9 +453,11 @@ dd($agenda);
         $notifications = $request->user()->notifications;
         $id = auth()->user()->id;
         $user = User::where('id','=',$id)->get()->first();
+        $schools = School::get();
 
         return view('guru.editprofil',[
             'user' => $user,
+            'schools' => $schools,
             'notifications' => $notifications,
             'responders' => $this->responders,
             'murids' => $this->murids,
@@ -400,6 +486,7 @@ dd($agenda);
                 Storage::delete($user->file);
                 $file = $request->file('file')->store('users');
             }
+
         }
         if (!$request->hasFile('file') && $user->file) {
             $file = $user->file;
@@ -412,8 +499,38 @@ dd($agenda);
             $newpassword = $user->password;
         }
 
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+            'grade' => 'required',
+            'nip' => 'required|numeric|unique:users,nip,'.$user->id,
+            'phone' => 'required',
+            'file' => 'image|mimes:jpeg,bmp,jpg,png|max:5024'
+
+        ],[
+            'name.required'  => '*nama tidak boleh kosong',
+            'email.required' => '*email tidak boleh kosong',
+            'grade.required' => '*kelas tidak boleh kosong',
+            'nip.unique' => '*NIP sudah terpakai',
+            'nip.required' => '*NIP tidak boleh kosong',
+            'nip.numeric' => '*NIP harus berupa angka',
+            'phone.required' => '*nomor telepon tidak boleh kosong',
+            'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
+            'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->with('danger', 'Gagal memperbarui informasi profil '.$validate->getMessageBag()->first().'')
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         $data = User::find($id)->update([
             'name' => $request->name,
+            'school_id' => $request->school,
+            'email' => $request->email,
             'nip' => $request->nip,
             'grade' => $request->grade,
             'phone' => $request->phone,
@@ -425,7 +542,28 @@ dd($agenda);
 
     public function addAgenda(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'place' => 'required',
+            'description' => 'required'
+            // 'start_At' => 'required'
+        ],[
+            'name.required'  => '*nama tidak boleh kosong',
+            'place.required' => '*tempat tidak boleh kosong',
+            'description.required' => '*deskripsi tidak boleh kosong'
+            // 'start_At.required' => '*tanggal pelaksanaan tidak boleh kosong'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->with('danger', 'Gagal membuat agenda rapat')
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         // $date = Carbon::createFromFormat('d/m/Y', $request->date);
+
         $newdate = Carbon::parse($request->date)->format('Y-m-d');
         $time = Carbon::parse($request->time)->format('H:i:s');
 
@@ -453,6 +591,23 @@ dd($agenda);
 
     public function AddDetail(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'summary' => 'required',
+            'user' => 'required'
+        ],[
+            'summary.required'  => '*notulensi rapat kosong',
+            'user.required'  => '*peserta rapat tidak ada'
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return response()->json(array(
+                'success' => false,
+                'errors' => $error
+            ), 400);
+        }
+
         $file = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file')->store('agendas');
@@ -617,6 +772,17 @@ dd($agenda);
     }
     public function addAnswer(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'message' => 'required',
+        ],[
+            'message.required' => '*jawaban pesan kosong, silahkan isi terlebih dahulu'
+        ]);
+
+        if($validate->fails())
+        {
+            $error = $validate->getMessageBag()->first();
+            return redirect()->back()->with('danger', $error);
+        }
         $parent_id = Question::where('parent', $request->question_id)->latest()->select('id')->get()->first();
         if($parent_id !== null)
         {
@@ -656,6 +822,7 @@ dd($agenda);
             ]);
         }
         return response()->json($data);
+        // ->with('success-guru', 'Berhasil menyelesaikan konseling')
     }
 
     public function showQuestion($id)

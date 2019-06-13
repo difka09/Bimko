@@ -4,8 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-          Dashboard
-          <small>Control panel</small>
+          Dashboard Admin
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -17,7 +16,7 @@
             <div class="row">
                     <div class="col-md-3 col-sm-6 col-xs-12">
                       <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                        <span class="info-box-icon bg-aqua"><i class="fa fa-user-md"></i></span>
 
                         <div class="info-box-content">
                           <span class="info-box-text">Guru</span>
@@ -28,8 +27,8 @@
 
                     <div class="col-md-3 col-sm-6 col-xs-12">
                       <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
+                        {{-- <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span> --}}
+                        <span class="info-box-icon bg-red"><i class="fa fa-users"></i></span>
                         <div class="info-box-content">
                           <span class="info-box-text">Murid</span>
                             <span class="info-box-number">{{ $murid }}</span>
@@ -41,21 +40,20 @@
 
                     <div class="col-md-3 col-sm-6 col-xs-12">
                       <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
+                        <span class="info-box-icon bg-green"><i class="fa fa-user"></i></span>
                         <div class="info-box-content">
-                          <span class="info-box-text">Sales</span>
-                          <span class="info-box-number">760</span>
+                            <span class="info-box-text">Responder</span>
+                            <span class="info-box-number">{{$responder}}</span>
                         </div>
                       </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-xs-12">
                       <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-university"></i></span>
                         <div class="info-box-content">
-                          <span class="info-box-text">New Members</span>
-                          <span class="info-box-number">2,000</span>
+                            <span class="info-box-text">Sekolah</span>
+                            <span class="info-box-number">{{$school}}</span>
                         </div>
                       </div>
                     </div>
@@ -70,10 +68,7 @@
                           <div class="box-header with-border">
                         <div class="box box-widget widget-user">
                           <div class="widget-user-header bg-aqua-active">
-                            <h3 class="widget-user-username">{{ auth()->user()->name }}</h3>
-                          </div>
-                          <div class="widget-user-image">
-                            <img class="img-circle" src="http://localhost:8000/admin/dist/img/user2-160x160.jpg" alt="User Avatar">
+                            <h3 style="text-align: center" class="widget-user-username" style="font-weight: bold">"{{ auth()->user()->name }}"</h3>
                           </div>
                           <div class="box-footer"></div>
                             <form class="form-horizontal">

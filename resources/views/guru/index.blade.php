@@ -17,6 +17,7 @@
 @section('pageTitle', 'Beranda')
 @section('content')
 <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+    @include('admin.templates.partials._alerts')
     <div class="ui-block">
         <!-- News Feed Form  -->
         <div class="news-feed-form">
@@ -45,9 +46,9 @@
                             <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
                         </div> --}}
                         <div class="form-group with-icon label-floating is-empty">
-                            <label class="control-label">Share what you are thinking here...</label>
+                            <label class="control-label">Apa yang anda pikirkan hari ini...</label>
                             <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
-                            <textarea class="form-control" name="content" id="content" placeholder="" required></textarea>
+                            <textarea class="form-control" name="content" id="content" placeholder=""></textarea>
                             {{-- <div class="error-message" style="color:red"></div> --}}
                         </div>
                         <div class="add-options-message">
@@ -69,14 +70,11 @@
                 <div class="tab-pane" id="upload" role="tabpanel" aria-expanded="true">
                     <form id="uploadForm" method="post" action="{{route('guru.addpost')}}" enctype="multipart/form-data">
                             @csrf
-                            {{-- <div class="author-thumb">
-                                <img src="{{asset('guru/img/author-page.jpg')}}" alt="author">
-                            </div> --}}
                             <div class="form-group with-icon label-floating is-empty">
                                 {{-- <label class="control-label">Share what you are thinking here...</label> --}}
-                                <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none" required>
+                                <input class="form-control" placeholder="Tulis nama file" type="text" name="title" id="title" style="border:none">
                                 <input type="hidden" name="user_id" id="user_id" value="{{auth()->user()->id}}">
-                                <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file" required></textarea>
+                                <textarea class="form-control" name="content" id="content" placeholder="Deskripsi file"></textarea>
                                 {{-- <div style="color:red" class="error-message"></div> --}}
 
 
@@ -87,11 +85,12 @@
                                     <label for="file_2">
                                     <svg class="olymp-computer-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-computer-icon')}}"></use></svg>
                                     <div id="filename_upload"></div>
-                                    <span class="size1_error" style="color:red"></span>
+                                    <span class="size1_error" style="color:red"></span><br>
                                     </label>
                                 </a>
                                 <input type="file" name="file_2" id="file_2" nonvalidate>
                                 <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post File</button>
+
                             </div>
                             </div>
                         </form>
@@ -112,7 +111,7 @@
                         <div class="author-date">
                             <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user->id)}}">{{$post->user->name}}</a>
                             <div class="post__date">
-                                <a href="{{route('guru.show',$post)}}"><time class="published" datetime="{{$post->created_at}}"></time>
+                                <a href="{{route('guru.show',$post)}}" style="color:#888DA8"><time class="published" datetime="{{$post->created_at}}"></time>
                                 </a>
                             </div>
                         </div>
@@ -129,7 +128,7 @@
                                 </li>
                                 @endif
                                 <li>
-                                    <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Delete Post</a>
+                                    <a class="delete-post" href="javascript:void(0)" id="delete-post" data-id="{{$post->id}}">Hapus Kiriman</a>
                                 </li>
                             </ul>
                         </div>
@@ -182,7 +181,7 @@
                             <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                             <ul class="more-dropdown">
                                     <li>
-                                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
+                                    <a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Hapus Komentar</a>
                                     </li>
                             </ul>
                             </div>
@@ -366,16 +365,11 @@ function showFileName4( event ) {
 </script>
 
 
-
-     {{-- $(document).ready(function () {
-     $(".content").hide();
-     $(".show_hide").on("click", function () {
-         var txt = $(".content").is(':visible') ? 'Read More' : 'Read Less';
-         $(".show_hide").text(txt);
-         $(this).next('.content').slideToggle(200);
-     });
- }); --}}
-
+<script>
+    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-danger").slideUp(500);
+    });
+</script>
 @endpush
 
 

@@ -3,7 +3,13 @@
 
 <div class="col-10 col-lg-8 main-admin">
     <div class="title-admin">Biodata</div>
-    <div class="col-8">{{ Session::get('msg') }}</div>
+    {{-- <div class="col-8">{{ Session::get('msg') }}</div> --}}
+    @if(count($errors) > 0)
+    @foreach($errors->all() as $error)
+        <div class="col-8">{{ $error }}</div>
+    @endforeach
+    @endif
+
     <form class="col-10" method="POST" action="{{Route('guest.updateprofil')}}">
         @csrf
         @method("PUT")

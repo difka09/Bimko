@@ -48,7 +48,7 @@
           </ul>
         </li> --}}
         <li class="{{ request()->is('admin/trash') ? 'active' : '' }}"><a href="{{ route('user.trash') }}"><i class="fa fa-trash"></i> <span>Trash</span></a></li>
-        <li class="{{ request()->is('admin/trash') ? 'active' : '' }}"><a href="{{ route('user.trash') }}"><i class="fa fa-database"></i> <span>Import</span></a></li>
+        <li class="{{ request()->is('admin/import') ? 'active' : '' }}"><a href="{{ route('admin.import') }}"><i class="fa fa-database"></i> <span>Import</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

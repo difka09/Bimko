@@ -7,7 +7,6 @@
 
         <div class="container">
             <div class="row">
-
                 <!-- Main Content -->
                 @yield('content')
                 {{-- ('guru.templates.partials._content') --}}

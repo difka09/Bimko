@@ -1,12 +1,9 @@
 <?php
 
-// Route::get('jumlahguru','UserviewController@countGuru');
-// Route::get('home', function(){
-//     return view('admin.index');
-// })->name('admin.index');
-
-
 Route::get('/home', 'UserviewController@CountUser')->name('admin.index');
+Route::get('import', 'ImportController@indexImport')->name('admin.import');
+Route::post('import/storemurid', 'ImportController@storeMurid')->name('admin.importstoremurid');
+Route::post('import/storeguru', 'ImportController@storeGuru')->name('admin.importstoreguru');
 
 Route::resource('/user', 'UserController');
 
@@ -40,8 +37,14 @@ Route::post('/categories','UserviewController@storeCategory')->name('user.catego
 
 Route::put('user/reset/{user}', 'UserController@resetPassword')->name('user.reset');
 
+Route::get('download/xlsmurid',function(){
+    $download = public_path() .'/fileku/muridxls.xlsx';
+    return response()->download($download);
+})->name('admin.xlsmurid');
 
-//
-// Route::get('/user', function(){
-//     return 'user';
-// });
+Route::get('download/xlsguru',function(){
+    $download = public_path() .'/fileku/guruxls.xlsx';
+    return response()->download($download);
+})->name('admin.xlsguru');
+
+Route::get('export/school', 'ImportController@export')->name('admin.export');

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use DateTime;
 use DB;
 use App\Models\Feed;
+use App\Models\Question;
 
 class FileController extends Controller
 {
@@ -21,6 +22,10 @@ class FileController extends Controller
     $this->month = $date->format('m') - 1;
     $this->year = $date->format('Y');
     $this->responders = Feed::where('status','=',0)->latest()->limit(4)->get();
+    $this->murids = Question::where([
+        ['status','=',0],
+        ['parent','=',null]
+        ])->latest()->limit(4)->get();
     }
 
 
@@ -52,7 +57,8 @@ class FileController extends Controller
         return view('guru.filepage', [
             'files' => $files,
             'notifications' => $notifications,
-            'responders' => $this->responders
+            'responders' => $this->responders,
+            'murids' =>$this->murids
             ]);
 
     }
@@ -74,7 +80,7 @@ class FileController extends Controller
                 $output.='
                 <a href="'.route('guru.profil',$user->id).'"><div class="inline-items" data-selectable="">
                     <div class="author-thumb">
-                            <img width="42px" height="42" src="'.$user->getImage().'" alt="avatar">
+                            <img src="'.$user->getImage().'" alt="avatar" style="width:100%;height:100%;max-width:42px;max-height:42px;">
                     </div>
                     <div class="notification-event">
                         <span class="h6 notification-friend">'.$user->name.'</span>

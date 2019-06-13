@@ -4,7 +4,7 @@
 		<div class="title-admin">Tambah Artikel</div>
 		@if(count($errors) > 0)
 			@foreach($errors->all() as $error)
-				<div class="col-8">{{ $error }}</div>
+				<div class="col-8">{{ $error[0] }}</div>
 			@endforeach
 		@endif
 <form class="col-12" action="{{ route('feed.store') }}" method="POST" enctype="multipart/form-data">

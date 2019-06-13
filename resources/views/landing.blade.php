@@ -40,8 +40,8 @@
 				<div class="navbar-header">
 					<!-- Logo -->
 					<div class="navbar-brand">
-						<a href="index.html">
-							<img class="logo" src="{{asset('landing/img/logo.png')}}" alt="logo">
+						<a href="#">
+							<img class="logo" src="{{asset('landing/img/logo.png')}}" alt="">
 							<img class="logo-alt" src="{{asset('landing/img/logo-alt.png')}}" alt="logo">
 						</a>
 					</div>
@@ -77,7 +77,7 @@
 					<!-- home content -->
 					<div class="col-md-10 col-md-offset-1">
 						<div class="home-content">
-							<h1 class="white-text">Sistem Informasi Guru BimKo Se-SMK Kabupaten Blora</h1>
+							<h1 class="white-text">Sistem Informasi Guru BimKo SMK Se-Kabupaten Blora</h1>
 							<p class="white-text">BimKo adalah tempat untuk berbagi mengenai informasi kuliah, pekerjaan, pengalaman, sarana konsultasi dengan guru BK. Daftar Sekarang!
 							</p>
                             <a href="{{ Route('feeds.index') }}" class="white-btn">Kunjungi Web Portal</a>
@@ -194,125 +194,14 @@
 
 
 	<!-- Why Choose Us -->
-	<div id="map" class="section md-padding">
-
-		<!-- Container -->
-		{{-- <div class="container"> --}}
-
-			<!-- Row -->
-			{{-- <div class="row"> --}}
-
-
-
-				{{-- <!-- why choose us content -->
-				<div class="col-md-6">
-					<div class="section-header">
-						<h2 class="title">Why Choose Us</h2>
-					</div>
-					<p>Molestie at elementum eu facilisis sed odio. Scelerisque in dictum non consectetur a erat. Aliquam id diam maecenas ultricies mi eget mauris. Ultrices sagittis orci a scelerisque purus.</p>
-					<div class="feature">
-						<i class="fa fa-check"></i>
-						<p>Quis varius quam quisque id diam vel quam elementum.</p>
-					</div>
-					<div class="feature">
-						<i class="fa fa-check"></i>
-						<p>Mauris augue neque gravida in fermentum.</p>
-					</div>
-					<div class="feature">
-						<i class="fa fa-check"></i>
-						<p>Orci phasellus egestas tellus rutrum.</p>
-					</div>
-					<div class="feature">
-						<i class="fa fa-check"></i>
-						<p>Nec feugiat nisl pretium fusce id velit ut tortor pretium.</p>
-					</div>
-				</div>
-				<!-- /why choose us content -->
-
-				<!-- About slider -->
-				<div class="col-md-6">
-					<div id="about-slider" class="owl-carousel owl-theme">
-						<img class="img-responsive" src="{{asset('landing/img/about1.jpg')}}" alt="">
-						<img class="img-responsive" src="{{asset('landing/img/about2.jpg')}}" alt="">
-						<img class="img-responsive" src="{{asset('landing/img/about1.jpg')}}" alt="">
-						<img class="img-responsive" src="{{asset('landing/img/about2.jpg')}}" alt="">
-					</div>
-				</div>
-				<!-- /About slider --> --}}
-
-			</div>
-			<!-- /Row -->
+	<div id="map" class="section md-padding"></div>
+		<!-- /Row -->
 
 		</div>
 		<!-- /Container -->
 
 	</div>
 	<!-- /Why Choose Us -->
-
-
-	{{-- <!-- Numbers -->
-	<div id="numbers" class="section sm-padding">
-
-		<!-- Background Image -->
-		<div class="bg-img" style="background-image: {{asset('landing/img/background2.jpg')}}">
-			<div class="overlay"></div>
-		</div>
-		<!-- /Background Image -->
-
-		<!-- Container -->
-		<div class="container">
-
-			<!-- Row -->
-			<div class="row">
-
-				<!-- number -->
-				<div class="col-sm-3 col-xs-6">
-					<div class="number">
-						<i class="fa fa-users"></i>
-						<h3 class="white-text"><span class="counter">451</span></h3>
-						<span class="white-text">Happy clients</span>
-					</div>
-				</div>
-				<!-- /number -->
-
-				<!-- number -->
-				<div class="col-sm-3 col-xs-6">
-					<div class="number">
-						<i class="fa fa-trophy"></i>
-						<h3 class="white-text"><span class="counter">12</span></h3>
-						<span class="white-text">Awards won</span>
-					</div>
-				</div>
-				<!-- /number -->
-
-				<!-- number -->
-				<div class="col-sm-3 col-xs-6">
-					<div class="number">
-						<i class="fa fa-coffee"></i>
-						<h3 class="white-text"><span class="counter">154</span>K</h3>
-						<span class="white-text">Cups of Coffee</span>
-					</div>
-				</div>
-				<!-- /number -->
-
-				<!-- number -->
-				<div class="col-sm-3 col-xs-6">
-					<div class="number">
-						<i class="fa fa-file"></i>
-						<h3 class="white-text"><span class="counter">45</span></h3>
-						<span class="white-text">Projects completed</span>
-					</div>
-				</div>
-				<!-- /number -->
-
-			</div>
-			<!-- /Row -->
-
-		</div>
-		<!-- /Container -->
-
-	</div>
-	<!-- /Numbers --> --}}
 
 	<!-- Footer -->
 	<footer id="footer" class="sm-padding bg-dark">
@@ -327,10 +216,10 @@
 
 					<!-- footer logo -->
 					<div class="footer-logo">
-						<a href="index.html"><img src="{{asset('landing/img/logo-alt.png')}}" alt="logo"></a>
+						<a href="/"><img src="{{asset('landing/img/logo-alt.png')}}" alt="logo"></a>
 					</div>
 					<!-- /footer logo -->
-
+{{--
 					<!-- footer follow -->
 					<ul class="footer-follow">
 						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -340,11 +229,12 @@
 						<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
 						<li><a href="#"><i class="fa fa-youtube"></i></a></li>
 					</ul>
-					<!-- /footer follow -->
+					<!-- /footer follow --> --}}
 
 					<!-- footer copyright -->
 					<div class="footer-copyright">
-						<p>Copyright © 2017. All Rights Reserved. Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+						<p>Copyright © 2019 Develop by Difka</p>
+                        <p>Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
 					</div>
 					<!-- /footer copyright -->
 
@@ -399,6 +289,62 @@
         width: 100%;
         height: 640px;
         }
+        .gm-style-iw {
+    width: 350px !important;
+    top:83px !important;
+    left: 0px !important;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+    border: 1px solid rgba(72, 181, 233, 0.6);
+    border-radius: 2px 2px 10px 10px;
+    }
+    #iw-container {
+    margin-bottom: 10px;
+    }
+    #iw-container .iw-title {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    padding: 10px;
+    background-color: #48b5e9;
+    color: white;
+    margin: 0;
+    border-radius: 2px 2px 0 0;
+    }
+    #iw-container .iw-content {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin-right: 1px;
+    padding: 15px 5px 20px 15px;
+    max-height: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    }
+    .iw-content img {
+    float: right;
+    width: 100%;
+    height: 100%;
+    max-width: 115px;
+    max-height: 83px:;
+    margin: 0 5px 5px 10px;
+    }
+    .iw-subTitle {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 5px 0;
+    }
+    .iw-bottom-gradient {
+    position: absolute;
+    width: 326px;
+    height: 25px;
+    bottom: 10px;
+    right: 18px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    }
         </style>
 
     <script>
@@ -416,7 +362,9 @@
             title: '{{$map->name}}',
             icon: '{{ asset('images/maps/icon-school.png') }}',
             infoWindow: {
-                content : '<h3>{{$map->name}}</h3><p>{{$map->description}}</p>'
+                // content : '<h3>{{$map->name}}</h3><p>{{$map->description}}</p>'
+                content : '<div id="iw-container"><div class="iw-title">{{$map->name}}</div><div class="iw-content"><div class="iw-subTitle">{{$map->name}}</div><img src="{{$map->getImage()}}" alt="loading"><p align="justify">{{$map->description}}</p><div class="iw-subTitle">Informasi</div><p>{{$map->address}}<br>3830-292 Ílhavo - Portugal<br><br>Telepon. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p></div><div class="iw-bottom-gradient"></div></div>'
+
             }
         });
         @endforeach

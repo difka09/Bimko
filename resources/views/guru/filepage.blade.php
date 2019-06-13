@@ -53,7 +53,7 @@ button{
             @foreach ($files as $file)
             <li>
                 <div class="author-thumb" id="author-thumb" style="width:42px;height:42px;">
-                    <img width="42px" height="42px" style="max-height: 42px;max-width: 42px" src="{{$file->user->getImage()}}" alt="author">
+                    <img style="width:100%;height:100%;" style="max-height: 42px;max-width: 42px" src="{{$file->user->getImage()}}" alt="author">
                 </div>
                 <div class="notification-event">
                     <a href="{{route('guru.profil',$file->user->id)}}" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="{{route('guru.show',$file)}}" class="notification-link">{{$file->file_3}}</a>
@@ -71,9 +71,8 @@ button{
         <!-- ... end Notification List -->
     </div>
 
-    <div style="position:fixed">
-            {{ $files->links() }}
-    </div>
+    {{ $files->links() }}
+
 
 </div>
 

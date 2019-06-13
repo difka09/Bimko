@@ -97,7 +97,7 @@
                                 <div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg>
                                 <ul class="more-dropdown">
                                         <li>
-                                        <a class="delete-comment-show" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Delete Komentar</a>
+                                        <a class="delete-comment-show" href="javascript:void(0)" id="delete-comment" data-post="{{$comment->post_id}}" data-id="{{$comment->id}}">Hapus Komentar</a>
                                         </li>
                                 </ul>
                                 </div>

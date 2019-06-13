@@ -129,6 +129,22 @@ class MuridController extends Controller
         $school_id = $request->input('school_id');
         $user = User::find($id);
 
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'phone' => 'required'
+        ],[
+            'name.required'  => '*nama tidak boleh kosong',
+            'phone.required' => '*nomor telepon tidak boleh kosong'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->with('danger', 'Gagal memperbarui profil')
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
+
         if(!empty($password)){
             $newpassword = Hash::make($request['password']);
         }else{

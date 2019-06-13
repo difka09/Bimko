@@ -1,4 +1,5 @@
 @extends('user.templates.default')
+@section('pageTitle', 'Bimko | Artikel : '.$feed->name.'')
 @section('content')
 
         <!-- post content -->
@@ -10,7 +11,7 @@
                     <a href="index.html" class="breadcrumbs__url"><i class="ui-home"></i></a>
                   </li>
                   <li class="breadcrumbs__item">
-                    <a href="index.html" class="breadcrumbs__url">Berita</a>
+                    <a href="index.html" class="breadcrumbs__url">Artikel</a>
                   </li>
                 </ul>
 
@@ -49,14 +50,14 @@
 
                     <!-- Share -->
                   <div class="entry__share">
-                    <div class="socials entry__share-socials">
-                      <a href="#" class="social social-facebook entry__share-social social--wide social--medium">
+                    <div class="socials entry__share-socials social-buttons">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{url()->current()}}&display=popup" class="social social-facebook entry__share-social social--wide social--medium" target="_blank">
                         <i class="ui-facebook"></i>
-                        <span class="social__text">Share on Facebook</span>
+                        <span class="social__text">Bagikan ke Facebook</span>
                       </a>
-                      <a href="#" class="social social-twitter entry__share-social social--wide social--medium">
+                      <a href="https://twitter.com/intent/tweet?url={{ url()->current() }}" class="social social-twitter entry__share-social social--wide social--medium" target="_blank">
                         <i class="ui-twitter"></i>
-                        <span class="social__text">Share on Twitter</span>
+                        <span class="social__text">Bagikan ke Twitter</span>
                       </a>
                     </div>
                   </div> <!-- share -->
@@ -115,10 +116,14 @@
                         @foreach ($feedcomments as $feedcomment)
                       <div class="comment-body">
                         <div class="comment-avatar">
-                          <img alt="" src="{{asset('images/maps/icon-school.png')}}">
+                            @if ($feedcomment->user->isGuest())
+                            <img src="http://placehold.it/64/006400/fff&text={{substr($feedcomment->user->name,0,2)}}" alt="author" style="width:100%">
+                            @else
+                            <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedcomment->user->name,0,2)}}" alt="author" style="width:100%">
+                            @endif
                         </div>
                         <div class="comment-text">
-                          <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#commentmodal{{$feedcomment->user_id}}">{{$feedcomment->name}}:</h6>
+                          <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#commentmodal{{$feedcomment->user_id}}">{{$feedcomment->user->name}}:</h6>
                           {{-- <h6 class="comment-author">{{$feedcomment->name}}: </h6> --}}
                           <div class="comment-metadata">
                             <a href="#" class="comment-date">{{$controller->fullTimeShow($feedcomment->created_at)}}</a>
@@ -144,10 +149,14 @@
                         <li class="comment">
                           <div class="comment-body">
                             <div class="comment-avatar">
-                              <img alt="" src="{{asset('images/maps/icon-school.png')}}">
-                            </div>
+                              @if ($feedreply->user->isGuest())
+                              <img src="http://placehold.it/64/006400/fff&text={{substr($feedreply->user->name,0,2)}}" alt="author" style="width:100%">
+                              @else
+                              <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedreply->user->name,0,2)}}" alt="author" style="width:100%">
+                              @endif
+                              </div>
                             <div class="comment-text">
-                            <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#replymodal{{$feedreply->user_id}}">{{$feedreply->name}}:</h6>
+                            <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#replymodal{{$feedreply->user_id}}">{{$feedreply->user->name}}:</h6>
                               <div class="comment-metadata">
                               <a href="#" class="comment-date">{{$controller->fullTimeShow($feedreply->created_at)}}</a>
                               </div>
@@ -159,7 +168,7 @@
                         @endif
                         @endforeach
                         @auth
-                        @if (auth()->user()->isAdmin())
+                        @if (auth()->user()->isAdmin()||auth()->user()->isGuru())
                         @else
                         <div id="form-comment">
                             <form id="form-{{$feedcomment->id}}" class="comment-form" method="post" action="{{route('reply.store')}}" style="display:none" data-parentuser="{{$feedcomment->user_id}}">
@@ -171,9 +180,11 @@
                               <textarea id="comment" name="message" rows="5" required="required" placeholder="Balas Komentar*"></textarea>
                               </p>
                               <p class="comment-form-submit">
+                                @if ($errors->has('message'))
+                                <span style="color:red">{{ $errors->first('message') }}</span><br>
+                                @endif
                               <button type="submit" class="btn btn-lg btn-color btn-button">Balas Komentar</button>
                               <div class="title-wrap"><br></div>
-                              {{-- <input class="btn btn-color btn-lg btn-button" style="background-color:steelblue; width:70px" href="#" id="batal" value="x"> --}}
                               </p>
                           </form>
                         </div>
@@ -196,7 +207,7 @@
                     </div>
                     @endguest
                     @auth
-                    @if (auth()->user()->isAdmin())
+                    @if (auth()->user()->isAdmin()||auth()->user()->isGuru())
                     @else
                     <div class="title-wrap">
                         <h5 class="comment-respond__title uppercase">Tinggalkan Komentar</h5>
@@ -207,21 +218,12 @@
                             <input type="hidden" value="{{$feed->user_id}}" name="parentuser_id">
                             <input type="hidden" value=0 name="parent_id">
                             <input type="hidden" value="{{$feed->id}}" name="feed_id">
-                          <!-- <label for="comment">Comment</label> -->
                             <textarea id="comment" name="message" rows="5" required="required" placeholder="Komentar*"></textarea>
                             </p>
-                        {{-- <div class="row row-20">
-                          <div class="col-lg-4">
-                            <input name="name" id="name" type="text" placeholder="Name*">
-                          </div>
-                          <div class="col-lg-4">
-                            <input name="email" id="email" type="email" placeholder="Email*">
-                          </div>
-                          <div class="col-lg-4">
-                            <input name="website" id="website" type="text" placeholder="Website">
-                          </div>
-                        </div> --}}
                             <p class="comment-form-submit">
+                                @if ($errors->has('message'))
+                                <span style="color:red">{{ $errors->first('message') }}</span><br>
+                                @endif
                             <button type="submit" class="btn btn-lg btn-color btn-button">Kirim Komentar</button>
                             </p>
                         </form>
@@ -238,13 +240,13 @@
 
 @push('stylecustome')
 <style>
-#myDIV1 {
+.myDIV1 {
     width: 100%;
     text-align: center;
     margin-top: 20px;
     font-weight: bold
   }
-#myDIV2 {
+.myDIV2 {
     width: 100%;
     text-align: center;
     margin-top: 20px;
@@ -267,26 +269,54 @@
     </script>
 
     <script>
-        function myFunction1() {
-          var x = document.getElementById("myDIV1");
+        $('body').on('click', '.phone1', function(){
+            var id = $(this).data("id");
+            var x = document.getElementById("myDIV1" + id);
           if (x.style.display === "none") {
             x.style.display = "block";
           } else {
             x.style.display = "none";
           }
-        }
+        });
     </script>
 
 <script>
-        function myFunction2() {
-          var x = document.getElementById("myDIV2");
+        $('body').on('click', '.phone2', function(){
+        var id = $(this).data("id");
+          var x = document.getElementById("myDIV2" + id);
           if (x.style.display === "none") {
             x.style.display = "block";
           } else {
             x.style.display = "none";
           }
-        }
+        });
     </script>
+
+<script>
+
+    var popupSize = {
+        width: 780,
+        height: 550
+    };
+
+    $(document).on('click', '.social-buttons > a', function(e){
+
+        var
+            verticalPos = Math.floor(($(window).width() - popupSize.width) / 2),
+            horisontalPos = Math.floor(($(window).height() - popupSize.height) / 2);
+
+        var popup = window.open($(this).prop('href'), 'social',
+            'width='+popupSize.width+',height='+popupSize.height+
+            ',left='+verticalPos+',top='+horisontalPos+
+            ',location=0,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1');
+
+        if (popup) {
+            popup.focus();
+            e.preventDefault();
+        }
+
+    });
+</script>
 @endpush
 
 @foreach ($feedcomments as $feedcomment)
@@ -295,23 +325,27 @@
         <div class="modal-content" style="background:transparent !important;">
             <div class="modal-body" style="background:transparent !important;">
                 <div class="cardmodal" style="background:white">
-                    <img src="{{asset('images/users/team2.jpg')}}" alt="John" style="width:100%">
-                        <h1>{{$feedcomment->name}}</h1>
-                        <p class="titlemodal">CEO & Founder, Example</p>
-                        <p>{{$feedcomment->agency}}</p>
+                        @if ($feedcomment->user->isGuest())
+                        <img src="http://placehold.it/64/006400/fff&text={{substr($feedcomment->user->name,0,2)}}" alt="author" style="width:100%">
+                        @else
+                        <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedcomment->user->name,0,2)}}" alt="author" style="width:100%">
+                        @endif
+                        <h1>{{$feedcomment->user->name}}</h1>
+                        <p class="titlemodal">Info :  </p>
                         <div style="margin: 24px 0;">
-                            <amodal href="#"><i class="fa fa-dribbble"></i></amodal>
-                            <amodal href="#"><i class="fa fa-twitter"></i></amodal>
-                            <amodal href="#"><i class="fa fa-linkedin"></i></amodal>
-                            <amodal href="#"><i class="fa fa-facebook"></i></amodal>
+                            @if ($feedcomment->user->isGuest())
+                            <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedcomment->user->agency}}</i></p>
+                            @else
+                            <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedcomment->user->school->name}}</i><p>
+                            @endif
                         </div>
                         @auth
-                        <div id="myDIV1" style="display:none">{{$feedcomment->phone}}</div>
+                        <div class="myDIV1" id="myDIV1{{$feedcomment->id}}" style="display:none"><i class="fa fa-phone"></i>&nbsp;&nbsp;{{$feedcomment->user->phone}}</div>
                         @endauth
                         @guest
-                        <div id="myDIV1" style="display:none">silahkan <a href="/login">login</a> terlebih dahulu</div>
+                        <div class="myDIV1" id="myDIV1{{$feedcomment->id}}" style="display:none">silahkan <a href="/login">login</a> terlebih dahulu</div>
                         @endguest
-                        <p><buttonmodal onclick="myFunction1()">Contact</buttonmodal></p>
+                        <p><buttonmodal class="phone1" data-id="{{$feedcomment->id}}">Contact</buttonmodal></p>
                 </div>
             </div>
         </div>
@@ -325,23 +359,27 @@
         <div class="modal-content" style="background:transparent">
             <div class="modal-body" style="background:transparent !important;">
                     <div class="cardmodal" style="background:white">
-                        <img src="{{asset('images/users/team2.jpg')}}" alt="John" style="width:100%">
-                            <h1>{{$feedreply->name}}</h1>
-                            <p class="titlemodal">CEO & Founder, Example</p>
-                            <p>{{$feedreply->agency}}</p>
+                        @if ($feedreply->user->isGuest())
+                        <img src="http://placehold.it/64/006400/fff&text={{substr($feedreply->user->name,0,2)}}" alt="author" style="width:100%">
+                        @else
+                        <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedreply->user->name,0,2)}}" alt="author" style="width:100%">
+                        @endif
+                            <h1>{{$feedreply->user->name}}</h1>
+                            <p class="titlemodal">Info :</p>
                             <div style="margin: 24px 0;">
-                              <amodal href="#"><i class="fa fa-dribbble"></i></amodal>
-                              <amodal href="#"><i class="fa fa-twitter"></i></amodal>
-                              <amodal href="#"><i class="fa fa-linkedin"></i></amodal>
-                              <amodal href="#"><i class="fa fa-facebook"></i></amodal>
+                              @if ($feedreply->user->isGuest())
+                              <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedreply->user->agency}}</i></p>
+                              @else
+                              <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedreply->user->school->name}}</i><p>
+                              @endif
                             </div>
                                 @auth
-                            <div id="myDIV2" style="display:none">{{$feedreply->phone}}</div>
+                            <div class="myDIV2" id="myDIV2{{$feedreply->id}}" style="display:none"><i class="fa fa-phone"></i>&nbsp;&nbsp;{{$feedreply->user->phone}}</div>
                                 @endauth
                                 @guest
-                            <div id="myDIV2" style="display:none">silahkan <a href="/login">login</a> terlebih dahulu</div>
+                            <div class="myDIV2" id="myDIV2{{$feedreply->id}}" style="display:none">silahkan <a href="/login">login</a> terlebih dahulu</div>
                                 @endguest
-                            <p><buttonmodal onclick="myFunction2()">Contact</buttonmodal></p>
+                            <p><buttonmodal class="phone2" data-id="{{$feedreply->id}}">Contact</buttonmodal></p>
                     </div>
             </div>
         </div>

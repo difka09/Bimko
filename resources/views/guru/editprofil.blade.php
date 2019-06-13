@@ -17,13 +17,14 @@
 @section('content')
 
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
+        @include('admin.templates.partials._alerts')
     <div class="ui-block">
         <div class="ui-block-title">
             <h6 class="title">Edit Informasi Profil</h6>
         </div>
         <div class="ui-block-content">
             <!-- Personal Information Form  -->
-            <form action="{{ route('guru.updateprofil')}}" class="form-horizontal" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('guru.updateprofil')}}" class="form-horizontal editForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
 
@@ -36,29 +37,23 @@
 
                         <div class="form-group label-floating is-select">
                             <label class="control-label">Email</label>
-                            <input class="form-control" placeholder="" type="email" name="email" value="{{$user->email}}" disabled>
+                            <input class="form-control" placeholder="" type="email" name="email" value="{{$user->email}}">
                         <span class="material-input"></span>
-                        </div>
-
-                        <div class="form-group label-floating is-empty">
-                                <label class="control-label">Password</label>
-                                <input class="form-control" placeholder="" type="password" name="password">
-                                <span >(*)untuk password baru</span>
-                            <span class="material-input"></span>
                         </div>
 
                         <div class="form-group label-floating is-select">
                                 <label class="control-label">NIP</label>
-                                <input class="form-control" placeholder="" type="number" name="nip" value="{{$user->nip}}">
+                                <input class="form-control" placeholder="" type="text" name="nip" value="{{$user->nip}}">
                             <span class="material-input"></span>
                         </div>
 
                         <div class="form-group label-floating is-select">
                                 <label class="control-label">Sekolah</label>
                             <div class="btn-group bootstrap-select form-control">
-                                <select class="selectpicker form-control" tabindex="-98">
-                                    <option value="MA">Married</option>
-                                    <option value="FE">Not Married</option>
+                                <select name="school" class="selectpicker form-control" tabindex="-98">
+                                    @foreach ($schools as $school)
+                                    <option value="{{$school->id}}" {{$user->school->id == $school->id  ? 'selected' : ''}}>{{$school->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                                 <span class="material-input"></span>
@@ -80,13 +75,20 @@
 
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
 
-                        <div class="form-group date-time-picker label-floating is-empty">
+                        {{-- <div class="form-group date-time-picker label-floating is-empty">
                             <label class="control-label">Tanggal Lahir</label>
                             <input name="datetimepicker" value="">
                             <span class="input-group-addon">
                                     <svg class="olymp-month-calendar-icon icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-month-calendar-icon')}}"></use></svg>
                             </span>
+                        </div> --}}
+                        <div class="form-group label-floating is-empty">
+                                <label class="control-label">Password</label>
+                                <input class="form-control" placeholder="" type="password" name="password">
+                                <span >(*)untuk password baru</span>
+                            <span class="material-input"></span>
                         </div>
+
                         <div class="form-group label-floating is-select">
                                 <label class="control-label">Telepon</label>
                                 <input class="form-control" placeholder="" type="number" name="phone" value="{{$user->phone}}">
@@ -221,6 +223,7 @@
                         {{-- <button class="btn btn-secondary btn-lg full-width">Restore all Attributes</button> --}}
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                        <span class="size_error" style="color:red"></span>
                         <button type="submit" class="btn btn-primary btn-lg full-width">Simpan Perubahan Informasi</button>
                     </div>
                 </div>
@@ -232,6 +235,27 @@
 
 @endsection
 @push('scripts')
+
+<script>
+    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-danger").slideUp(500);
+    });
+</script>
+
+<script>
+$('.editForm').on('submit',(function(e) {
+var fileku = $('#imgProfil').val();
+    if(fileku!='')
+    {
+        $('.size_error').html("");
+        var file_size = $('#imgProfil')[0].files[0].size;
+        if(file_size > 5097000) {
+            $('.size_error').html("maksimal ukuran file 5MB")
+            return false;
+        }
+    }
+}));
+</script>
 <script>
 function readURL(input) {
 

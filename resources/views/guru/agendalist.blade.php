@@ -5,6 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            @include('admin.templates.partials._alerts')
             <div class="ui-block responsive-flex">
                 <div class="ui-block-title">
                     <ul class="nav nav-tabs calendar-events-tabs" role="tablist">
@@ -115,7 +116,7 @@
                                     @foreach ($agenda->detailAgenda->users as $user)
                                     <li>
                                         <a title="{{$user->name}}" href="#">
-                                            <img src="{{$user->getImage()}}" alt="friend">
+                                            <img src="{{$user->getImage()}}" alt="friend" style="width: 100%;height:100%">
                                         </a>
                                     </li>
                                     @endforeach
@@ -132,7 +133,7 @@
                                 @endif
                             </td>
                             <td class="add-event">
-                                    @if ($agenda->user_id == auth()->user()->id)
+                                    {{-- @if ($agenda->user_id == auth()->user()->id) --}}
                                 <div class="more"><svg class="olymp-settings"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-settings')}}"></use></svg>
                                     <ul class="more-dropdown">
 
@@ -146,8 +147,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                                @else
-                                @endif
+                                {{-- @else --}}
+                                {{-- @endif --}}
                             </td>
                         </tr>
                         @endforeach
@@ -266,6 +267,7 @@
             <div class="form-group label-floating is-focused">
                 <label class="control-label">File</label>
                 <input class="form-control" placeholder="" type="file" name="file" id="file" accept=".xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf,.rar,.zip,.7zip">
+                <span class="size_error" style="color:red"></span>
                 <span class="material-input"></span>
             </div>
             <input type="hidden" id="agenda_id" name="agenda_id">
@@ -346,4 +348,11 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 </script>
+
+<script>
+    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-danger").slideUp(500);
+    });
+</script>
+
 @endpush

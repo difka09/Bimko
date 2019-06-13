@@ -1,4 +1,6 @@
 @extends('guru.templates.wtsidebar')
+@section('pageTitle', 'Permintaan Konseling')
+@section('content')
 @push('customizecss')
 <style>
 
@@ -209,10 +211,9 @@
                                     @if($question->answers->count()==0)
                                     <a style="color:white" class="btn btn-green btn-sm close-question" data-id="{{$question->id}}">Tutup konseling</a>
                                     @endif
-                                    @foreach ($question->answers as $answer)
-                                    <?php $answeruser = $answer->user_id ?>
-                                    @endforeach
-                                    @if(auth()->user()->id == $answeruser)
+
+                                    <?php $answerid = $question->answers[0]->user_id ?>
+                                    @if(auth()->user()->id == $answerid)
                                     <a style="color:white" class="btn btn-green btn-sm close-question" data-id="{{$question->id}}">Tutup konseling</a>
                                     @endif
                                     @endif
@@ -297,6 +298,10 @@
 <script>
     $("#alert-guru-success").fadeTo(2000, 500).slideUp(500, function(){
         $("#alert-guru-success").slideUp(500);
+    });
+
+    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-danger").slideUp(500);
     });
 </script>
 @endpush

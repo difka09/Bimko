@@ -1,18 +1,19 @@
 <head>
-    <title>Aha Magazine | Home</title>
+    <title>@yield('pageTitle')</title>
+
+    {{-- <title>Aha Magazine | Home</title> --}}
 
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    {{-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> --}}
     <meta name="description" content="">
-
     <!-- Google Fonts -->
-
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet'>
     <!-- Css -->
 
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('user/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('user/css/font-icons.css') }}" />
     @stack('select2styles')
     @stack('stylecustome')
@@ -32,6 +33,8 @@
         display: block;
         width: 400px;
         height: 250px;
+        max-width: 100%;
+        max-height: 100%;
         text-align: center;
         color: white;
         font-size: 30px;

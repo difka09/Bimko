@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 // use Illuminate\Support\Facades\Auth;
 
@@ -59,6 +60,24 @@ class GuestController extends Controller
         // if (!$request->hasFile('file') && $user->file) {
         //     $file = $user->file;
         // }
+
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'agency' => 'required',
+            'phone' => 'required'
+        ],[
+            'name.required'  => '*nama tidak boleh kosong',
+            'agency.required' => '*instansi tidak boleh kosong',
+            'phone.required' => '*nomor telepon tidak boleh kosong'
+        ]);
+
+        if($validate->fails())
+        {
+            return back()
+                ->with('danger', 'Gagal memperbarui profil')
+                ->withInput($request->all())
+                ->withErrors($validate);
+        }
 
         if(!empty($password)){
             $newpassword = Hash::make($request['password']);

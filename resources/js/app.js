@@ -11,21 +11,22 @@ const NOTIFICATION_TYPES = {
 $(document).ready(function() {
     if(window.Laravel.userId){
         $.post('/notifications', function(data){
-            addNotificationsDB(data, "#notifications");
-
+            addNotificationsDB(data, ".idnotifications");
         });
 
         Echo.private('App.Models.User.' + window.Laravel.userId).notification((notification) => {
-          var count = parseInt($('#notifications').text());
-        if(count > 20 )
+          var count = parseInt($('#idnotifications').text());
+          var countmobile = parseInt($('#mobileidnotifications').text());
+
+        if(count > 20 && countmobile >20)
         {
-            $('#notifications').html('20+');
+            $('.idnotifications').html('20+');
 
         }
         else {
-          $('#notifications').text(count+1);
+          $('.idnotifications').text(count+1);
         }
-            addNotificationsDB([notification], '#notifications');
+            addNotificationsDB([notification], '.idnotifications');
         });
     }
 });
@@ -44,9 +45,11 @@ function showNotificationsDB(notifications, target){
             return makeNotificationDB(notification);
         });
         $(target + 'Menu').html(htmlElements.join(''));
+
         $(target).addClass('has-notifications')
     }else {
         $(target + 'Menu').html('<li><div class="notification-event"><div>Tidak ada pemberitahuan</div></div></li>');
+
         $(target).removeClass('has-notifications');
     }
 }
