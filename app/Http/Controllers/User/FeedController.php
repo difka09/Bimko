@@ -123,6 +123,7 @@ class FeedController extends Controller
             'name.required'  => '*Judul artikel kosong',
             'content.required' => '*konten artikel kosong',
             'catfeed.required' => '*kategori artikel kosong',
+            'file.max' => 'ukuran file maksimal 5MB',
             'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
             'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
         ]);

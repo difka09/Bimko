@@ -48,3 +48,4 @@ Route::get('download/xlsguru',function(){
 })->name('admin.xlsguru');
 
 Route::get('export/school', 'ImportController@export')->name('admin.export');
+Route::put('changepassword', 'UserviewController@changePassword')->name('admin.changepassword');

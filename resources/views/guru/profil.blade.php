@@ -103,7 +103,9 @@
                     </a>
                     <div class="author-content">
                         <a class="h4 author-name">{{$user->name}}</a>
+                    @if ($user->school)
                     <div class="country">{{$user->school->name}}</div>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -358,7 +360,7 @@
                 <ul class="widget w-personal-info item-block">
                     <li>
                         <span class="title">Informasi diri:</span>
-                        <span class="text">Hi, Saya {{$user->name}} sebagai guru bk di {{$user->school->name}} dan mengajar siswa kelas {{$user->grade}}</span>
+                        <span class="text">Hi, Saya {{$user->name}} sebagai guru bk di @if ($user->school){{$user->school->name}}@endif dan mengajar siswa kelas {{$user->grade}}</span>
                     </li>
                     <li>
                         <span class="title">NIP:</span>

@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\School;
 use App\Models\FeedComment;
 use App\Models\FeedNotification;
+use App\Models\Question;
+use App\Models\Answer;
 
 class UserController extends Controller
 {
@@ -157,6 +159,8 @@ class UserController extends Controller
         $user->posts()->delete();
         $user->feeds()->delete();
         $user->comments()->delete();
+        $user->answers()->delete();
+        $user->questions()->delete();
         $user->agendas()->delete();
         $user->feedcomments()->delete();
         $user->feednotifications()->delete();
@@ -205,6 +209,9 @@ class UserController extends Controller
         $user1->feedcomments()->forceDelete();
         $user1->feednotifications()->forceDelete();
         $user1->agendas()->forceDelete();
+        $user1->answers()->forceDelete();
+        $user1->questions()->forceDelete();
+
         // $user1->detailAgendas()->forceDelete();
 
         $user->forceDelete();
@@ -232,6 +239,8 @@ class UserController extends Controller
         Comment::withTrashed()->restore();
         Agenda::withTrashed()->restore();
         DetailAgenda::withTrashed()->restore();
+        Question::withTrashed()->restore();
+        Answer::withTrashed()->restore();
 
         return back()->with('success', 'Semua data telah direstore');
     }
@@ -256,6 +265,12 @@ class UserController extends Controller
         $post->restore();
 
         $agenda = Agenda::onlyTrashed()->where('user_id',$id);
+        $agenda->restore();
+
+        $agenda = Answer::onlyTrashed()->where('user_id',$id);
+        $agenda->restore();
+
+        $agenda = Question::onlyTrashed()->where('user_id',$id);
         $agenda->restore();
 
         return back()->with('success', 'Data telah di restore');

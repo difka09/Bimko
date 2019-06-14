@@ -131,7 +131,8 @@ class MuridController extends Controller
 
         $validate = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+
         ],[
             'name.required'  => '*nama tidak boleh kosong',
             'phone.required' => '*nomor telepon tidak boleh kosong'

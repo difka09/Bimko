@@ -7,17 +7,17 @@
             <nav class="col-12 nav-header">
                 <ul>
                     <a href="/" class="col-2"><li>Beranda</li></a>
-                    @if (auth()->user()->isGuest())
+                    {{-- @if (auth()->user()->isGuest())
                     <a href="/guest/profil" class="col-2"><li>Profil</li></a>
                     @endif
                     @if (auth()->user()->isMurid())
                     <a href="/murid/profil" class="col-2"><li>Profil</li></a>
                     @endif
-                    <a href="{{ route('logout') }}" class="col-2" onclick="event.preventDefault();document.getElementById('logout-form-mobile').submit();"><li>Logout</li></a>
+                    <a href="{{ route('logout') }}" class="col-2" onclick="event.preventDefault();document.getElementById('logout-form-mobile').submit();"><li>Logout</li></a> --}}
                 </ul>
-                    <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{-- <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
-                    </form>
+                    </form> --}}
 
                 <div class="col-3 offset-7 search-box">
                     <div class="col-2 offset-6" id="log-btn">&nbsp;</div>

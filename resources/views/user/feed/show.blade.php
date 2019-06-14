@@ -336,7 +336,9 @@
                             @if ($feedcomment->user->isGuest())
                             <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedcomment->user->agency}}</i></p>
                             @else
+                            @if ($feedcomment->user->school)
                             <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedcomment->user->school->name}}</i><p>
+                            @endif
                             @endif
                         </div>
                         @auth
@@ -370,7 +372,9 @@
                               @if ($feedreply->user->isGuest())
                               <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedreply->user->agency}}</i></p>
                               @else
+                              @if ($feedreply->user->school)
                               <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedreply->user->school->name}}</i><p>
+                              @endif
                               @endif
                             </div>
                                 @auth

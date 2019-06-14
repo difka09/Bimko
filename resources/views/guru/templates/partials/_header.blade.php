@@ -96,7 +96,9 @@
                         <div class="author-title">
                             {{auth()->user()->name}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg>
                         </div>
+                        @if (auth()->user()->school)
                         <span class="author-subtitle">{{auth()->user()->school->name}}</span>
+                        @endif
                     </a>
                 </div>
             </div>

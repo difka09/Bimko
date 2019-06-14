@@ -26,6 +26,19 @@
         </button>
         {{ session('success-guru') }}
     </div>
+@endif
 
-
+@if (session('success-admin'))
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i>Sukses!</h4>
+        {{ session('success-admin') }}
+    </div>
+@endif
+@if (session('danger-admin'))
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Gagal!</h4>
+        {{ session('danger-admin') }}
+    </div>
 @endif

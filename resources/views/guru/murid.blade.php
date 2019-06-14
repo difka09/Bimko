@@ -210,11 +210,11 @@
                                     @if ($question->status == 0)
                                     @if($question->answers->count()==0)
                                     <a style="color:white" class="btn btn-green btn-sm close-question" data-id="{{$question->id}}">Tutup konseling</a>
-                                    @endif
-
+                                    @else
                                     <?php $answerid = $question->answers[0]->user_id ?>
                                     @if(auth()->user()->id == $answerid)
                                     <a style="color:white" class="btn btn-green btn-sm close-question" data-id="{{$question->id}}">Tutup konseling</a>
+                                    @endif
                                     @endif
                                     @endif
                                 </td>

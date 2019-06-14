@@ -63,6 +63,7 @@
                     <br>
 
                   <div class="row">
+                        @include('admin.templates.partials._alerts')
                   <div class="col-md-6">
                       <div class="box box-primary">
                           <div class="box-header with-border">
@@ -100,21 +101,23 @@
                                   <h3 class="box-title">Reset Password</h3>
                                 </div>
 
-                                <form class="form-horizontal" method="POST" action="">
-                                  <div class="box-body">
+                                <form class="form-horizontal" method="POST" action="{{Route('admin.changepassword')}}">
+                                    @csrf
+                                    @method("PUT")
+                                    <div class="box-body">
                                     <div class="form-group"></div>
                                     <div class="form-group"></div>
                                     <div class="form-group">
                                         <label for="inputPassword3" class="col-sm-2 control-label">Password lama</label>
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" name="oldPassword" id="oldPassword" placeholder="Password Lama">
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password Lama">
                                     </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="inputPassword3" class="col-sm-2 control-label">Password baru</label>
                                     <div class="col-sm-10">
-                                        <input type="password" id="myInput" class="form-control" name="newPassword" id="newPassword" placeholder="Password Baru"><br>
+                                        <input type="password" id="myInput" class="form-control" name="new_password" placeholder="Password Baru"><br>
                                         <input type="checkbox" onclick="myFunction()"> Lihat Password
                                     </div>
                                     </div>

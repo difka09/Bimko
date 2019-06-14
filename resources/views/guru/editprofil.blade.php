@@ -52,7 +52,10 @@
                             <div class="btn-group bootstrap-select form-control">
                                 <select name="school" class="selectpicker form-control" tabindex="-98">
                                     @foreach ($schools as $school)
+                                    @if ($user->$school)
                                     <option value="{{$school->id}}" {{$user->school->id == $school->id  ? 'selected' : ''}}>{{$school->name}}</option>
+                                    @endif
+                                    <option value="{{$school->id}}">{{$school->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

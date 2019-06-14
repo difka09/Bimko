@@ -17,7 +17,11 @@
         <input class="col-10 input-main" type="number" name="nis" value="{{ $user->nis }}" disabled>
         <select name="school_id" class="col-10 input-main">
             @foreach ($schools as $school)
+            @if ($user->school)
             <option value="{{$school->id}}" {{$user->school->id == $school->id  ? 'selected' : ''}}>{{$school->name}}</option>
+            @else
+            <option value="{{$school->id}}">{{$school->name}}</option>
+            @endif
             @endforeach
         </select>
         {{-- <input class="col-10 input-main" type="text" value="{{$user->school->name}}" placeholder="sekolah"> --}}

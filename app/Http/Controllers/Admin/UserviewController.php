@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\School;
 use App\Models\Catfeed;
+use Illuminate\Support\Facades\Validator;
 
 class UserviewController extends Controller
 {
@@ -257,6 +258,41 @@ class UserviewController extends Controller
         ]);
 
         return redirect()->route('category.index')->with('info', 'Kategori berhasil diedit');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $validate = Validator::make($request->all(),[
+            'password' => 'required',
+            'new_password' => 'required|min:8'
+
+        ],
+        [
+            'password.required' => 'password lama kosong',
+            'new_password.required' => 'password baru kosong',
+            'new_password.min' => 'password baru minimal 8 karakter',
+
+        ]);
+
+        if($validate->fails())
+        {
+            return back()->with('danger-admin', 'Gagal memperbarui password admin, '.$validate->getMessageBag()->first().'');
+        }
+
+        if(Hash::check($request->password, $user->password))
+        {
+            $user->fill([
+                'password' => Hash::make($request->new_password)
+            ])->save();
+
+            return back()->with('success-admin', 'Berhasil memperbarui password admin');
+
+        }else
+        {
+            return back()->with('danger-admin', 'Gagal memperbaharui password, password lama salah');
+        }
+
     }
 
 }
