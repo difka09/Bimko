@@ -2,7 +2,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Bimko</title>
-    <link rel="shortcut icon" href="/img/newspaper.png">
+    <link rel="shortcut icon" href="{{ asset('user/img/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('user/panel/css/rewidify.css') }}">
     @stack('select2styles')
     @stack('customecss')

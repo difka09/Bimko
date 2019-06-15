@@ -36,6 +36,7 @@
         @endif
 
         <!-- Bootstrap CSS -->
+        <link rel="shortcut icon" href="{{ asset('user/img/favicon.ico') }}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-reboot.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-grid.css')}}">
