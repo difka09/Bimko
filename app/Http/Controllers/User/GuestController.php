@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 // use Illuminate\Support\Facades\Auth;
 
@@ -108,11 +109,13 @@ class GuestController extends Controller
 
     public function deleteFeed(Feed $feed)
     {
+        Storage::delete($feed->file);
+
         $feed->forceDelete();
         $catfeeds = Catfeed::find($feed->catfeed);
         $feed->catfeeds()->detach($catfeeds);
 
-        $feed->feedcomments()->delete();
+        $feed->feedcomments()->forceDelete();
         return back()->with('msg', 'Berhasil Menghapus Artikel');
     }
 
@@ -133,8 +136,10 @@ class GuestController extends Controller
 
     public function deleteComment(FeedComment $feedcomment)
     {
-        $feedcomment->delete();
-        FeedComment::where('parent_id', $feedcomment->id)->delete();
+        FeedComment::where('parent_id', $feedcomment->id)->Forcedelete();
+        // dd($feedcomment);
+        $feedcomment->forceDelete();
+
 
         return back()->with('msg', 'Berhasil Menghapus Komentar');
     }

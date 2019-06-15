@@ -16,7 +16,7 @@
           @foreach ($feeds as $feed)
           <article class="entry post-list">
             <div class="entry__img-holder post-list__img-holder">
-              <a href="single-post.html">
+              <a href="{{ Route('feeds.show', $feed) }}">
                 <div class="thumb-container thumb-75">
                   <img data-src="{{$feed->getImage()}}" src="{{$feed->getImage()}}" class="entry__img lazyload" alt="">
                 </div>

@@ -24,11 +24,11 @@ use App\Models\Question;
 use App\Models\Answer;
 // use Intervention\Image\ImageManager;
 // use Intervention\Image\Image;
+// use Intervention\Image\Exception\NotReadableException;
 use App\Models\School;
 use Illuminate\Support\Facades\Validator;
+use Image;
 
-// use Image;
-// use Intervention\Image\Exception\NotReadableException;
 
 class GuruController extends Controller
 {
@@ -127,7 +127,7 @@ class GuruController extends Controller
             ), 400);
         }
 
-
+        // $file_2 = Image::make($request->file('file_2'))->resize(300,200)->store('posts');
         $file_2 = $request->file('file_2')->store('posts');
         $data = Post::create([
             'title' => $request->title,
@@ -165,7 +165,18 @@ class GuruController extends Controller
         }
 
         if ($request->hasFile('file_1')) {
-        $upload = $request->file('file_1')->store('posts');
+            $image = $request->file('file_1');
+            $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                $constraint->aspectRatio();
+            })->encode('jpg');
+            // $hash = md5($resize->__toString());
+            $hash = str_random(50);
+            $path = "images/posts/{$hash}.jpg";
+            $resize->save(public_path($path));
+            $upload = "posts/{$hash}.jpg";
+
+        // $upload = $request->file('file_1')->store('posts');
+
         $file_1 = new Post;
         $file_1->file_1 = $upload;
         $file_1->content = $request->content;
@@ -239,7 +250,16 @@ class GuruController extends Controller
             if($post->file_1){
                 Storage::delete($post->file_1);
             }
-            $file_1 = $request->file('file_1')->store('posts');
+            // $file_1 = $request->file('file_1')->store('posts');
+            $image = $request->file('file_1');
+            $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                $constraint->aspectRatio();
+            })->encode('jpg');
+            // $hash = md5($resize->__toString());
+            $hash = str_random(50);
+            $path = "images/posts/{$hash}.jpg";
+            $resize->save(public_path($path));
+            $file_1 = "posts/{$hash}.jpg";
         }
         if (!$request->hasFile('file_1') && $post->file_1) {
             $file_1 = $post->file_1;
@@ -484,7 +504,16 @@ dd($agenda);
             }
             else{
                 Storage::delete($user->file);
-                $file = $request->file('file')->store('users');
+                $image = $request->file('file');
+                $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                    $constraint->aspectRatio();
+                })->encode('jpg');
+                // $hash = md5($resize->__toString());
+                $hash = str_random(50);
+                $path = "images/users/{$hash}.jpg";
+                $resize->save(public_path($path));
+                $file = "users/{$hash}.jpg";
+                // $file = $request->file('file')->store('users');
             }
 
         }

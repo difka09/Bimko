@@ -1,4 +1,4 @@
-@extends('admin.templates.default')
+@extends('admin.templates.defaultwtcontentwrapper')
 
 @section('content')
 <div class="col-md-5 col-md-offset-3">
@@ -62,6 +62,18 @@
                     </div>
                 </div>
 
+                <div class="form-group {{ $errors->has('latitude') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">Latitude</label>
+                    <div class="col-sm-10">
+                    <input type="text" id="lat" name="latitude" class="form-control" value="{{ old('latitude') }}" placeholder="latitude">
+                    @if ($errors->has('latitude'))
+                        <p class="help-block">
+                            {{ $errors->first('latitude') }}
+                        </p>
+                     @endif
+                    </div>
+                </div>
+
                 <div class="form-group {{ $errors->has('longitude') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Longitude</label>
                     <div class="col-sm-10">
@@ -74,17 +86,6 @@
                     </div>
                 </div>
 
-                <div class="form-group {{ $errors->has('latitude') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Latitude</label>
-                    <div class="col-sm-10">
-                    <input type="text" id="lat" name="latitude" class="form-control" value="{{ old('latitude') }}" placeholder="latitude">
-                    @if ($errors->has('latitude'))
-                        <p class="help-block">
-                            {{ $errors->first('latitude') }}
-                        </p>
-                     @endif
-                    </div>
-                </div>
                 {{-- <div class="form-group {{ $errors->has('phone') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Nomor HP</label>
                     <div class="col-sm-10">

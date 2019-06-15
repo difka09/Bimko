@@ -8,7 +8,7 @@
 
     @include('admin.templates.partials._sidebar')
 
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="height:980px">
     <section class="content">
         @yield('content')
     </section>

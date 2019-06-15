@@ -51,8 +51,9 @@ class SchoolController extends Controller
             'address' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'description' => 'required'
-            // 'file' => ''
+            'description' => 'required',
+            'image' => 'required'
+
         ]);
 
         $image = $request->file('image')->store('schools');

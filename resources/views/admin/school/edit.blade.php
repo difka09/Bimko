@@ -1,4 +1,4 @@
-@extends('admin.templates.default')
+@extends('admin.templates.defaultwtcontentwrapper')
 
 @section('content')
 <div class="col-md-5 col-md-offset-3">
@@ -73,18 +73,6 @@
                     </div>
                 </div>
 
-                <div class="form-group {{ $errors->has('longitude') ? 'has-error' :'' }}">
-                    <label for="" class="col-sm-2 control-label">Longitude</label>
-                    <div class="col-sm-10">
-                    <input type="text" id="long" name="longitude" class="form-control" value="{{ $school->longitude ?? old('longitude') }}" placeholder="longitude">
-                    @if ($errors->has('longitude'))
-                        <p class="help-block">
-                            {{ $errors->first('longitude') }}
-                        </p>
-                     @endif
-                    </div>
-                </div>
-
                 <div class="form-group {{ $errors->has('latitude') ? 'has-error' :'' }}">
                     <label for="" class="col-sm-2 control-label">Latitude</label>
                     <div class="col-sm-10">
@@ -94,6 +82,18 @@
                             {{ $errors->first('latitude') }}
                         </p>
                     @endif
+                    </div>
+                </div>
+
+                <div class="form-group {{ $errors->has('longitude') ? 'has-error' :'' }}">
+                    <label for="" class="col-sm-2 control-label">Longitude</label>
+                    <div class="col-sm-10">
+                    <input type="text" id="long" name="longitude" class="form-control" value="{{ $school->longitude ?? old('longitude') }}" placeholder="longitude">
+                    @if ($errors->has('longitude'))
+                        <p class="help-block">
+                            {{ $errors->first('longitude') }}
+                        </p>
+                     @endif
                     </div>
                 </div>
 

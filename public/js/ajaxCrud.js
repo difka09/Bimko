@@ -726,6 +726,8 @@ $('body').on('click', '.edit-detail', function(){
         var newtime = moment(new Date(data[0]['start_At'] )).format("HH:mm");
         $('#view-agenda').modal('show');
         document.getElementById("update-agenda-btn").style.display = "block";
+        // document.getElementById("update-agenda-btn").style.pointerEvents = "auto";
+        // document.getElementById("update-agenda-btn").disabled = false;
         $('#agendaid').val(data[0]['id']);
         document.getElementById("editdate").style.display = "block";
         $('#name').val(data[0]['name']);

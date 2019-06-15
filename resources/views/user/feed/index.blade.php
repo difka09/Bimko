@@ -16,7 +16,7 @@
           @foreach ($feeds as $feed)
           <article class="entry post-list">
             <div class="entry__img-holder post-list__img-holder">
-              <a href="single-post.html">
+              <a href="{{ Route('feeds.show', $feed) }}">
                 <div class="thumb-container thumb-75">
                   <img data-src="{{$feed->getImage()}}" src="{{$feed->getImage()}}" class="entry__img lazyload" alt="">
                 </div>
@@ -61,7 +61,7 @@
             {{ $feeds->links('vendor.pagination.paginationfeed') }}
             <br>
         </div>
-        <a href="{{Route('guest.createfeed')}}" title="Konsultasi Yuk..." class="act-btn"></a>
+        <a href="{{Route('murid.createquestion')}}" title="Konsultasi Yuk..." class="act-btn"></a>
 
       </div> <!-- end posts -->
       @endsection

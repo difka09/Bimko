@@ -12,11 +12,10 @@ use App\Models\User;
 use App\Models\Catfeed;
 use App\Models\FeedComment;
 use App\Models\FeedNotification;
-
+use Image;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use App\Models\Post;
+
 
 class FeedController extends Controller
 {
@@ -117,12 +116,13 @@ class FeedController extends Controller
             'name' => 'required|unique:feeds',
             'content' => 'required',
             'catfeed' => 'required',
-            'file' => 'image|mimes:jpeg,bmp,jpg,png|max:5024'
+            'file' => 'required|image|mimes:jpeg,bmp,jpg,png|max:5024'
         ],[
             'name.unique'  => '*Judul telah digunakan, gunakan judul lain',
             'name.required'  => '*Judul artikel kosong',
             'content.required' => '*konten artikel kosong',
             'catfeed.required' => '*kategori artikel kosong',
+            'file.required' => '*file kosong',
             'file.max' => 'ukuran file maksimal 5MB',
             'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
             'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
@@ -136,7 +136,16 @@ class FeedController extends Controller
                 ->withErrors($validate);
         }
 
-        $file = $request->file('file')->store('feeds');
+        $image = $request->file('file');
+        $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+            $constraint->aspectRatio();
+        })->encode('jpg');
+        // $hash = md5($resize->__toString());
+        $hash = str_random(60);
+        $path = "images/feeds/{$hash}.jpg";
+        $resize->save(public_path($path));
+        $file = "feeds/{$hash}.jpg";
+        // $file = $request->file('file')->store('feeds');
 
         $date = new DateTime();
         $newDate = $date->format('dmy');
@@ -173,42 +182,43 @@ class FeedController extends Controller
     {
         $categories = Catfeed::get();
         if($feed->status == 1){
-        $feed->readby = $feed->readby + 1;
-        $feed->save();
+            $feed->readby = $feed->readby + 1;
+            $feed->save();
         }
 
-    $relates = $feed->catfeeds;
+        $relates = $feed->catfeeds;
 
-    foreach($relates as $relate){
-        $relatednews = Feed::whereHas('catfeeds', function($q) use ($relate){
-            $q->where([
-                ['slug', $relate->slug]
-                ]);
-        })->where([
-                ['slug','!=',$feed->slug],
-                ['status','=',1]
-            ])->latest()->limit(2)->get();
-    }
-        $feedcomments = FeedComment::where('feedcomments.feed_id', $feed->id)
-                                    ->where('parent_id','==', '0')
-                                    ->orderBy('id', 'ASC')->get();
+        foreach($relates as $relate){
+            $relatednews = Feed::whereHas('catfeeds', function($q) use ($relate){
+                $q->where([
+                    ['slug', $relate->slug]
+                    ]);
+            })->where([
+                    ['slug','!=',$feed->slug],
+                    ['status','=',1]
+                ])->latest()->limit(2)->get();
+        }
+            $feedcomments = FeedComment::where('feedcomments.feed_id', $feed->id)
+                                        ->where('parent_id','==', '0')
+                                        ->orderBy('id', 'ASC')->get();
 
-        $feedreplies = FeedComment::where('feedcomments.feed_id', $feed->id)
-                                    ->where('parent_id','!=', '0')
-                                    ->orderBy('id', 'ASC')->get();
+            $feedreplies = FeedComment::where('feedcomments.feed_id', $feed->id)
+                                        ->where('parent_id','!=', '0')
+                                        ->orderBy('id', 'ASC')->get();
 
-         return view('user.feed.show',[
-            'feed' => $feed,
-            'relatednews' => $relatednews,
-            'categories' => $categories,
-            'feedcomments' => $feedcomments,
-            'feedreplies' => $feedreplies,
-            'populars' => $this->populars,
-            'latests' => $this->latests,
-            'maps' => $this->maps,
-            'controller' => $this
+            return view('user.feed.show',[
+                'feed' => $feed,
+                'relatednews' => $relatednews,
+                'categories' => $categories,
+                'feedcomments' => $feedcomments,
+                'feedreplies' => $feedreplies,
+                'populars' => $this->populars,
+                'latests' => $this->latests,
+                'maps' => $this->maps,
+                'controller' => $this
 
-        ]);
+            ]);
+
     }
 
     public function addComment(Request $request)
@@ -277,6 +287,19 @@ class FeedController extends Controller
         return back();
 
     }
+
+    public function exceptionFeed()
+    {
+        $categories = Catfeed::get();
+         return view('user.feed.show404',[
+            'categories' => $categories,
+            'populars' => $this->populars,
+            'latests' => $this->latests,
+            'maps' => $this->maps,
+            'controller' => $this
+        ]);
+    }
+
     public function showCategory(Feed $feed)
     {
 

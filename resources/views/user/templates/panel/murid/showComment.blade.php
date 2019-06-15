@@ -17,7 +17,7 @@
 									</div>
 								</div>
 								<div class="col-2 col-lg-2 pad1 ptop">
-                                     <form method="POST" action="{{route('guest.deletecomment',$feedcomment->id)}}">
+                                     <form method="POST" action="{{route('murid.deletecomment',$feedcomment->id)}}">
                                         @csrf
                                         @method("DELETE")
                                     <button type="submit" class="col-6 col-xs-4 btn-delete" onclick="return confirm('Yakin ingin menghapus comment ini?')">Hapus</button>

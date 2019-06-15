@@ -196,7 +196,7 @@ class MuridController extends Controller
                                                  ->orderBy('feedcomments.id', 'DESC')->select(['feedcomments.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username'])->paginate(8);
 
 
-        return view('user.templates.panel.guest.showComment',[
+        return view('user.templates.panel.murid.showComment',[
             'feedcomments' => $feedcomments,
             'controller' => $this
         ]);
@@ -204,8 +204,9 @@ class MuridController extends Controller
 
     public function deleteComment(FeedComment $feedcomment)
     {
-        $feedcomment->delete();
-        FeedComment::where('parent_id', $feedcomment->id)->delete();
+        FeedComment::where('parent_id', $feedcomment->id)->forceDelete();
+
+        $feedcomment->forceDelete();
 
         return back()->with('msg', 'Berhasil Menghapus Komentar');
     }
@@ -215,6 +216,7 @@ class MuridController extends Controller
         $feednotifications = DB::table('feednotifications')->where('feednotifications.parentuser_id', Auth::user()->id)
                                                            ->where('feednotifications.user_id', '!=', Auth::user()->id)
                                                            ->join('feeds', 'feeds.id', '=', 'feednotifications.feed_id')
+                                                            // ->join('feedcomments','feedcomments.feed_id.','=','feeds.id')
                                                            ->join('users', 'users.id', '=', 'feednotifications.user_id')
                                                            ->orderBy('feednotifications.id', 'DESC')->select(['feednotifications.*', 'feeds.name as feedname', 'feeds.slug', 'users.name as username'])->paginate(8);
 
