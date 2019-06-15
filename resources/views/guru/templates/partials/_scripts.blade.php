@@ -51,6 +51,19 @@
     var me = [{{auth()->user()->id}}];
 </script>
 
+<script>
+var initnotif = {{auth()->user()->unreadNotifications->count()}};
+var originalTitle = document.title;
+
+if(initnotif == 0)
+$('.count-notif').text(originalTitle);
+else if(initnotif > 19)
+$('.count-notif').text(originalTitle+' (20+)');
+else{
+$('.count-notif').text(originalTitle+' ('+initnotif+')');
+}
+</script>
+
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
 {{-- adding --}}
 {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}

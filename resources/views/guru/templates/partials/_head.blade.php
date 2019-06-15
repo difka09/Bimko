@@ -6,7 +6,9 @@
         <title>{{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }}</title>
         <title>{{ request()->is('tes/123/profil/*') ? 'profil' : '' }}</title>
         <title>{{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }}</title> --}}
-        <title>@yield('pageTitle')</title>
+        <title class="count-notif">
+            @yield('pageTitle')
+        </title>
 
         <!-- Required meta tags always come first -->
         <meta charset="utf-8">

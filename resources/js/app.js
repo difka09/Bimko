@@ -9,6 +9,7 @@ const NOTIFICATION_TYPES = {
 };
 
 $(document).ready(function() {
+
     if(window.Laravel.userId){
         $.post('/notifications', function(data){
             addNotificationsDB(data, ".idnotifications");
@@ -18,7 +19,7 @@ $(document).ready(function() {
           var count = parseInt($('#idnotifications').text());
           var countmobile = parseInt($('#mobileidnotifications').text());
 
-        if(count > 20 && countmobile >20)
+        if(count > 19 && countmobile >19)
         {
             $('.idnotifications').html('20+');
 
@@ -27,6 +28,55 @@ $(document).ready(function() {
           $('.idnotifications').text(count+1);
         }
             addNotificationsDB([notification], '.idnotifications');
+            if(count != 0)
+            $('.count-notif').text(originalTitle+' ('+ (count+1) +')');
+            if(count > 19)
+            $('.count-notif').text(originalTitle+' (20+)');
+            else{
+            $('.count-notif').text(originalTitle+' ('+ (count+1) +')');
+
+            }
+
+            // if(a = notification.type === NOTIFICATION_TYPES.comment){
+            //     var notificationText = makeNotificationTextDB(notification);
+            //     var commentText = notification.data.comment.user.name+' mengkomentari status'+ notificationText;
+
+            //     if (! ('Notification' in window)) {
+            //         alert('Web Notification is not supported');
+            //         return;
+            //     }
+
+            //     Notification.requestPermission( permission => {
+            //         let notification = new Notification('Bimko Notifikasi!', {
+            //         body: commentText,
+            //         icon: "https://pusher.com/static_logos/320x320.png"
+            //         });
+
+            //         notification.onclick = () => {
+            //             window.open(window.location.href);
+            //         };
+            //     });
+
+            // }
+            // if(a = notification.type === NOTIFICATION_TYPES.agenda){
+            //     var agendaText = notification.data.agenda.creator+' Mengundang anda untuk menghadiri rapat '+ notification.data.agenda.name +'di '+notification.data.agenda.place;
+            //     if (! ('Notification' in window)) {
+            //         alert('Web Notification is not supported');
+            //         return;
+            //     }
+
+            //     Notification.requestPermission( permission => {
+            //         let notification = new Notification('Bimko Notifikasi!', {
+            //         body: agendaText,
+            //         icon: "https://pusher.com/static_logos/320x320.png"
+            //         });
+
+            //         notification.onclick = () => {
+            //             window.open(window.location.href);
+            //         };
+            //     });
+            // }
+
         });
     }
 });
@@ -83,6 +133,7 @@ function makeNotificationTextDB(notification){
 
     return text;
 }
+
 
 $(document).on('click', '.read-me',function(){
         var notif_id = $(this).data('notifid');
