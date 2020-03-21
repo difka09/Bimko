@@ -32,7 +32,7 @@
                     <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="form-group label-floating is-select">
                             <label class="control-label">Nama Lengkap</label>
-                            <input class="form-control" placeholder="" type="text" name="name" value="{{$user->name}}">
+                            <input class="form-control" placeholder="" type="text" name="name" value="{{ucwords($user->name)}}">
                         <span class="material-input"></span></div>
 
                         <div class="form-group label-floating is-select">
@@ -43,7 +43,7 @@
 
                         <div class="form-group label-floating is-select">
                                 <label class="control-label">NIP</label>
-                                <input class="form-control" placeholder="" type="text" name="nip" value="{{$user->nip}}">
+                                <input class="form-control" placeholder="" type="number" name="nip" value="{{$user->nip}}">
                             <span class="material-input"></span>
                         </div>
 
@@ -52,10 +52,12 @@
                             <div class="btn-group bootstrap-select form-control">
                                 <select name="school" class="selectpicker form-control" tabindex="-98">
                                     @foreach ($schools as $school)
-                                    @if ($user->$school)
+                                    @if ($user->school)
                                     <option value="{{$school->id}}" {{$user->school->id == $school->id  ? 'selected' : ''}}>{{$school->name}}</option>
-                                    @endif
+                                    @else
                                     <option value="{{$school->id}}">{{$school->name}}</option>
+                                    @endif
+
                                     @endforeach
                                 </select>
                             </div>
@@ -98,8 +100,8 @@
                             <span class="material-input"></span>
                         </div>
                         <div class="form-group label-floating">
-                        <div class="photo-album-item" data-mh="album-item" style="height: 430px">
-								<div class="photo-item" style="height: 370px;max-height: 370px;display:inline-block">
+                        <div class="photo-album-item" data-mh="album-item" style="height: 560px">
+								<div class="photo-item" style="height: 500px;max-height: 500px;display:inline-block">
 									<img id="showImg" style="height: 100%;width: 100%" src="{{$user->getImage()}}" alt="photo">
 									<div class="overlay overlay-dark"></div>
 								</div>
@@ -240,8 +242,8 @@
 @push('scripts')
 
 <script>
-    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
-        $("#alert-danger").slideUp(500);
+    $("#alert-guru-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-guru-danger").slideUp(500);
     });
 </script>
 
@@ -252,8 +254,14 @@ var fileku = $('#imgProfil').val();
     {
         $('.size_error').html("");
         var file_size = $('#imgProfil')[0].files[0].size;
-        if(file_size > 5097000) {
-            $('.size_error').html("maksimal ukuran file 5MB")
+        if(file_size > 10000000) {
+            swal({
+                title: "gagal posting status",
+                text: "maksimal gambar berukuran 10MB",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+                });
             return false;
         }
     }

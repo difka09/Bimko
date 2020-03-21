@@ -14,9 +14,9 @@
         @csrf
         @method("PUT")
         <input type="hidden" value="{{$user->id}}" name="id">
-        <input class="col-10 input-main" type="text" name="name" value="{{ $user->name }}">
+        <input class="col-10 input-main" type="text" name="name" value="{{ ucwords($user->name) }}">
         <input class="col-10 input-main" type="email" name="email" value="{{ $user->email }}" disabled>
-        <input class="col-10 input-main" type="text" name="agency" placeholder="agency" value="{{ $user->agency }}">
+        <input class="col-10 input-main" type="text" name="agency" placeholder="agency" value="{{ ucwords($user->agency) }}">
         <input class="col-10 input-main" type="password" name="password" placeholder="Untuk melakukan perubahan password/masukkan password baru">
         {{-- <input class="col-10 input-main" type="date" name="tgl" placeholder="Tanggal Lahir yyyy/mm/dd" value="{{ Auth::user()->tgl_lahir }}"> --}}
         <input class="col-10 input-main" type="number" name="phone" placeholder="No. HP" value="{{ $user->phone }}">

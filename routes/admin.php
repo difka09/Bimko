@@ -18,6 +18,7 @@ Route::get('/trash/show/{id}', 'UserController@trashShow')->name('user.trash.sho
 Route::get('/guru','UserviewController@indexGuru')->name('user.guru');
 Route::get('/guru/create','UserviewController@createGuru')->name('user.guru.create');
 Route::post('/guru','UserviewController@storeGuru')->name('user.guru.store');
+Route::post('/guru/migrate','UserviewController@MigrateStatus')->name('user.guru.migrate');
 
 
 Route::get('/murid','UserviewController@indexMurid')->name('user.murid');

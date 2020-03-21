@@ -63,13 +63,17 @@ class GuestController extends Controller
         // }
 
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
             'agency' => 'required',
-            'phone' => 'required'
+            'phone' => 'required|numeric|min:0|digits_between:10,15'
         ],[
             'name.required'  => '*nama tidak boleh kosong',
+            'name.regex' => '*nama hanya berformat alfabet',
             'agency.required' => '*instansi tidak boleh kosong',
-            'phone.required' => '*nomor telepon tidak boleh kosong'
+            'phone.required'    => 'nomor telepon harus diisi',
+            'phone.numeric'     => 'nomor telepon harus berformat angka',
+            'phone.min'         => 'nomor telepon harus angka bulat positif',
+            'digits_between'    => 'masukkan jumlah digit nomor telepon dengan benar'
         ]);
 
         if($validate->fails())

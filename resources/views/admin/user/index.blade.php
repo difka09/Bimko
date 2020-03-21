@@ -9,8 +9,8 @@
                 <h3 class="box-title">Data <?php echo  $user['roleName']; ?></h3>
             </div>
             <div class="box-body">
-            <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
-            <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }} btn btn-primary">Tambah <?php echo  $user['roleName']; ?></a>
+            <a href="{{ route('user.guru.create') }}" class=" {{ request()->is('admin/guru') ? '' : 'hidden' }} btn btn-primary">Tambah Guru </a>
+            <a href="{{ route('user.murid.create') }}" class=" {{ request()->is('admin/murid') ? '' : 'hidden' }} btn btn-primary">Tambah Murid </a>
             <a href="{{ route('user.guest.create') }}" class=" {{ request()->is('admin/guest') ? '' : 'hidden' }} btn btn-primary">Tambah Responder</a>
 
                 <table class="table table-bordered">
@@ -25,7 +25,7 @@
                    <tr>
                        {{-- <td>#</td> --}}
                         <td>{{ $index + $users->firstItem() }}</td>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ ucwords($user->name) }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>
@@ -34,7 +34,7 @@
                             @else
                             @endif
                             <button id="delete" data-title="{{ $user->name }}" href="{{route('user.destroy',$user) }}" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                            <button id="reset" data-title="{{ $user->name }}" href="{{route('user.reset',$user) }}" class="btn btn-danger">reset</button>
+                            <button id="reset" data-title="{{ $user->name }}" href="{{route('user.reset',$user) }}" class="btn btn-danger">reset password</button>
                         </td>
                         <form id="deleteForm" method="post">
                             @csrf

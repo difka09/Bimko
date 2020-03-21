@@ -4,7 +4,7 @@
 <div class="col-md-5 col-md-offset-3">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title">Edit Kategory</h3>
+            <h3 class="box-title">Edit Kategori</h3>
         </div>
             <form action="{{ route('category.update',$category) }}" class="form-horizontal" method="POST">
                 @csrf

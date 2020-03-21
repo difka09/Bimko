@@ -57,7 +57,6 @@ class GuruController extends Controller
         $notifications = $request->user()->unreadNotifications()->limit(20)->get()->toArray();
 
         $agenda = Agenda::latest()->where('start_At','>', Carbon::now()->subDays(0))->first();
-        // dd($agenda);
         if($agenda){
         $date = new Carbon($agenda->start_At);
         $now = Carbon::now();
@@ -89,8 +88,27 @@ class GuruController extends Controller
         $day = 'Belum ada agenda rapat';
         $name = '';
     }
-        // dd($difference);
-        // dd($agendas);
+
+    // $default = '@bimko.id';
+    // $check = SubStr(auth()->user()->email, strpos(auth()->user()->email, '@'));
+    $created_at = auth()->user()->created_at;
+    $updated_at = auth()->user()->updated_at;
+    if($created_at == $updated_at)
+    {
+        
+        return view('guru.index', [
+            'posts' => $posts,
+            'files' => $files,
+            'day' => $day,
+            'name' => $name,
+            'notifications' => $notifications,
+            'responders' => $this->responders,
+            'murids' => $this->murids,
+            'warning' => 'silahkan perbarui profil anda '
+        ]);
+    }
+    else
+    {
         return view('guru.index', [
             'posts' => $posts,
             'files' => $files,
@@ -103,19 +121,20 @@ class GuruController extends Controller
 
         ]);
     }
+    }
 
     public function addPost(Request $request)
     {
         $validate = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
-            'file_2' => 'required|max:20024',
+            'file_2' => 'required|max:30024',
 
         ],[
             'title.required'  => '*Judul file kosong',
             'content.required' => '*Deskripsi file kosong',
             'file_2.required' => '*file tidak ada',
-            'file_2.max' => 'maksimal file berukuran 20mb',
+            'file_2.max' => 'maksimal ukuran file 30MB',
         ]);
 
         if($validate->fails())
@@ -127,7 +146,7 @@ class GuruController extends Controller
             ), 400);
         }
 
-        // $file_2 = Image::make($request->file('file_2'))->resize(300,200)->store('posts');
+
         $file_2 = $request->file('file_2')->store('posts');
         $data = Post::create([
             'title' => $request->title,
@@ -145,58 +164,66 @@ class GuruController extends Controller
 
     public function addStatus(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'content' => 'required',
-            'file_1' => 'image|mimes:jpeg,bmp,jpg,png|max:5024',
-        ],[
-            'content.required' => '*status kosong',
-            'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
-            'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)',
-            'file_1.max' => 'maksimal gambar berukuran 5mb'
-        ]);
-
-        if($validate->fails())
-        {
-            $error = $validate->getMessageBag()->first();
-            return response()->json(array(
-                'success' => false,
-                'errors' => $error
-            ), 400);
-        }
-
+        
         if ($request->hasFile('file_1')) {
+            
+            $validate1 = Validator::make($request->all(), [
+                'content' => 'required',
+                'file_1' => 'image|mimes:jpeg,gif,jpg,png|max:10024',
+            ],[
+                'content.required' => '*status kosong',
+                'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .gif, .jpg, .png)',
+                'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .gif, .jpg, .png)',
+                'file_1.max' => 'maksimal gambar berukuran 10MB'
+            ]);
+    
+            if($validate1->fails())
+            {
+                $error = $validate1->getMessageBag()->first();
+                return response()->json(['error' => $error]);
+            }
+            
             $image = $request->file('file_1');
             $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
                 $constraint->aspectRatio();
             })->encode('jpg');
-            // $hash = md5($resize->__toString());
             $hash = str_random(50);
             $path = "images/posts/{$hash}.jpg";
             $resize->save(public_path($path));
             $upload = "posts/{$hash}.jpg";
-
-        // $upload = $request->file('file_1')->store('posts');
-
-        $file_1 = new Post;
-        $file_1->file_1 = $upload;
-        $file_1->content = $request->content;
-        $file_1->user_id = $request->user_id;
-        $file_1->type = 1;
-        $file_1->post_name = auth()->user()->name;
-        $file_1->save();
+    
+            $file_1 = new Post;
+            $file_1->file_1 = $upload;
+            $file_1->content = $request->content;
+            $file_1->user_id = $request->user_id;
+            $file_1->type = 1;
+            $file_1->post_name = auth()->user()->name;
+            $file_1->save();
+            
+            return response()->json(['success' => 'status berhasil di posting']);
+        }else
+        {
+            $validate2 = Validator::make($request->all(), [
+                'content' => 'required'
+            ],[
+                'content.required' => '*status kosong',
+            ]);
+    
+            if($validate2->fails())
+            {
+                $error = $validate2->getMessageBag()->first();
+                return response()->json(['error' => $error]);
+            }
+            
+                $data = Post::create([
+                'content' => $request->content,
+                'user_id' => $request->user_id,
+                'type' => 1,
+                'post_name' => auth()->user()->name,
+                ]);
+                
+                return response()->json(['success' => 'status berhasil di posting']);
         }
-
-        else {
-        $data = Post::create([
-            'content' => $request->content,
-            'user_id' => $request->user_id,
-            'type' => 1,
-            'post_name' => auth()->user()->name,
-        ]);
-
-    }
-    // $file_path = asset('images/' . $this->file_1);
-    return response()->json();
     }
 
     public function showPost(Post $post, Request $request)
@@ -223,52 +250,90 @@ class GuruController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'content' => 'required',
-            'file_1' => 'image|mimes:jpeg,bmp,jpg,png|max:5024',
-        ],[
-            'content.required' => '*status kosong',
-            'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
-            'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)',
-            'file_1.max' => '*maksimal gambar berukuran 5mb'
-        ]);
-
-        if($validate->fails())
-        {
-            $error = $validate->getMessageBag()->first();
-            return response()->json(array(
-                'success' => false,
-                'errors' => $error
-            ), 400);
-        }
 
         $post = Post::find($id);
 
-        //get file_1
         $file_1 = null;
         if ($request->hasFile('file_1')) {
+             $validate1 = Validator::make($request->all(), [
+                'content' => 'required',
+                'file_1' => 'image|mimes:jpeg,gif,jpg,png|max:10024',
+            ],[
+                'content.required' => '*status kosong',
+                'file_1.image' => 'file harus berupa gambar atau berformat (.jpeg, .gif, .jpg, .png)',
+                'file_1.mimes' => 'hanya untuk gambar berformat (.jpeg, .gif, .jpg, .png)',
+                'file_1.max' => 'maksimal gambar berukuran 10MB'
+            ]);
+    
+            if($validate1->fails())
+            {
+                $error = $validate1->getMessageBag()->first();
+                return response()->json(['error' => $error]);
+            }
+            
             if($post->file_1){
                 Storage::delete($post->file_1);
+                $image = $request->file('file_1');
+                $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                    $constraint->aspectRatio();
+                })->encode('jpg');
+    
+                $hash = str_random(50);
+                $path = "images/posts/{$hash}.jpg";
+                $resize->save(public_path($path));
+                $file_1 = "posts/{$hash}.jpg";
+                
+                $data = Post::find($id)->update([
+                'content' => $request->content,
+                'file_1' => $file_1,
+            ]);
+            return response()->json($data);
             }
-            // $file_1 = $request->file('file_1')->store('posts');
-            $image = $request->file('file_1');
-            $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
-                $constraint->aspectRatio();
-            })->encode('jpg');
-            // $hash = md5($resize->__toString());
-            $hash = str_random(50);
-            $path = "images/posts/{$hash}.jpg";
-            $resize->save(public_path($path));
-            $file_1 = "posts/{$hash}.jpg";
+            else
+            {
+                $image = $request->file('file_1');
+                $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                    $constraint->aspectRatio();
+                })->encode('jpg');
+    
+                $hash = str_random(50);
+                $path = "images/posts/{$hash}.jpg";
+                $resize->save(public_path($path));
+                $file_1 = "posts/{$hash}.jpg";
+                
+                $data = Post::find($id)->update([
+                'content' => $request->content,
+                'file_1' => $file_1,
+            ]);
+            return response()->json($data);
+                
+            }
+         
+        }else
+        {
+            $validate2 = Validator::make($request->all(), [
+                'content' => 'required'
+            ],[
+                'content.required' => '*status kosong',
+            ]);
+    
+            if($validate2->fails())
+            {
+                $error = $validate2->getMessageBag()->first();
+                return response()->json(['error' => $error]);
+            }
+            if (!$request->hasFile('file_1') && $post->file_1) {
+                $file_1 = $post->file_1;
+            }
+            $data = Post::find($id)->update([
+                'content' => $request->content,
+                'file_1' => $post->file_1,
+            ]);
+            return response()->json($data);
         }
-        if (!$request->hasFile('file_1') && $post->file_1) {
-            $file_1 = $post->file_1;
-        }
-        $data = Post::find($id)->update([
-            'content' => $request->content,
-            'file_1' => $file_1,
-        ]);
-        return response()->json($data);
+
+
+            
     }
 
     public function updatePost(Request $request, $id)
@@ -276,11 +341,11 @@ class GuruController extends Controller
         $validate = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
-            'file_2' => 'max:20024'
+            'file_2' => 'max:30024'
         ],[
             'title.required'  => '*Judul file kosong',
             'content.required' => '*Deskripsi file kosong',
-            'file_2.max' => 'maksimal file berukuran 20mb'
+            'file_2.max' => 'maksimal file berukuran 30MB'
         ]);
 
         if($validate->fails())
@@ -312,7 +377,7 @@ class GuruController extends Controller
             'file_2' => $file_2,
             'file_3' => ($request->title."".substr($file_2, -5)),
         ]);
-        return response()->json($data);
+            return response()->json(['success' => 'status berhasil di posting']);
     }
 
     public function deletePost($id)
@@ -392,58 +457,14 @@ class GuruController extends Controller
     public function download(Post $post)
     {
         $file = public_path() .'/images/'. $post->file_2;
-        return response()->download($file);
+        $headers = ['Content-Type: application/pdf'];
+        
+    	$name = 'Bimko|'.$post->file_3;
+
+        return response()->download($file, $name, $headers);
 
     }
-    public function tes()
-    {
-        // $comments = new Comment();
-        // $id = $comments->user_id = auth()->user()->id;
-        // $user = User::where('id','=',$id)->get();
-        // dd($user);
-        // $detail = DetailAgenda::find(1);
-        // $user = User::onlyTrashed()->where('id', 19);
-        // dd($user);
-        $agenda = Agenda::withTrashed()->where('user_id', 20)->first();
-            if($agenda->detailAgenda->file){
-            Storage::delete($agenda->detailAgenda->file);
-        }
-dd($agenda);
-
-        // $comment = Comment::find($id);
-
-        // // dd($comment);
-        // $a = DB::table('notifications')->where('data','==','\"comment_id\":'.$id)->get();
-        // dd($a);
-    }
-
-    //notifikasi
-    // public function notification()
-    // {
-    //     return auth()->user()->unreadNotifications;
-
-    // }
-    // public function markAsRead(Request $request)
-    // {
-    //     auth()->user()->unreadNotifications->find($request->not_id)->markAsRead();
-
-    // }
-    // public function readLesson($lesson_id)
-    // {
-    //     $lesson = Lesson::find([$lesson_id]);
-    //     return view('lesson', compact('lesson'));
-
-    // }
-    // public function allMarkAsread()
-    // {
-    //     auth()->user()->unreadNotifications->markAsRead();
-
-    // }
-    // public function readAllLesson()
-    // {
-    //     $lessons = auth()->user()->readNotifications;
-    //     return view('allLesson', compact('lessons'));
-    // }
+   
 
     public function showProfil(User $user,Request $request)
     {
@@ -494,26 +515,55 @@ dd($agenda);
         //get file_1
         $file = null;
         if ($request->hasFile('file')) {
+             $validate1 = Validator::make($request->all(), [
+                'file' => 'image|mimes:jpeg,gif,jpg,png|max:10024',
+            ],[
+                'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .gif, .jpg, .png)',
+                'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .gif, .jpg, .png)',
+                'file.max' => 'maksimal gambar berukuran 10MB'
+            ]);
+    
+            if($validate1->fails())
+            {
+                $error = $validate1->getMessageBag()->first();
+                return back()
+                ->with('danger-guru', 'Gagal memperbarui informasi profil '.$error.'')
+                ->withInput($request->all())
+                ->withErrors($validate1);
+            }
             if($user->file == "users/woman.png")
             {
-                $file = $request->file('file')->store('users');
+                $image = $request->file('file');
+                $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                    $constraint->aspectRatio();
+                })->encode('jpg');
+                $hash = str_random(50);
+                $path = "images/users/{$hash}.jpg";
+                $resize->save(public_path($path));
+                $file = "users/{$hash}.jpg";
             }
             elseif($user->file == "users/man.png")
             {
-                $file = $request->file('file')->store('users');
+                $image = $request->file('file');
+                $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
+                    $constraint->aspectRatio();
+                })->encode('jpg');
+                $hash = str_random(50);
+                $path = "images/users/{$hash}.jpg";
+                $resize->save(public_path($path));
+                $file = "users/{$hash}.jpg";
             }
-            else{
+            else
+            {
                 Storage::delete($user->file);
                 $image = $request->file('file');
                 $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
                     $constraint->aspectRatio();
                 })->encode('jpg');
-                // $hash = md5($resize->__toString());
                 $hash = str_random(50);
                 $path = "images/users/{$hash}.jpg";
                 $resize->save(public_path($path));
                 $file = "users/{$hash}.jpg";
-                // $file = $request->file('file')->store('users');
             }
 
         }
@@ -529,29 +579,33 @@ dd($agenda);
         }
 
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
+            'email' => 'required|email',
             'grade' => 'required',
-            'nip' => 'required|numeric|unique:users,nip,'.$user->id,
-            'phone' => 'required',
-            'file' => 'image|mimes:jpeg,bmp,jpg,png|max:5024'
+            'nip' => 'required|min:0|numeric|digits:18|unique:users,nip,'.$user->id,
+            'phone' => 'required|numeric|min:0|digits_between:1,15',
 
         ],[
             'name.required'  => '*nama tidak boleh kosong',
+            'name.regex' => '*nama hanya berformat alfabet',
             'email.required' => '*email tidak boleh kosong',
+            'email.email'   => '*harus berformat email',
             'grade.required' => '*kelas tidak boleh kosong',
             'nip.unique' => '*NIP sudah terpakai',
             'nip.required' => '*NIP tidak boleh kosong',
             'nip.numeric' => '*NIP harus berupa angka',
+            'nip.min' => '*NIP harus angka bulat positif',
+            'nip.digits' => '*NIP harus 18 karakter',
             'phone.required' => '*nomor telepon tidak boleh kosong',
-            'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
-            'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
+            'phone.numeric' => '*nomor telepon harus berupa angka',
+            'phone.min' => '*nomor telepon harus angka bulat positif',
+            'phone.digits_between' => '*nomor telepon tidak boleh lebih 15 digit',
         ]);
 
         if($validate->fails())
         {
             return back()
-                ->with('danger', 'Gagal memperbarui informasi profil '.$validate->getMessageBag()->first().'')
+                ->with('danger-guru', 'Gagal memperbarui informasi profil '.$validate->getMessageBag()->first().'')
                 ->withInput($request->all())
                 ->withErrors($validate);
         }
@@ -586,7 +640,7 @@ dd($agenda);
         if($validate->fails())
         {
             return back()
-                ->with('danger', 'Gagal membuat agenda rapat')
+                ->with('danger-guru', 'Gagal membuat agenda rapat '.$validate->getMessageBag()->first().'')
                 ->withInput($request->all())
                 ->withErrors($validate);
         }
@@ -666,11 +720,14 @@ dd($agenda);
         $users = User::whereHas('roles',function($q){
             $q->where('name','Guru');
         })->get();
+        
+        $datenow = Carbon::now();
 
         return view('guru.agendalist',[
             'agendas' => $agendas,
             'users' => $users,
             'notifications' => $notifications,
+            'datenow' => $datenow
         ]);
     }
 
@@ -683,8 +740,14 @@ dd($agenda);
         $where = array ('id' => $id);
         $agenda = Agenda::where($where)->first();
         $agenda->load('detailAgenda');
+        $file_name ='';
+        if(isset($agenda->detailAgenda->file))
+        {
+        $file_name = $agenda->name."".substr($agenda->detailAgenda->file,-5);
+        }
 
-        return response()->json([$agenda,$users]);
+
+        return response()->json([$agenda,$users,$file_name]);
     }
 
     public function agendaDownload(Agenda $agenda,$id)
@@ -694,8 +757,12 @@ dd($agenda);
         $agenda = Agenda::where($where)->first();
 
         $download = public_path() .'/images/'. $agenda->detailAgenda->file;
+        $headers = ['Content-Type: application/pdf'];
+        
+        
+    	$name = 'Bimko-rapat|'.$agenda->name."".substr($agenda->detailAgenda->file,-5);
 
-        return response()->download($download);
+        return response()->download($download, $name, $headers);
     }
 
     public function deleteAgenda(Request $request,$id)
@@ -810,7 +877,7 @@ dd($agenda);
         if($validate->fails())
         {
             $error = $validate->getMessageBag()->first();
-            return redirect()->back()->with('danger', $error);
+            return redirect()->back()->with('danger-guru', $error);
         }
         $parent_id = Question::where('parent', $request->question_id)->latest()->select('id')->get()->first();
         if($parent_id !== null)
@@ -857,7 +924,9 @@ dd($agenda);
     public function showQuestion($id)
     {
         $question = Question::where('id', $id)->get()->first();
-        return response()->json($question);
+        
+        return response()->json($question);    
+        
     }
 
 

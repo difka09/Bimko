@@ -24,7 +24,7 @@
                 <nav class="sidenav__menu-container d-lg-none">
                   <ul class="sidenav__menu" role="menubar">
                     <li>
-                      <a href="" class="sidenav__menu-link sidenav__menu-link-category">Beranda</a>
+                      <a href="/feed" class="sidenav__menu-link sidenav__menu-link-category">Beranda</a>
                     </li>
                     <li>
                       <a href="#" class="sidenav__menu-link">Kategori</a>
@@ -38,6 +38,40 @@
                     <li>
                         <a href="{{Route('feed.info')}}" class="sidenav__menu-link sidenav__menu-link-category">Tentang Kami</a>
                     </li>
+                    @guest
+                    <li>
+                        <a href="/login" class="sidenav__menu-link sidenav__menu-link-category">Register/Login</a>
+                    </li>
+                    @endguest
+                    @auth
+                    <li>
+                      <a href="#" class="sidenav__menu-link">{{ucwords(auth()->user()->name)}}</a>
+                      <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i>
+                      </button>
+                         <ul class="sidenav__menu-dropdown">
+                        @if(auth()->user()->isGuest())
+                        <li><a href="{{ route('guest.showuser') }}" class="sidenav__menu-link">Profil</a>
+                        </li>
+                        @endif
+                        @if(auth()->user()->isGuru())
+                        <li><a href="{{ route('guru.profil',auth()->user()->id)}}" class="sidenav__menu-link">Profil</a>
+                        </li>
+                        @endif
+                        @if(auth()->user()->isMurid())
+                        <li><a href="{{ route('murid.showuser') }}" class="sidenav__menu-link">Profil</a>
+                        </li>
+                        @endif
+                        <li><a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();" class="sidenav__menu-link">Logout</a>
+                        </li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                            </form
+                        </ul>
+                    </li>
+                    
+                    @endauth
                   </ul>
                 </nav>
 
@@ -107,12 +141,11 @@
             @auth
                 <li class="nav__dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
+                        {{ ucwords(Auth::user()->name) }} <span class="caret"></span>
                     </a>
                     {{-- <a href="#">{{ Auth::user()->name }} <span class="caret"></span></a> --}}
                 <ul class="nav__dropdown-menu">
-                    </a></li>
-                    @if (auth()->user()->isGuru())
+                     @if (auth()->user()->isGuru())
                     <li><a class="dropdown-item" href="{{ route('guru.profil',auth()->user()->id)}}">
                             Profil
                     </a></li>
@@ -136,6 +169,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
+                </a></li>
             @endauth
         </ul>
         </div>
@@ -146,7 +180,8 @@
                 <i class="ui-search nav__search-trigger-icon"></i>
               </a>
               <div class="nav__search-box" id="nav__search-box">
-                <form class="nav__search-form" action="{{route('feed.search')}}" method="GET">
+                <form class="nav__search-form" action="{{route('feed.search')}}" method="POST">
+                    @csrf
                   <input type="text" id="cari" name="cari" placeholder="Cari artikel disini" class="nav__search-input">
                   <button type="submit" class="search-button btn btn-lg btn-color btn-button">
                     <i class="ui-search nav__search-icon"></i>

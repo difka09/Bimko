@@ -1,11 +1,11 @@
 <head>
         {{-- <h6> {{ request()->is('tes/123') ? 'Beranda' : '' }} </h6>
 
-        <title>{{ request()->is('tes/123') ? 'Beranda' : '' }}</title>
-        <title>{{ request()->is('tes/123/a/files') ? 'Data File' : '' }}</title>
-        <title>{{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }}</title>
-        <title>{{ request()->is('tes/123/profil/*') ? 'profil' : '' }}</title>
-        <title>{{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }}</title> --}}
+        <title>{{ request()->is('a/guru') ? 'Beranda' : '' }}</title>
+        <title>{{ request()->is('a/guru/files') ? 'Data File' : '' }}</title>
+        <title>{{ request()->is('a/guru/a/agenda') ? 'agenda' : '' }}</title>
+        <title>{{ request()->is('a/guru/profil/*') ? 'profil' : '' }}</title>
+        <title>{{ request()->is('a/guru/edit/profil') ? 'edit profil' : '' }}</title> --}}
         <title class="count-notif">
             @yield('pageTitle')
         </title>
@@ -36,8 +36,9 @@
             window.Laravel.userId = {{ auth()->user()->id }}
         </script>
         @endif
-
         <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ asset('css/offline-theme-slide.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/offline-language-english.css')}}">
         <link rel="shortcut icon" href="{{ asset('user/img/favicon.ico') }}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap-reboot.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('guru/Bootstrap/dist/css/bootstrap.css')}}">
@@ -117,5 +118,6 @@ div.ex2 {
         <link rel="stylesheet" type="text/css" href="{{asset('guru/css/fonts.min.css')}}">
         @stack('customecss')
         @stack('uploadicon')
+
 
 </head>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="utf-8">
+<head><meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 	<title>Bimko | Landing</title>
+    <link rel="shortcut icon" href="{{ asset('user/img/favicon.ico') }}">
+
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CVarela+Round" rel="stylesheet">
 	<!-- Bootstrap -->
@@ -21,11 +23,88 @@
 	<link rel="stylesheet" href="{{asset('landing/css/font-awesome.min.css')}}">
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="{{asset('landing/css/style.css')}}" />
+    <style>
+
+    .intro{
+        text-align: center;
+        display: block;
+        color:white;
+        margin-left: auto;
+        margin-right: auto;
+        display:block;
+        color:#ffffff;
+        weight:bold;
+    }
+    
+    </style>
+    <style>
+    .overlay1 {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0, 0.9);
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
+    
+    .overlay1-content {
+      position: relative;
+      top: 25%;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .overlay1 a {
+      padding: 8px;
+      text-decoration: none;
+      font-size: 36px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .overlay1 a:hover, .overlay1 a:focus {
+      color: #f1f1f1;
+    }
+    
+    .overlay1 .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 45px;
+      font-size: 60px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .overlay1 a {font-size: 20px}
+      .overlay1 .closebtn {
+      font-size: 40px;
+      top: 15px;
+      right: 35px;
+      }
+    }
+    </style>
 </head>
 
 <body>
+    <div id="myNav" class="overlay1" style="width:100%">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="overlay1-content">
+        <h1 class="intro">Aplikasi Penelitian Tugas Akhir Universitas Diponegoro Fakultas Teknik Komputer</h1>
+        <h2 class="intro">Pembuatan Sistem Informasi Bimbingan dan Konseling SMK di Kabupaten Blora Menggunakan Kerangka Kerja <em>Laravel</em></h2>
+        <img class="intro" src="https://upload.wikimedia.org/wikipedia/id/thumb/2/2d/Undip.png/220px-Undip.png" alt="UNDIP">
+        <br>
+        <p class="intro">Difka Satria Akbar | 21120115120019</p>
+        <br>
+        <!--<p>akan menuju ke halaman <a href="/">landing</a> dalam <span id="counter">15</span> detik</p>-->
+    </div>
+    </div>
 	<!-- Header -->
-	<header id="home">
+	<header id="home" style="display:none">
         @include('admin.templates.partials._alerts')
 		<!-- Background Image -->
 		<div class="bg-img" style="background-image: {{asset('landing/img/background1.jpg')}}">
@@ -97,7 +176,7 @@
 
 
     <!-- Contact -->
-	<div id="info" class="section md-padding">
+	<div id="info" class="section md-padding" style="display:none">
 
 		<!-- Container -->
 		<div class="container">
@@ -160,7 +239,7 @@
 	<!-- /Contact -->
 
 	<!-- About -->
-	<div id="service" class="section md-padding bg-grey">
+	<div id="service" class="section md-padding bg-grey" style="display:none">
 
 		<!-- Container -->
 		<div class="container">
@@ -194,7 +273,7 @@
 
 
 	<!-- Why Choose Us -->
-	<div id="map" class="section md-padding"></div>
+	<div id="map" class="section md-padding" style="display:none"></div>
 		<!-- /Row -->
 
 		</div>
@@ -204,7 +283,7 @@
 	<!-- /Why Choose Us -->
 
 	<!-- Footer -->
-	<footer id="footer" class="sm-padding bg-dark">
+	<footer id="footer" class="sm-padding bg-dark" style="display:none">
 
 		<!-- Container -->
 		<div class="container">
@@ -233,7 +312,7 @@
 
 					<!-- footer copyright -->
 					<div class="footer-copyright">
-						<p>Copyright © 2019 Develop by Difka</p>
+						<p>Copyright © 2019 Developed by Difka</p>
                         <p>Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
 					</div>
 					<!-- /footer copyright -->
@@ -275,7 +354,7 @@
                 $("#alert-danger").slideUp(500);
             });
     </script>
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyD_eiIH24e4fILRNWijlDHOMpo4dbVelJY"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAWVDSnVhNaCKNA3g1apoeFT5H2ITYHSRA"></script>
     <script src="{{ asset('js/gmaps.js') }}"></script>
     <style type="text/css">
         .user-panel>.image>img {
@@ -348,26 +427,36 @@
         </style>
 
     <script>
+        
+    </script>
+    <script>
+        function closeNav() {
+        document.getElementById("myNav").style.width = "0%";
+        document.getElementById("home").style.display= "block";
+        document.getElementById("info").style.display= "block";
+        document.getElementById("service").style.display= "block";
+        document.getElementById("map").style.display= "block";
+        document.getElementById("footer").style.display= "block";
         var map = new GMaps({
             el: '#map',
             zoom: 12,
             lat: -6.9611102,
             lng: 111.4038343
         });
-
         @foreach($maps as $map)
         map.addMarker({
             lat: '{{$map->latitude}}',
             lng: '{{$map->longitude}}',
             title: '{{$map->name}}',
-            icon: '{{ asset('images/maps/icon-school.png') }}',
+            icon: '{{ asset('images/maps/school-icon.ico') }}',
             infoWindow: {
-                // content : '<h3>{{$map->name}}</h3><p>{{$map->description}}</p>'
-                content : '<div id="iw-container"><div class="iw-title">{{$map->name}}</div><div class="iw-content"><div class="iw-subTitle">{{$map->name}}</div><img src="{{$map->getImage()}}" alt="loading"><p align="justify">{{$map->description}}</p><div class="iw-subTitle">Informasi</div><p>{{$map->address}}<br>3830-292 Ílhavo - Portugal<br><br>Telepon. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p></div><div class="iw-bottom-gradient"></div></div>'
+                content : '<div id="iw-container"><div class="iw-title">{{$map->name}}</div><div class="iw-content"><div class="iw-subTitle">{{$map->name}}</div><img src="{{$map->getImage()}}" alt="loading"><p align="justify">{{$map->description}}</p><div class="iw-subTitle">Informasi</div><p>{{$map->address}}<br></p></div><div class="iw-bottom-gradient"></div></div>'
 
             }
         });
         @endforeach
+
+        }
     </script>
 
 </body>

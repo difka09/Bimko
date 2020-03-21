@@ -19,13 +19,13 @@
                 </div> --}}
                 <div class="notification-event">
                     @if (($allnotification->data['comment']['parent_id']) == ($allnotification->data['comment']['user_id']))
-                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">nya</a>.
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{ucwords($allnotification->data['comment']['user']['name'])}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">nya</a>.
                     @endif
                     @if (($allnotification->data['comment']['parent_id']) == (auth()->user()->id))
-                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">anda</a>.
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{ucwords($allnotification->data['comment']['user']['name'])}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">anda</a>.
                     @endif
                     @if (((($allnotification->data['comment']['parent_id']) != (auth()->user()->id))) && (($allnotification->data['comment']['user_id']) != ($allnotification->data['comment']['parent_id'])))
-                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{$allnotification->data['comment']['user']['name']}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">{{$allnotification->data['comment']['post']['post_name']}}</a>.
+                    <a href="{{Route('guru.profil',$allnotification->data['comment']['user_id'])}}" class="h6 notification-friend">{{ucwords($allnotification->data['comment']['user']['name'])}}</a> mengkomentari status <a href="{{Route('guru.show',$allnotification->data['comment']['post_id'])}}" class="notification-link">{{$allnotification->data['comment']['post']['post_name']}}</a>.
                     @endif
                     <span class="notification-date"><time class="entry-date updated" datetime="{{$allnotification->created_at}}"></time></span>
                 </div>

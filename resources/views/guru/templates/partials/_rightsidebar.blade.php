@@ -41,7 +41,7 @@
                 <img src="{{$file->user->getImage()}}" alt="author">
             </div>
             <div class="notification-event">
-                <a href="#" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->file_3}}</a>
+                <a href="#" class="h6 notification-friend">{{ucwords($file->user->name)}}</a> telah mengupload file <a href="#" class="notification-link">{{$file->file_3}}</a>
             <span class="notification-date"><time class="entry-date updated" datetime="{{$file->created_at}}"></time></span>
             </div>
         </li>

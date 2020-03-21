@@ -184,7 +184,7 @@
                                             <img src="{{asset('guru/img/avatar78-sm.jpg')}}" alt="author">
                                         </div> --}}
                                         <div class="author-date">
-                                        <a href="#" class="author-name h6">{{$question->user->name}}</a> telah mengirimkan permintaan pesan konseling<a href="#"> {{$question->name}}</a>
+                                        <a href="#" class="author-name h6">{{ucwords($question->user->name)}}</a> telah mengirimkan permintaan pesan konseling<a href="#"> {{$question->name}}</a>
                                         </div>
                                     </div>
                                 </td>
@@ -290,6 +290,11 @@
                     {
                         return false;
                     }
+                },error: function(data)
+                {
+                    console.log('aduh');
+                    alert('pesan sudah dihapus');
+                    location.reload();   
                 }
             });
         });
@@ -300,8 +305,8 @@
         $("#alert-guru-success").slideUp(500);
     });
 
-    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
-        $("#alert-danger").slideUp(500);
+    $("#alert-guru-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-guru-danger").slideUp(500);
     });
 </script>
 @endpush

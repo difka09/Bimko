@@ -38,10 +38,16 @@ class ImportController extends Controller
         $niss = User::pluck('nis')->toArray();
 
         $data = Excel::toCollection(new UsersImport, request()->file('file'));
+        if($data[0][1]['name'] == '')
+        {
+            $sum_row = '';   
+        }
 
     foreach($data[0] as $row) {
-        if($row['nis']=='')
-        $zonk ='';
+        if($row['name']=='')
+            break;
+        if($row['nis'] =='')
+            $zonk ='';
         if(in_array($row['email'], $emails))
         $email[] = [
             'email' => $row['email']
@@ -58,9 +64,29 @@ class ImportController extends Controller
             $c = $b->implode('email', ', ');
             return back()->with('danger', 'Gagal mengimport data siswa. Data email duplikat : '.$c.'');
     }
-    elseif(isset($zonk))
+    elseif(isset($zonk) && !isset($sum_row) && $row['name']!='')
     {
         return back()->with('danger', 'Gagal mengimport data siswa. Terdapat data NIS kosong');
+    }
+    elseif(isset($sum_row))
+    {
+        $user = [
+            'id' => $data[0][0]['id'],
+            'name' => $data[0][0]['name'],
+            'email' => $data[0][0]['email'],
+            'password' => Hash::make('12345678'),
+            'nis' => $data[0][0]['nis'],
+            'nip' => $data[0][0]['nip'],
+            'gender' => $data[0][0]['gender'],
+            'agency' => $data[0][0]['agency'],
+            'grade' => $data[0][0]['grade'],
+            'phone' => $data[0][0]['phone'],
+            'file' => $data[0][0]['file'],
+            'school_id' => $data[0][0]['school_id']
+        ];
+        $insertData = User::create($user);
+        $insertData->assignRole('Murid');
+        return back()->with('success', 'Berhasil mengimport data siswa');
     }
     elseif(isset($nis))
     {
@@ -112,19 +138,29 @@ class ImportController extends Controller
         $emails = User::pluck('email')->toArray();
         $nips = User::pluck('nip')->toArray();
         $data = Excel::toCollection(new UsersImport, request()->file('file'));
+        if($data[0][1]['name'] == '')
+        {
+            $sum_row = '';   
+        }
         foreach($data[0] as $row) {
-            if($row['nip']=='')
-            $zonk ='';
+            if($row['name']=='')
+                break;
+            if($row['nip'] =='')
+                $zonk ='';
+        
+            elseif($row['nip'] != '')
+                if(in_array($row['nip'],$nips))
+                $nip[] = [
+                    'nip' => $row['nip']
+                ];
 
             if(in_array($row['email'], $emails))
             $email[] = [
                 'email' => $row['email']
             ];
-            elseif(in_array($row['nip'],$nips))
-            $nip[] = [
-                'nip' => $row['nip']
-            ];
+            
         }
+
         if(isset($email))
         {
             $b = collect($email);
@@ -133,9 +169,29 @@ class ImportController extends Controller
 
             return back()->with('danger', 'Gagal mengimport data guru. Data email duplikat : '.$c.'');
         }
-        elseif(isset($zonk))
+        elseif(isset($zonk) && !isset($sum_row) && $row['name']!='')
         {
             return back()->with('danger', 'Gagal mengimport data guru. Terdapat data NIP kosong');
+        }
+        elseif(isset($sum_row))
+        {
+        $user = [
+            'id' => $data[0][0]['id'],
+            'name' => $data[0][0]['name'],
+            'email' => $data[0][0]['email'],
+            'password' => Hash::make('12345678'),
+            'nis' => $data[0][0]['nis'],
+            'nip' => $data[0][0]['nip'],
+            'gender' => $data[0][0]['gender'],
+            'agency' => $data[0][0]['agency'],
+            'grade' => $data[0][0]['grade'],
+            'phone' => $data[0][0]['phone'],
+            'file' => $data[0][0]['file'],
+            'school_id' => $data[0][0]['school_id']
+        ];
+        $insertData = User::create($user);
+        $insertData->assignRole('Guru');
+        return back()->with('success', 'Berhasil mengimport data guru');
         }
         elseif(isset($nip))
         {

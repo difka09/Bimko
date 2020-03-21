@@ -102,7 +102,7 @@
                                         <img src="{{asset('guru/img/avatar78-sm.jpg')}}" alt="author">
                                     </div> --}}
                                     <div class="author-date">
-                                    <a href="#" class="author-name h6">{{$feed->user->name}}</a> telah mengirimkan permintaan persetujuan artikel<a href="#"> {{$feed->name}}</a>
+                                    <a href="#" class="author-name h6">{{ucwords($feed->user->name)}}</a> telah mengirimkan permintaan persetujuan artikel<a href="#"> {{$feed->name}}</a>
                                     </div>
                                 </div>
                             </td>

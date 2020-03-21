@@ -11,11 +11,13 @@
     width: 80px;
     cursor: pointer;
 }
+
+
 </style>
 @endpush
 <div class="modal fade" id="open-photo-popup-v1" tabindex="-1" role="dialog" aria-labelledby="open-photo-popup-v1" aria-hidden="true" style="display:none">
-	<div class="modal-dialog window-popup open-photo-popup open-photo-popup-v1" role="document">
-		<div class="modal-content" style="width: 970px;height:756px;">
+	<div class="modal-dialog window-popup open-photo-popup open-photo-popup-v1" role="document" style="max-width: 580px; max-height:720px">
+		<div class="modal-content" style="max-width: 580px;max-height:720px">
 			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
 				<svg class="olymp-close-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-close-icon')}}"></use></svg>
 			</a>
@@ -25,8 +27,8 @@
 					<div class="swiper-container" data-slide="fade">
 						{{-- <div class="swiper-wrapper"> --}}
 							{{-- <div class="swiper-slide"> --}}
-								<div class="photo-item" style="max-width: 970px;max-height:756px">
-                                <img src="{{$user->getImage()}}" alt="photo" style="width: 100%;height: 100%;" width="970px" height="100px">
+								<div class="photo-item" style="max-width: 580px;max-height:720px;">
+                                <img src="{{$user->getImage()}}" alt="photo" style="width: 100%;height: auto;">
 									<div class="overlay"></div>
 								</div>
 							{{-- </div> --}}
@@ -159,7 +161,7 @@
                                     </label>
                                 </a>
                                 <input type="file" name="file_1" id="file_1">
-                                <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post Status</button>
+                                <button type="submit" id="btn-save19" class="btn btn-primary btn-md-2">Post Status</button>
                             </div>
                             </div>
                         </form>
@@ -187,7 +189,7 @@
                                         </label>
                                     </a>
                                     <input type="file" name="file_2" id="file_2" nonvalidate>
-                                    <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post File</button>
+                                    <button type="submit" id="btn-save20" class="btn btn-primary btn-md-2">Post File</button>
                                 </div>
                                 </div>
                             </form>
@@ -206,7 +208,7 @@
                         <div class="post__author author vcard inline-items">
                             <img src="{{$user->getimage()}}" alt="author">
                             <div class="author-date">
-                                <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user->id)}}">{{$post->user->name}}</a>
+                                <a class="h6 post__author-name fn" href="{{route('guru.profil',$post->user->id)}}">{{ucwords($post->user->name)}}</a>
                                 <div class="post__date">
                                     <a href="{{route('guru.show',$post)}}" style="color:#888DA8"><time class="published" datetime="{{$post->created_at}}"></time></a>
                                 </div>
@@ -241,7 +243,7 @@
                         @else
                         @endif
                         </div>
-                    <div id="countcomment{{$post->id}}" class="countcomment">
+                    <div id="countcomment{{$post->id}}" class="countcomment" data-post="{{$post->id}}">
                         <div class="post-additional-info inline-items">
                             <div class="comments-shared">
                                 <a class="post-add-icon inline-items">
@@ -267,7 +269,7 @@
                             <div class="post__author author vcard inline-items">
                                 <img src="{{$comment->user->getImage()}}" alt="author">
                                 <div class="author-date">
-                                    <a class="h6 post__author-name fn" href="{{route('guru.profil',$comment->user->id)}}">{{$comment->user->name}}</a>
+                                    <a class="h6 post__author-name fn" href="{{route('guru.profil',$comment->user->id)}}">{{ucwords($comment->user->name)}}</a>
                                     <div class="post__date">
                                         <time class="published" datetime="{{$comment->created_at}}">
                                         </time>
@@ -335,11 +337,12 @@
         <div id="iniload"></div>
             <div id="remove-row">
                 @if (empty($myid))
-                <div title="Data tidak ditemukan">
-                    <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
-                </div>
+                <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
+                <!--<div title="Data tidak ditemukan">-->
+                <!--    <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-dropdown-arrow-icon" style="fill:gray"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>-->
+                <!--</div>-->
                 @else
-                <a id="btn-more" class="btn btn-control" data-user="{{$user->id}}" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
+                <a id="btn-more" class="btn btn-control" data-user="{{$user->id}}" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon" style="fill:gray"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
                 @endif
             </div>
         </div>
@@ -360,11 +363,15 @@
                 <ul class="widget w-personal-info item-block">
                     <li>
                         <span class="title">Informasi diri:</span>
-                        <span class="text">Hi, Saya {{$user->name}} sebagai guru bk di @if ($user->school){{$user->school->name}}@endif dan mengajar siswa kelas {{$user->grade}}</span>
+                        <span class="text">Hi, Saya {{ucwords($user->name)}} sebagai guru bk di @if ($user->school){{$user->school->name}}@endif dan mengajar siswa kelas {{$user->grade}}</span>
                     </li>
                     <li>
                         <span class="title">NIP:</span>
-                        <span class="text">{{$user->nip}}</span>
+                        @php
+                        $nip = $user->nip;
+                        $nip1 = substr($nip,0,8);
+                        @endphp
+                        <span class="text">{{$nip1}}<span>{{preg_replace("/[0-9]/","X",$nip1)}}</span></span>
                     </li>
                     <li>
                         <span class="title">Telepon:</span>
@@ -499,8 +506,10 @@ $(document).ready(function(){
             //    console.log(data);
                 if(data != '')
                 {
+                    var afterdata = data.replace("<script>","");
+
                     $('#remove-row').remove();
-                    $('#iniload').append(data);
+                    $('#iniload').append(afterdata);
                 }
                 else
                 {
@@ -528,8 +537,10 @@ $(document).ready(function(){
             {
                 if(data != '')
                 {
+                    var afterdata = data.replace("<script>","");
+
                     $('#remove-row-comments'+post).remove();
-                    $('#comment'+post).append(data);
+                    $('#comment'+post).append(afterdata);
                     // console.log(data);
 
                     // console.log(post);
@@ -595,6 +606,11 @@ function showFileName4( event ) {
                 $(this).next('.content').slideToggle(200);
             });
         }); --}}
-
+<script>
+    $('body').on('click', '.countcomment', function(){
+        var post_id = $(this).data("post");
+        document.getElementById('text'+post_id).focus();
+    });
+</script>
 @endpush
 

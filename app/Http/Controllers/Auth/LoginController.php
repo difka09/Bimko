@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {
@@ -44,6 +46,7 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.wrong')],
         ]);
+
     }
 
     protected function authenticated(Request $request, $user)
@@ -53,7 +56,7 @@ class LoginController extends Controller
                 return redirect()->route('admin.index');
             }
             elseif($user->hasRole('guest')) {
-                return redirect()->route('guest.createfeed');
+                return redirect()->route('guest.showuser');
             }
     }
 }

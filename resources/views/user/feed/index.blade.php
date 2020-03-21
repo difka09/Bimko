@@ -26,12 +26,12 @@
             <div class="entry__body post-list__body">
               <div class="entry__header">
                 <h2 class="entry__title">
-                <a href="{{ Route('feeds.show', $feed) }}">{{ $feed->name }}</a>
+                <a href="{{ Route('feeds.show', $feed) }}">{{ ucwords($feed->name) }}</a>
                 </h2>
                 <ul class="entry__meta">
                   <li class="entry__meta-author">
                     <i class="ui-author"></i>
-                    <a href="#">{{$feed->user->name}}</a>
+                    <a href="#">{{ ucwords($feed->user->name) }}</a>
                   </li>
                     <?php
                         $controller->tanggal($feed->agreement->created_at);

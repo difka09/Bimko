@@ -27,7 +27,7 @@ class FeedController extends Controller
 
         $this->maps = School::orderBy('name', 'asc')->get();
         $this->populars = Feed::orderBy('readby', 'desc')->where('status','=',1)->limit(4)->get();
-        $this->latests = Feed::orderBy('created_at', 'desc')->where('status','=',1)->limit(4)->get();
+        $this->latests = Feed::orderBy('updated_at', 'desc')->where('status','=',1)->limit(4)->get();
 
 
     }
@@ -35,7 +35,7 @@ class FeedController extends Controller
     public function indexFeed()
     {
         $categories = Catfeed::get();
-        $feeds = Feed::latest()->where('status','=',1)->paginate(5);
+        $feeds = Feed::orderBy('updated_at','DESC')->where('status','=',1)->paginate(5);
 
         // dd($latests);
 
@@ -51,12 +51,14 @@ class FeedController extends Controller
     public function search(Request $request)
     {
         $categories = Catfeed::get();
-        $input = $request->cari;
+        
+        $input = strip_tags($request->cari);
+
 
         $feeds = new Feed;
         if(request()->has('cari')){
             $feeds = $feeds->where([
-            ['name','LIKE',"%{$request->cari}%"],
+            ['name','LIKE',"%{$input}%"],
             ['status','=',1],
            ]);
        }
@@ -64,7 +66,7 @@ class FeedController extends Controller
        $feeds = $feeds->paginate(4)->appends([
         'cari' =>  request('cari'),
     ]);
-
+    
     return view('user.feed.search',[
         'feeds' => $feeds,
         'input' => $input,
@@ -76,6 +78,7 @@ class FeedController extends Controller
         'controller' => $this
         ]);
     }
+    
 
     public function category($id)
     {   if($category_name = Catfeed::where('slug',$id)->count() == 0)
@@ -113,17 +116,18 @@ class FeedController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required|unique:feeds',
+            'name' => 'required|unique:feeds|max:32',
             'content' => 'required',
             'catfeed' => 'required',
-            'file' => 'required|image|mimes:jpeg,bmp,jpg,png|max:5024'
+            'file' => 'required|image|mimes:jpeg,jpg,png,gif|max:10024'
         ],[
             'name.unique'  => '*Judul telah digunakan, gunakan judul lain',
             'name.required'  => '*Judul artikel kosong',
+            'name.max' => '*Maksimal karakter judul 32',
             'content.required' => '*konten artikel kosong',
             'catfeed.required' => '*kategori artikel kosong',
-            'file.required' => '*file kosong',
-            'file.max' => 'ukuran file maksimal 5MB',
+            'file.required' => '*file gambar kosong',
+            'file.max' => 'ukuran file maksimal 10MB',
             'file.image' => 'file harus berupa gambar atau berformat (.jpeg, .bmp, .jpg, .png)',
             'file.mimes' => 'hanya untuk gambar berformat (.jpeg, .bmp, .jpg, .png)'
         ]);
@@ -135,7 +139,8 @@ class FeedController extends Controller
                 ->withInput($request->all())
                 ->withErrors($validate);
         }
-
+        
+        
         $image = $request->file('file');
         $resize = Image::make($image->getRealPath())->resize(960,960, function($constraint){
             $constraint->aspectRatio();

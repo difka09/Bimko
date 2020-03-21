@@ -7,6 +7,8 @@
   <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="shortcut icon" href="{{ asset('user/img/favicon.ico') }}">
+
   {{-- <link type="text/css" rel="stylesheet" href="{{asset('landing/css/bootstrap.min.css')}}" /> --}}
   <style>
   .alert-danger {
@@ -44,7 +46,7 @@ button.close {
     @include('admin.templates.partials._alerts')
     <div class="form">
              <div id="login-responder" style="display:block">
-                <h1>Daftar Sebagai Responder</h1>
+                <h1>Daftar Sebagai Responder/Alumni Siswa Blora</h1>
                 <form action="{{Route('guest.store')}}" method="POST">
                     @csrf
                 <div class="field-wrap {{ $errors->has('name') ? 'has-error' :'' }}">
@@ -121,7 +123,7 @@ button.close {
 
 
 
- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
  <script>
     $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
         $("#alert-danger").slideUp(500);

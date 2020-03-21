@@ -22,7 +22,7 @@
                     <img src="http://placehold.it/64/006400/fff&text=R" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">{{$responder->user->name}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{str_limit($responder->name,10)}}</a>.
+                    <a href="#" class="h6 notification-friend">{{ucwords($responder->user->name)}}</a> telah mengirimkan permintaan persetujuan artikel <a href="#" class="notification-link">{{str_limit($responder->name,10)}}</a>.
                     <span class="notification-date"><time class="entry-date updated" datetime="{{$responder->created_at}}"></time></span>
                 </div>
            </li>
@@ -54,7 +54,7 @@
                     <img src="http://placehold.it/64/55C1E7/fff&text={{substr($murid->user->name,0,2)}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="#" class="h6 notification-friend">{{$murid->user->name}}</a> telah mengirimkan permintaan konseling <a href="#" class="notification-link">{{str_limit($murid->name,10)}}</a>.
+                    <a href="#" class="h6 notification-friend">{{ucwords($murid->user->name)}}</a> telah mengirimkan permintaan konseling <a href="#" class="notification-link">{{str_limit($murid->name,10)}}</a>.
                     <span class="notification-date"><time class="entry-date updated" datetime="{{$murid->created_at}}"></time></span>
                 </div>
             </li>

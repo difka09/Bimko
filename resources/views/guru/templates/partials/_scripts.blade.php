@@ -1,5 +1,5 @@
 <!-- JS Scripts -->
-
+<script src="{{asset('js/offline.min.js')}}"></script>
 <script src="{{asset('guru/js/jquery-3.2.1.js')}}"></script>
 <script src="{{asset('guru/js/jquery.appear.js')}}"></script>
 <script src="{{asset('guru/js/jquery.mousewheel.js')}}"></script>
@@ -66,11 +66,21 @@ $('.count-notif').text(originalTitle+' ('+initnotif+')');
 
 <script src="{{asset('js/ajaxCrud.js')}}"></script>
 {{-- adding --}}
-{{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}
-<script src="//js.pusher.com/3.1/pusher.min.js"></script>
-{{-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}
+<script src="https://js.pusher.com/3.1/pusher.min.js"></script>
+{{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> --}}
 <script src="{{ asset('js/app.js') }}" defer></script>
-
+<script>
+    Offline.options = {
+        checkOnLoad: false,
+        interceptRequests: true,
+    reconnect: {
+        initialDelay: 5,
+        delay: 15
+    },
+    requests: true
+    };
+</script>
 
 @stack('scripts')
 

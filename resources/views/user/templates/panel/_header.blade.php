@@ -27,7 +27,7 @@
                 <div class="col-12">
                 <div class="col-2 col-lg-10"><img src="{{asset('user/panel/img/profile.png')}}"></div>
                     <div class="col-10 dlog">
-                        {{ auth::user()->name }}
+                        {{ ucwords(auth::user()->name) }}
                     </div>
                 </div>
                 @if (auth()->user()->isGuest())

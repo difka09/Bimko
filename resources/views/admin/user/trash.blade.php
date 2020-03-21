@@ -11,7 +11,7 @@
                             <div class="col-md-12">
                                 <div class="form-group label-floating">
                                 <label for="">Nama</label>
-                                <input type="text" class="form-control" name="name" value="{{$user->name}}" disabled>
+                                <input type="text" class="form-control" name="name" value="{{ucwords($user->name)}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -37,6 +37,7 @@
                                 </div>
                             </div>
                         </div>
+                        @if($user->grade != null)
                         <div class="row" style="padding-left:20px;padding-right:20px">
                             <div class="col-md-12">
                                 <div class="form-group label-floating">
@@ -45,6 +46,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        @if($user->phone != null)
                         <div class="row" style="padding-left:20px;padding-right:20px">
                             <div class="col-md-12">
                                 <div class="form-group label-floating">
@@ -53,6 +56,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
@@ -72,7 +76,9 @@
             </div>
             <div class="box-body">
                 {{-- <a href="{{ route('user.index') }}" class="btn btn-primary">Data User</a> --}}
+                @if($users->count() != 0)
                 <a href="{{ route('user.restoreall') }}" class="btn btn-primary">Restore All</a>
+                @endif
                 <table class="table table-bordered">
                     <tr>
                         <th>Nama</th>
@@ -81,9 +87,12 @@
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
+                    @if($users->count() == 0)
+                    data trash kosong
+                    @endif
                    @foreach ($users as $user)
                    <tr>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ ucwords($user->name) }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         @if ($user->isGuru())
@@ -99,7 +108,7 @@
                             <button type="button" data-toggle="modal" class="btn btn-success" data-target="#yourModal{{$user->id}}"><i class="fa fa-eye"></i> lihat</button>
                             {{-- <button type="button" data-toggle="modal" class="btn btn-success" data-target="#yourModal" value="{{ route('user.trash.show', $user->id) }}"><i class="fa fa-eye"></i> lihat</button> --}}
                             <a href="{{ route('user.restore', $user->id) }}" class="btn btn-success">Restore</a>
-                            <a href="{{ route('user.destroypermanent', $user->id) }}"  class="btn btn-danger">Delete</a>
+                            <a href="{{ route('user.destroypermanent', $user->id) }}"  class="btn btn-danger">Hapus</a>
                             {{-- <button id="delete" data-title="{{ $user->name }}" href="{{route('user.restore',$user) }}" class="btn btn-success">Restore</i></button>
                             <button id="reset" data-title="{{ $user->name }}" href="{{route('user.reset',$user) }}" class="btn btn-danger">Hapus Permanen</button> --}}
                         </td>

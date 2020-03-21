@@ -9,15 +9,23 @@ $(document).ready(function (e) {
     $('#statusForm').on('submit',(function(e) {
     e.preventDefault();
     var fileku = $('#file_1').val();
-    if(fileku!='')
+    if(fileku!=='')
     {
         $('.size_error').html("");
         var file_size = $('#file_1')[0].files[0].size;
-        if(file_size > 5097000) {
-            $('.size_error').html("maksimal ukuran file 5MB")
+        if(file_size > 10000000) {
+            swal({
+                title: "gagal posting status",
+                text: "maksimal gambar berukuran 10MB",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+                });
             return false;
         }
     }
+    $('#btn-save19').html("posting..");
+
     var formData = new FormData(this);
     var formURL = $('#statusForm').attr("action");
     $.ajax({
@@ -28,41 +36,51 @@ $(document).ready(function (e) {
         contentType: false,
         processData: false,
         success:function(data){
-            // console.log(data);
-            location.reload();
-
-        },
-        error: function(data){
-            var error = data.responseJSON.errors;
+            if($.isEmptyObject(data.error)){
+                location.reload();                
+            }else{
                 swal({
                     title: "gagal posting status",
-                    text: error,
+                    text: data.error,
                     icon: "error",
                     buttons: true,
                     dangerMode: true,
                 });
+                $('#btn-save19').html("Post Status");
+
+            }
+        },
+        error: function(data){
+            console.log(data);
         }
-            });
+    });
     }));
 
 
 //post fileform
     $('#uploadForm').on('submit',(function(e) {
         var fileku = $('#file_2').val();
-        if(fileku=='')
+        if(fileku==='')
         {
             alert("file kosong, silahkan pilih file");
         }
     e.preventDefault();
     $('.size1_error').html("");
     var file_size = $('#file_2')[0].files[0].size;
-    if(file_size > 20097000) {
-        $('.size1_error').html("maksimal ukuran file 20MB")
-        return false;
-    }
+        if(file_size > 30000000) {
+            swal({
+                title: "gagal upload file",
+                text: "maksimal ukuran file 30MB",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+                });
+            return false;
+        }
+    $('#btn-save20').html("uploading..");
+
     var formData = new FormData(this);
     var formURL = $('#uploadForm').attr("action");
-
     $.ajax({
         type:'POST',
         url: formURL,
@@ -83,6 +101,8 @@ $(document).ready(function (e) {
                         buttons: true,
                         dangerMode: true,
                     });
+                    $('#btn-save20').html("Post File");
+
         }
          });
     }));
@@ -121,15 +141,23 @@ $(document).ready(function (e) {
     $('#updateForm1').on('submit',(function(e) {
         e.preventDefault();
         var fileku = $('#file_3').val();
-        if(fileku!='')
+        if(fileku!=='')
         {
             $('.size3_error').html("");
             var file_size = $('#file_3')[0].files[0].size;
-            if(file_size > 5097000) {
-                $('.size3_error').html("maksimal ukuran file 5MB")
+             if(file_size > 10000000) {
+                swal({
+                    title: "gagal posting status",
+                    text: "maksimal gambar berukuran 10MB",
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
+                    });
                 return false;
             }
         }
+        $('.btn-save1').html("editing..");
+
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
         var post_id = $("#ajax-crud-modal").find("input[name='id']").val();
@@ -143,21 +171,26 @@ $(document).ready(function (e) {
             contentType: false,
             processData: false,
             success: function(data){
+            if($.isEmptyObject(data.error)){
                 $('#ajax-crud-modal').modal('hide');
                 location.href=urls[2]+ '/' +post_id;
-                // location.href=urls[2]+ '/' +post_id;
-                // $("#khusus"+post_id).load(location.href + " #khusus"+post_id);
+            // location.href=urls[2]+ '/' +post_id;
+            // $("#khusus"+post_id).load(location.href + " #khusus"+post_id);
+            }else{
+                swal({
+                    title: "gagal posting status",
+                    text: data.error,
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
+                });
+                $('.btn-save1').html("Edit Post");
+                }
             },
             error: function(data){
-                var error = data.responseJSON.errors;
-                    swal({
-                        title: "gagal posting status",
-                        text: error,
-                        icon: "error",
-                        buttons: true,
-                        dangerMode: true,
-                    });
-            }
+                console.log(data);
+            }    
+
         });
 
     }));
@@ -166,16 +199,23 @@ $(document).ready(function (e) {
     $('#updateForm2').on('submit',(function(e) {
         var fileku = $('#file_4').val();
 
-        if(fileku!='')
+        if(fileku!=='')
         {
         e.preventDefault();
         $('.size4_error').html("");
         var file_size = $('#file_4')[0].files[0].size;
-        if(file_size > 20097000) {
-            $('.size4_error').html("maksimal ukuran file 20MB")
+        if(file_size > 30000000) {
+            swal({
+                title: "gagal upload file",
+                text: "maksimal ukuran file 30MB",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+                });
             return false;
         }
         }
+        $('.btn-save2').html("uploading...");
         var formData = new FormData(this);
         formData.append('_method', 'PUT');
         var post_id = $("#ajax-crud-modal2").find("input[name='id']").val();
@@ -205,6 +245,8 @@ $(document).ready(function (e) {
                         buttons: true,
                         dangerMode: true,
                     });
+                $('.btn-save2').html("Edit Post");
+
             }
         });
 
@@ -229,7 +271,7 @@ $(document).ready(function (e) {
                             swal("Data telah terhapus", {
                                 icon: "success",
                             });
-                            location.reload();
+                            location.href=urls[2];
                             // $("#data-post").load(location.href + " #data-post");
                         },
                         error: function(data){
@@ -265,8 +307,12 @@ $(document).ready(function (e) {
                 // $("#countcomment"+post_id).load(location.href + " #countcomment"+post_id);
 
                 var comment = '<ul class="comments-list" id="comment-list"><div class="komen"><li class="comment-item"><input type="hidden" name="ax" class="name_val" value="'+comment_id+'"><input type="hidden" name="post" class="name_val" value="'+post_id+'"><div class="post__author author vcard inline-items"><img src="'+urls[5]+'/'+data[1][0]['file']+'" alt="author"><div class="author-date"><a class="h6 post__author-name fn" href="'+urls[14]+'/'+data[0]['user_id']+'">'+data[1][0]['name']+'</a> <div class="post__date"><time datetime="'+data[0]['created_at']+'" class="published"></time></div></div><div href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="'+urls[7]+'"></use></svg><ul class="more-dropdown"><li><a class="delete-comment" href="javascript:void(0)" id="delete-comment" data-post="'+data[0]['post_id']+'" data-id="'+data[0]['id']+'">Hapus Komentar</a></li></ul></div></div><p>'+data[0]['message']+'</p></li></div></ul>';
+                // var aftercomment = comment.replace(/<\/?[^>]+>/ig, " ");
+                var aftercomment = comment.replace("<script>","");
                 var count ='<div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items"><svg class="olymp-speech-balloon-icon"><use xlink:href="'+urls[9]+'"></use></svg><span>'+data[2]+'</span></a></div></div>';
-                $('#comment'+post_id).prepend(comment);
+                $('#comment'+post_id).prepend(aftercomment);
+                // $('#comment'+post_id).innerHtml = comment;
+                // $('#comment'+post_id).find('script').remove();
                 $("#countcomment" + post_id).html(count);
                 $(".btn-comment-show").html("Tulis Komentar");
                 document.getElementById("comment-form"+post_id).reset();
@@ -458,7 +504,7 @@ $(document).on('keyup', '.search-here', function(){
             }
             if(data[0]['detail_agenda']!=null){
                 if(data[0]['detail_agenda']['file']!=null){
-            document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[0]['detail_agenda']['file']+'</a>';
+            document.getElementById('filename_file').innerHTML='<a style="color:blue" href="'+urls[15]+ '/' +agenda_id+ '/download">'+data[2]+'</a>';
             }else{
             document.getElementById('filename_file').innerHTML="File belum diupload";
             }
@@ -491,10 +537,16 @@ $(document).on('keyup', '.search-here', function(){
         {
             $('.size_error').html("");
             var file_size = $('#file')[0].files[0].size;
-            if(file_size > 20097000) {
-                $('.size_error').html("maksimal ukuran file 20MB")
-                return false;
-            }
+        if(file_size > 30000000) {
+            swal({
+                title: "gagal upload file",
+                text: "maksimal ukuran file 30MB",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+                });
+            return false;
+        }
         }
         e.preventDefault();
         var agenda_id = $("#add-notulensi").find("input[name='agenda_id']").val();

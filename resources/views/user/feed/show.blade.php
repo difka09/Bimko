@@ -22,13 +22,13 @@
                     @else
                   <div class="single-post__entry-header entry__header">
                     <h1 class="single-post__entry-title">
-                    {{ $feed->name }}
+                    {{ ucwords($feed->name) }}
                     </h1>
 
                     <ul class="entry__meta">
                       <li class="entry__meta-author">
                         <i class="ui-author"></i>
-                        <a href="#" data-toggle="modal" style="cursor:pointer" data-target="#commentmodal{{$feed->user_id}}">{{$feed->user->name}}</a>
+                        <a href="#" data-toggle="modal" style="cursor:pointer" data-target="#commentmodal{{$feed->user_id}}">{{ucwords($feed->user->name)}}</a>
                       </li>
                         <?php
                             $controller->tanggal($feed->agreement->created_at);
@@ -70,13 +70,13 @@
 
                   </div> <!-- end entry article -->
 
+                    @if($relatednews->count() != 0)
                   <!-- Related Posts -->
                   <div class="related-posts">
                     <div class="title-wrap mt-40">
                       <h5 class="uppercase">Artikel lain</h5>
                     </div>
                     <div class="row row-20">
-
                     @foreach ($relatednews as $relatednew)
                         <div class="col-md-4">
 
@@ -92,7 +92,7 @@
                           <div class="entry__body">
                             <div class="entry__header">
                               <h2 class="entry__title entry__title--sm">
-                                <a href="{{ route('feeds.show', $relatednew)}}">{{$relatednew->name}}</a>
+                                <a href="{{ route('feeds.show', $relatednew)}}">{{ucwords($relatednew->name)}}</a>
                               </h2>
                             </div>
                           </div>
@@ -102,6 +102,7 @@
 
                     </div>
                   </div> <!-- end related posts -->
+                  @endif
 
                 </article> <!-- end standard post -->
 
@@ -123,8 +124,8 @@
                             @endif
                         </div>
                         <div class="comment-text">
-                          <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#commentmodal{{$feedcomment->user_id}}">{{$feedcomment->user->name}}:</h6>
-                          {{-- <h6 class="comment-author">{{$feedcomment->name}}: </h6> --}}
+                          <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#commentmodal{{$feedcomment->user_id}}">{{ucwords($feedcomment->user->name)}}:</h6>
+                          {{-- <h6 class="comment-author">{{ucwords($feedcomment->name)}}: </h6> --}}
                           <div class="comment-metadata">
                             <a href="#" class="comment-date">{{$controller->fullTimeShow($feedcomment->created_at)}}</a>
                           </div>
@@ -156,7 +157,7 @@
                               @endif
                               </div>
                             <div class="comment-text">
-                            <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#replymodal{{$feedreply->user_id}}">{{$feedreply->user->name}}:</h6>
+                            <h6 data-toggle="modal" style="cursor:pointer" class="comment-author" data-target="#replymodal{{$feedreply->user_id}}">{{ucwords($feedreply->user->name)}}:</h6>
                               <div class="comment-metadata">
                               <a href="#" class="comment-date">{{$controller->fullTimeShow($feedreply->created_at)}}</a>
                               </div>
@@ -330,14 +331,14 @@
                         @else
                         <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedcomment->user->name,0,2)}}" alt="author" style="width:100%">
                         @endif
-                        <h1>{{$feedcomment->user->name}}</h1>
+                        <h1>{{ucwords($feedcomment->user->name)}}</h1>
                         <p class="titlemodal">Info :  </p>
                         <div style="margin: 24px 0;">
                             @if ($feedcomment->user->isGuest())
                             <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedcomment->user->agency}}</i></p>
                             @else
                             @if ($feedcomment->user->school)
-                            <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedcomment->user->school->name}}</i><p>
+                            <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{ucwords($feedcomment->user->school->name)}}</i><p>
                             @endif
                             @endif
                         </div>
@@ -366,14 +367,14 @@
                         @else
                         <img src="http://placehold.it/64/55C1E7/fff&text={{substr($feedreply->user->name,0,2)}}" alt="author" style="width:100%">
                         @endif
-                            <h1>{{$feedreply->user->name}}</h1>
+                            <h1>{{ucwords($feedreply->user->name)}}</h1>
                             <p class="titlemodal">Info :</p>
                             <div style="margin: 24px 0;">
                               @if ($feedreply->user->isGuest())
                               <p href="#"><i class="fa fa-building">&nbsp;&nbsp;{{$feedreply->user->agency}}</i></p>
                               @else
                               @if ($feedreply->user->school)
-                              <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{$feedreply->user->school->name}}</i><p>
+                              <p href="#"><i class="fa fa-university">&nbsp;&nbsp;{{ucwords($feedreply->user->school->name)}}</i><p>
                               @endif
                               @endif
                             </div>

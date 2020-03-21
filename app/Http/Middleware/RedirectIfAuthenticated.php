@@ -18,7 +18,15 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/feed');
+            if(auth()->user()->hasRole('Guru')) {
+                return redirect()->route('guru.index');
+            }
+            elseif(auth()->user()->hasRole('admin')) {
+                return redirect()->route('admin.index');
+            }
+            else{
+                return redirect('/feed');
+            }
         }
 
         return $next($request);

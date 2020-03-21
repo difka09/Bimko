@@ -18,6 +18,11 @@
 @section('content')
 <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
     @include('admin.templates.partials._alerts')
+    @if(isset($warning))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-guru-success" style="color: #8a6d3b;background-color: #fcf8e3;border-color: #faebcc;">
+      Silahkan perbarui <a href="guru/edit/profil">profil anda </a>
+    </div>
+    @endif
     <div class="ui-block">
         <!-- News Feed Form  -->
         <div class="news-feed-form">
@@ -61,7 +66,7 @@
                                 </label>
                             </a>
                             <input accept="image/x-png,image/gif,image/jpeg" type="file" name="file_1" id="file_1">
-                            <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post Status</button>
+                            <button type="submit" id="btn-save19" class="btn btn-primary btn-md-2">Post Status</button>
                         </div>
                         </div>
                     </form>
@@ -89,7 +94,7 @@
                                     </label>
                                 </a>
                                 <input type="file" name="file_2" id="file_2" nonvalidate>
-                                <button type="submit" id="btn-save" class="btn btn-primary btn-md-2">Post File</button>
+                                <button type="submit" id="btn-save20" class="btn btn-primary btn-md-2">Post File</button>
 
                             </div>
                             </div>
@@ -145,7 +150,7 @@
                     @else
                     @endif
                     </div>
-                <div id="countcomment{{$post->id}}" class="countcomment">
+                <div id="countcomment{{$post->id}}" class="countcomment" data-post="{{$post->id}}">
                     <div class="post-additional-info inline-items">
                         <div class="comments-shared">
                             <a class="post-add-icon inline-items">
@@ -238,11 +243,9 @@
     <div id="iniload"></div>
     <div id="remove-row">
         @if (empty($myid))
-        <div title="Data tidak ditemukan">
-        <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
-        </div>
+        <a class="btn btn-control" data-container="newsfeed-items-grid" alt="No Data"><svg class="olymp-three-dots-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-three-dots-icon')}}"></use></svg></a>
         @else
-        <a id="btn-more" class="btn btn-control" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
+        <a id="btn-more" class="btn btn-control" data-id="{{$post->id}}" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon" style="fill:gray"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg></a>
         @endif
     </div>
 
@@ -276,9 +279,10 @@ $(document).ready(function(){
            {
             //    console.log(data);
               if(data != '')
-              {
+              { 
+                  var afterdata = data.replace("<script>","");
                   $('#remove-row').remove();
-                  $('#iniload').append(data);
+                  $('#iniload').append(afterdata);
                 //   $("#comment").load(location.href + " #comment");
               }
               else
@@ -309,8 +313,10 @@ $(document).ready(function(){
                 {
                     if(data != '')
                     {
+                        var afterdata = data.replace("<script>","");
+
                         $('#remove-row-comments'+post).remove();
-                        $('#comment'+post).append(data);
+                        $('#comment'+post).append(afterdata);
                         // $("#comment"+post).load(location.href + " #comment"+post);
                         // $("#countcomment"+post).load(location.href + " #countcomment"+post);
 
@@ -366,8 +372,14 @@ function showFileName4( event ) {
 
 
 <script>
-    $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
-        $("#alert-danger").slideUp(500);
+    $("#alert-guru-danger").fadeTo(2000, 500).slideUp(500, function(){
+        $("#alert-guru-danger").slideUp(500);
+    });
+</script>
+<script>
+    $('body').on('click', '.countcomment', function(){
+        var post_id = $(this).data("post");
+        document.getElementById('text'+post_id).focus();
     });
 </script>
 @endpush

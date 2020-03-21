@@ -60,7 +60,7 @@
         var href = $(this).attr('href');
         var title = $(this).data('title');
         swal({
-            title: "Apakah kamu yakin akan hapus user "+ title +" ?",
+            title: "Apakah kamu yakin akan hapus sekolah "+ title +" ?",
             text: "Jika menghapus data ini, data akan hilang!",
             icon: "warning",
             buttons: true,
@@ -91,7 +91,7 @@
             lat: '{{$school->latitude}}',
             lng: '{{$school->longitude}}',
             title: '{{$school->name}}',
-            icon: '{{ asset('images/maps/icon-school.png') }}',
+            icon: '{{ asset('images/maps/school-icon.ico') }}',
             infoWindow: {
                 content : '<h3>{{$school->name}}</h3><p>{{$school->description}}</p>'
             }

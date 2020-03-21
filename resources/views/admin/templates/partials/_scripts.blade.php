@@ -36,7 +36,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('admin/dist/js/demo.js') }}"></script>
 
-<script src="http://maps.google.com/maps/api/js?key=AIzaSyD_eiIH24e4fILRNWijlDHOMpo4dbVelJY"></script>
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyAWVDSnVhNaCKNA3g1apoeFT5H2ITYHSRA"></script>
 <script src="{{ asset('js/gmaps.js') }}"></script>
 <style type="text/css">
     .user-panel>.image>img {

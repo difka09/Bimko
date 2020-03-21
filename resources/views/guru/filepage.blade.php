@@ -18,7 +18,7 @@ button{
 </style>
 
 @endpush
-@section('pageTitle', 'Data File')
+@section('pageTitle', 'Kumpulan File')
 @section('content')
 <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
 <div class="ui-block">
@@ -26,11 +26,12 @@ button{
     <form action="{{route('guru.filepage')}}" method="GET">
         <div class="ui-block-title">
             <h6 class="title">Kumpulan File</h6>
-            <input class="form-control" id="cari" name="cari" type="text" style="width: 80%" placeholder="Cari File Di sini..." >
+            <input class="form-control" id="cari" name="cari" type="text" style="width: 80%" placeholder="Cari File Di sini..." value="{{request('cari')}}">
+            <!--<button type="submit" class="btn btn-sm" style="margin-left: 12%;margin-right:88%;margin-top:10%;margin-bottom=90%">cari</button>-->
             <button type="submit" class="btn btn-sm" style="margin-left: 12%">cari</button>
             {{-- <a href="{{route('guru.filepage')}}?title=gdx">a</a> --}}
             <div class="btn-group bootstrap-select form-control without-border">
-                <select name="dropdownList" id="dropdownList" tabindex="-98" class="selectpicker form-control without-border" onchange="location=this.value;">
+                <select name="file" id="file" tabindex="-98" class="selectpicker form-control without-border" onchange="location=this.value;">
                         <option value="#" selected>Urutkan</option>
                         <option value="{{route('guru.filepage', ['cari' => request('cari'), 'sort' => 'desc'])}}">Terbaru</option>
                         <option value="{{route('guru.filepage', ['cari' => request('cari'), 'sort' => 'asc'])}}">Terlama</option>
@@ -56,7 +57,7 @@ button{
                     <img style="width:100%;height:100%;" style="max-height: 42px;max-width: 42px" src="{{$file->user->getImage()}}" alt="author">
                 </div>
                 <div class="notification-event">
-                    <a href="{{route('guru.profil',$file->user->id)}}" class="h6 notification-friend">{{$file->user->name}}</a> telah mengupload file <a href="{{route('guru.show',$file)}}" class="notification-link">{{$file->file_3}}</a>
+                    <a href="{{route('guru.profil',$file->user->id)}}" class="h6 notification-friend">{{ucwords($file->user->name)}}</a> telah mengupload file <a href="{{route('guru.show',$file)}}" class="notification-link">{{$file->file_3}}</a>
                     <span class="notification-date"><time class="entry-date updated" datetime="{{$file->created_at}}"></time></span>
                 </div>
                 <span class="notification-icon">
@@ -77,25 +78,6 @@ button{
 </div>
 
 
-
-    <!-- Pagination -->
-    {{-- <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: -10.3833px; top: -16.8333px; background-color: rgb(255, 255, 255); transform: scale(16.7857);"></div></div></a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">12</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav> --}}
-    <!-- ... end Pagination -->
-
 </div>
 
 
@@ -105,12 +87,12 @@ button{
 @push('scripts')
 
 <script>
-var selectedItem = sessionStorage.getItem("dropdownList");
-$('#dropdownList').val(selectedItem);
+var selectedItem = sessionStorage.getItem("file");
+$('#file').val(selectedItem);
 
-$('#dropdownList').change(function() {
+$('#file').change(function() {
     var dropVal = $(this).val();
-    sessionStorage.setItem("dropdownList", dropVal);
+    sessionStorage.setItem("file", dropVal);
 });
 
 </script>

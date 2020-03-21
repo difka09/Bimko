@@ -1,4 +1,4 @@
-@extends('admin.templates.default')
+@extends('admin.templates.defaultwtcontentwrapper')
 
 @section('content')
 <div class="col-md-5 col-md-offset-3">
@@ -70,12 +70,12 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Foto</label>
-                    <div class="col-sm-10">
-                    <input type="file" name="file" class="form-control" value="{{ old('file') }}" placeholder="maks 2 Mb">
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                <!--    <label for="" class="col-sm-2 control-label">Foto</label>-->
+                <!--    <div class="col-sm-10">-->
+                <!--    <input type="file" name="file" class="form-control" value="{{ old('file') }}" placeholder="maks 2 Mb">-->
+                <!--    </div>-->
+                <!--</div>-->
 
         </div>
         <div class="box-footer">

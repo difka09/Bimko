@@ -130,12 +130,17 @@ class MuridController extends Controller
         $user = User::find($id);
 
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'phone' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
+            'phone' => 'required|numeric|min:0|digits_between:10,15'
 
         ],[
             'name.required'  => '*nama tidak boleh kosong',
-            'phone.required' => '*nomor telepon tidak boleh kosong'
+            'name.regex' => '*nama hanya berformat alfabet',
+            'phone.required'    => 'Nomor telepon harus diisi',
+            'phone.numeric'     => 'Nomor telepon harus berformat angka',
+            'phone.min'         => 'Nomor telepon harus angka bulat positif',
+            'digits_between'    => 'Masukkan jumlah digit nomor telepon dengan benar'
+
         ]);
 
         if($validate->fails())

@@ -72,7 +72,7 @@
                             <th class="description">
                                 Deskripsi
                             </th>
-                            <th class="users">
+                            <th class="users" style="width:125px">
                                 Peserta
                             </th>
                             <th class="add-event">
@@ -90,7 +90,7 @@
                                         <img src="{{asset('guru/img/avatar78-sm.jpg')}}" alt="author">
                                     </div> --}}
                                     <div class="author-date">
-                                    <a href="#" class="author-name h6">{{$agenda->user->name}}</a> telah membuat undangan<br> rapat <a href="#"> {{$agenda->name}}</a>
+                                    <a href="#" class="author-name h6">{{ucwords($agenda->user->name)}}</a> telah membuat undangan<br> rapat <a href="#"> {{$agenda->name}}</a>
                                     </div>
                                 </div>
                             </td>
@@ -115,7 +115,7 @@
                                     @else
                                     @foreach ($agenda->detailAgenda->users as $user)
                                     <li>
-                                        <a title="{{$user->name}}" href="#">
+                                        <a title="{{ucwords($user->name)}}" href="#">
                                             <img src="{{$user->getImage()}}" alt="friend" style="width: 100%;height:100%">
                                         </a>
                                     </li>
@@ -125,10 +125,12 @@
                                 </ul>
                             </td>
                             <td class="add-event">
-                                <a style="color:white" href="javascript:void(0)" class="btn btn-breez btn-sm" id="view-detail" data-id="{{$agenda->id}}">Lihat Rincian</a>
+                            <a style="color:white" href="javascript:void(0)" class="btn btn-breez btn-sm" id="view-detail" data-id="{{$agenda->id}}">Lihat Rincian</a>
                                 @if ($agenda->user_id == auth()->user()->id)
                                 @if ($agenda->detailAgenda == null)
+                                @if ($datenow > $agenda->start_At)
                                 <a style="color:white" class="btn btn-grey btn-sm" id="edit-agenda" data-id="{{$agenda->id}}">Tulis Notulensi</a>
+                                @endif
                                 @endif
                                 @endif
                             </td>
@@ -253,7 +255,7 @@
             <label for="" class="control-label is-focused">Peserta Rapat</label>
                 <select name="user[]" id="" class="form-control select2" multiple="multiple" style="width: 422px">
                     @foreach ($users as $user)
-                    <option style="background-color: aqua;color:black" value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option style="background-color: aqua;color:black" value="{{ $user->id }}">{{ ucwords($user->name) }}</option>
                     @endforeach
                 </select>
 

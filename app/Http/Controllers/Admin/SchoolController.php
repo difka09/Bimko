@@ -52,7 +52,7 @@ class SchoolController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
             'description' => 'required',
-            'image' => 'required'
+            'image' => 'required|max:10024'
 
         ]);
 

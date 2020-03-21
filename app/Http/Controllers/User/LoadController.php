@@ -188,7 +188,7 @@ class LoadController extends Controller
             $output .='<img src="'.$post->getImage1().'" alt="author" width="770" height="520">';
             }
             $output .=' </div>
-            <div id="countcomment'.$post->id.'" class="countcomment">
+            <div id="countcomment'.$post->id.'" class="countcomment" data-post="'.$post->id.'">
             <div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items">
             <svg class="olymp-speech-balloon-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon').'"></use></svg>
             <span>'.$post->comments->count().'</span></a>
@@ -255,7 +255,7 @@ class LoadController extends Controller
             $last_id = $post->id;
             }
             $output.= '<div id="remove-row">
-            <a id="btn-more" class="btn btn-control" data-id="'.$last_id.'" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon').'"></use></svg></a>
+            <a id="btn-more" class="btn btn-control" data-id="'.$last_id.'" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon" style="fill:gray"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon').'"></use></svg></a>
             </div>
             ';
             echo $output;
@@ -330,7 +330,7 @@ class LoadController extends Controller
             $output .='<img src="'.$post->getImage1().'" alt="author" width="770" height="520">';
             }
             $output .=' </div>
-            <div id="countcomment'.$post->id.'" class="countcomment">
+            <div id="countcomment'.$post->id.'" class="countcomment" data-post="'.$post->id.'">
             <div class="post-additional-info inline-items"><div class="comments-shared"><a class="post-add-icon inline-items">
             <svg class="olymp-speech-balloon-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon').'"></use></svg>
             <span>'.$post->comments->count().'</span></a>
@@ -397,7 +397,7 @@ class LoadController extends Controller
             $current_user = $post->user->id;
             }
             $output.= '<div id="remove-row">
-            <a id="btn-more" class="btn btn-control" data-user="'.$current_user.'" data-id="'.$last_id.'" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon').'"></use></svg></a>
+            <a id="btn-more" class="btn btn-control" data-user="'.$current_user.'" data-id="'.$last_id.'" data-container="newsfeed-items-grid"><svg class="olymp-dropdown-arrow-icon" style="fill:gray"><use xlink:href="'.asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon').'"></use></svg></a>
             </div>
             ';
             // echo $current_user;

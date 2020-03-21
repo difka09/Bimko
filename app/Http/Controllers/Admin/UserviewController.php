@@ -15,8 +15,12 @@ class UserviewController extends Controller
 {
     Public function indexGuru()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->paginate(8);;
-        $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Guru')->count();
+        $users = User::whereHas('roles',function($q){
+                $q->where('name','Guru');
+            })->orderBy('name','asc')->paginate(8);
+        $checkusers = User::whereHas('roles',function($q){
+                $q->where('name','Guru');
+            })->count();
 
         if($checkusers == 0){
             return view('admin.user.emptyPage', [
@@ -32,8 +36,12 @@ class UserviewController extends Controller
 
     Public function indexMurid()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Murid')->paginate(8);
-        $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'Murid')->count();
+        $users = User::whereHas('roles',function($q){
+                $q->where('name','Murid');
+            })->orderBy('name','asc')->paginate(8);
+        $checkusers = User::whereHas('roles',function($q){
+                $q->where('name','Murid');
+            })->count();
         // dd($checkusers);
         if($checkusers == 0){
             return view('admin.user.emptyPage', [
@@ -49,8 +57,12 @@ class UserviewController extends Controller
 
     Public function indexGuest()
     {
-        $users = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->paginate(8);
-        $checkusers = Userview::orderBy('name', 'asc')->where('roleName', '=', 'guest')->count();
+        $users = User::whereHas('roles',function($q){
+                $q->where('name','guest');
+            })->orderBy('name','asc')->paginate(8);
+        $checkusers = User::whereHas('roles',function($q){
+                $q->where('name','guest');
+            })->count();
         // dd($checkusers);
         if($checkusers == 0){
             return view('admin.user.emptyPage', [
@@ -85,12 +97,12 @@ class UserviewController extends Controller
     public function storeGuru(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
-            'nip' => 'required|numeric|unique:users',
+            'nip' => 'required|min:0|numeric|digits:18|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|min:0|digits_between:1,15',
             'school_id' => 'required',
             'gender' => 'required',
         ]);
@@ -132,12 +144,12 @@ class UserviewController extends Controller
     public function storeMurid(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
-            'nis' => 'required|numeric|unique:users',
+            'nis' => 'required|min:0|numeric|unique:users',
             'grade' => 'required|numeric|min:10|max:12',
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|min:0|digits_between:10,15',
             'school_id' => 'required',
             // 'file' => ''
         ]);
@@ -160,11 +172,11 @@ class UserviewController extends Controller
     public function storeGuest(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'agency' => 'required',
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|min:0|digits_between:10,15',
             // 'file' => ''
         ]);
 
@@ -181,9 +193,15 @@ class UserviewController extends Controller
     }
 
     public function CountUser(){
-        $guru = Userview::All()->where('roleName', '=', 'Guru')->count();
-        $murid = Userview::All()->where('roleName', '=', 'Murid')->count();
-        $responder = Userview::All()->where('roleName', '=', 'guest')->count();
+        $guru = User::whereHas('roles',function($q){
+                $q->where('name','Guru');
+            })->count();
+        $murid = User::whereHas('roles',function($q){
+                $q->where('name','Murid');
+            })->count();
+        $responder = User::whereHas('roles',function($q){
+                $q->where('name','guest');
+            })->count();
         $school = School::all()->count();
         // dd($users);
         return view('admin.index', [

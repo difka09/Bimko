@@ -21,7 +21,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               {{-- <img src="{{ asset('admin/dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image"> --}}
-            <span class="hidden-xs">{{ auth()->user()->name }}</span>
+            <span class="hidden-xs">{{ ucwords(auth()->user()->name) }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -29,7 +29,7 @@
                 <img src="http://placehold.it/64/9999ff/fff&text=admin" class="img-circle" alt="User Image">
 
                 <p>
-                    {{ auth()->user()->name }}
+                    {{ ucwords(auth()->user()->name) }}
                   {{-- <small>Member since Nov. 2012</small> --}}
                 </p>
               </li>

@@ -28,15 +28,31 @@ class FileController extends Controller
         ])->latest()->limit(4)->get();
     }
 
-
+    public function indexFile(Request $request)
+    {
+        $notifications = $request->user()->notifications;
+        $files = Post::where('type','=', 2)->latest()->paginate(4);
+        
+        return view('guru.filepage', [
+            'files' => $files,
+            'notifications' => $notifications,
+            'responders' => $this->responders,
+            'murids' =>$this->murids
+        ]);
+    
+    }
+    
     public function filePage(Request $request)
     {
         $notifications = $request->user()->notifications;
+        $input = strip_tags($request->cari);
+        
+
         $files = new Post;
         if(request()->has('cari')){
             $files = $files->where([
                ['type','=',2],
-               ['file_3','LIKE',"%{$request->cari}%"],
+               ['file_3','LIKE',"%{$input}%"],
            ]);
        }
 
@@ -64,16 +80,16 @@ class FileController extends Controller
     }
 
     public function searchPeople(Request $request)
-    {
-
+    {  
         if($request->ajax()){
             $output="";
             $users = User::whereHas('roles',function($q){
                 $q->where('name','Guru');
-            })->where('name','LIKE','%'.$request->search.'%')->latest()->get();
+            })->where('name','LIKE','%'.$request->search.'%')->orderBy('name','ASC')->limit(5)->get();
+
             if($users)
             {
-                $output.=' <div class="selectize-dropdown multi form-control" style="width: 500px; top: 70px; left: 0px; visibility: visible;">
+                $output.='<div class="selectize-dropdown multi form-control" style="width: 500px; top: 70px; left: 0px; visibility: visible;">
                 <div class="selectize-dropdown-content">';
                 foreach ($users as $user)
                 {
@@ -83,12 +99,23 @@ class FileController extends Controller
                             <img src="'.$user->getImage().'" alt="avatar" style="width:100%;height:100%;max-width:42px;max-height:42px;">
                     </div>
                     <div class="notification-event">
-                        <span class="h6 notification-friend">'.$user->name.'</span>
-                        <span style="color:blue" class="chat-message-item">'.$user->school->name.'</span>
+                        <span class="h6 notification-friend">'.ucwords($user->name).'</span>';
+                if(Isset($user->school->name))
+                {
+                $output .= '
+                <span style="color:blue" class="chat-message-item">'.$user->school->name.'</span>
+                    </div>
+                </div></a>';
+                }else
+                {
+                $output .= '
+                <span style="color:blue" class="chat-message-item">sekolah belum diisi</span>
                     </div>
                 </div></a>';
                 }
+                }
                 $output.='</div></div>';
+
 
             }
             if($users->isEmpty()){

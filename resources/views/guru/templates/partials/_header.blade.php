@@ -3,13 +3,13 @@
 <header class="header" id="site-header">
 
         <div class="page-title">
-            <h6> {{ request()->is('tes/123') ? 'Beranda' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/a/files') ? 'data file' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/a/agenda') ? 'agenda' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/a/responder') ? 'permintaan responder' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/a/pesan-konseling') ? 'permintaan konseling' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/profil/*') ? 'profil' : '' }} </h6>
-            <h6> {{ request()->is('tes/123/edit/profil') ? 'edit profil' : '' }} </h6>
+            <h6> {{ request()->is('a/guru') ? 'Beranda' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/a/files') ? 'data file' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/a/agenda') ? 'agenda' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/a/responder') ? 'permintaan responder' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/a/pesan-konseling') ? 'permintaan konseling' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/profil/*') ? 'profil' : '' }} </h6>
+            <h6> {{ request()->is('a/guru/edit/profil') ? 'edit profil' : '' }} </h6>
             <h6> {{ request()->is('allnotifications') ? 'pemberitahuan' : '' }} </h6>
 
         </div>
@@ -94,7 +94,7 @@
                     </div>
                     <a href="#" class="author-name fn">
                         <div class="author-title">
-                            {{auth()->user()->name}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg>
+                            {{ucwords(auth()->user()->name)}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{asset('guru/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon')}}"></use></svg>
                         </div>
                         @if (auth()->user()->school)
                         <span class="author-subtitle">{{auth()->user()->school->name}}</span>

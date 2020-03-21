@@ -4,12 +4,15 @@
 		<div class="title-admin pbot">Daftar Komentar</div>
 		<div class="col-12 pic-content bbotn mtop">
 				<div class="col-12 main-val">
+	    		    @if($feedcomments->count() == 0)
+                        tidak ada komentar
+                    @endif
 					<div class="col-8">{{ Session::get('msg') }}</div>
                     @foreach ($feedcomments as $feedcomment)
                     <div class="col-12 val-content subval-content pbot">
 							<div class="col-10 col-lg-8 col-md-6 col-sm-4 col-xs-2 sub-main">
 								<div class="col-10 col-lg-8">
-									<div class="col-12">{{ $feedcomment->username }}</div>
+									<div class="col-12">{{ ucwords($feedcomment->username) }}</div>
 									<div class="col-12">{{ $feedcomment->message }}</div>
 									<div class="col-12 ket-com">
 										<?php $controller->fullTime($feedcomment->created_at); ?>

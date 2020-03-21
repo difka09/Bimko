@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\models\User;
-use App\models\Userview;
+use App\Models\User;
+use App\Models\Userview;
 use App\Models\Feed;
 use App\Models\Post;
 // use Egulias\EmailValidator\Warning\Comment;
@@ -19,6 +19,7 @@ use App\Models\FeedComment;
 use App\Models\FeedNotification;
 use App\Models\Question;
 use App\Models\Answer;
+use DB;
 
 class UserController extends Controller
 {
@@ -39,12 +40,12 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u',
             'email' => 'required|email',
             'password' => 'required|min:8',
             'identity' => 'required|numeric',
             'grade' => 'required|numeric|min:10|max:12',
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|min:0|digits_between:10,15',
             // 'file' => ''
         ]);
 
@@ -72,24 +73,47 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $schools = School::get();
+        $roles = DB::table('roles')->where('name','!=','admin')->get();
+        
+        $checkrole1 = User::whereHas('roles',function($q){
+                $q->where('name','guest');
+            })->where('id',$user->id)->get();
+        $checkrole2 = User::whereHas('roles',function($q){
+                $q->where('name','Guru');
+            })->where('id',$user->id)->get();
+        $checkrole3 = User::whereHas('roles',function($q){
+                $q->where('name','Murid');
+            })->where('id',$user->id)->get();
+        if(!$checkrole1->isEmpty())
+        {
+            $status = 'guest';
+        }elseif(!$checkrole2->isEmpty())
+        {
+            $status = 'Guru';
+        }else
+        {
+            $status = 'Murid';
+        }
         return view('admin.user.edit',[
             'user' => $user,
             'schools' => $schools,
+            'status' => $status,
+            'roles' => $roles
         ]);
     }
 
     public function update(Request $request, User $user)
     {
-        $users = Userview::find($user->id);
+        $users = User::find($user->id);
 
 
-        if($users->roleName=='Murid'){
+        if($users->hasRole('Murid')){
             $this->validate($request,[
-                'name' => 'required',
-                'email' => 'required|email',
-                'nis' => 'required|numeric|unique:users,nis,'.$user->id,
+                'name' => 'required|regex:/^[\pL\s]+$/u',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'nis' => 'required|min:0|numeric|unique:users,nis,'.$user->id,
                 'grade' => 'required|numeric|min:10|max:12',
-                'phone' => 'required|numeric',
+                'phone' => 'required|numeric|min:0|digits_between:10,15',
                 'school_id' => 'required',
                 // 'file' => ''
             ]);
@@ -101,15 +125,17 @@ class UserController extends Controller
             'phone' => $request->phone,
             'school_id' => $request->school_id,
         ]);
+        $users->removeRole('Murid');
+        $users->assignRole($request->status);
         return redirect()->route('user.murid')->with('info', 'User Murid berhasil di edit');
 
-        }else if($users->roleName == 'Guru'){
+        }else if($users->hasRole('Guru')){
             $this->validate($request,[
-                'name' => 'required',
-                'email' => 'required|email',
-                'nip' => 'required|numeric|unique:users,nip,'.$user->id,
+                'name' => 'required|regex:/^[\pL\s]+$/u',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'nip' => 'required|min:0|numeric|digits:18|unique:users,nip,'.$user->id,
                 'grade' => 'required|numeric|min:10|max:12',
-                'phone' => 'required|numeric',
+                'phone' => 'required|numeric|min:0|digits_between:1,15',
                 'school_id' => 'required',
                 'gender' => 'required',
 
@@ -125,20 +151,29 @@ class UserController extends Controller
                 'gender' => $request->gender,
 
             ]);
+            $users->removeRole('Guru');
+            $users->assignRole($request->status);
         return redirect()->route('user.guru')->with('info', 'User Guru berhasil di edit');
 
+        }else if($users->hasRole('guest')){
+            $this->validate($request,[
+                'name' => 'required|regex:/^[\pL\s]+$/u',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'phone' => 'required|numeric|min:0|digits_between:10,15',
+                'agency' => 'required'
+            ]);
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'agency' => $request->agency,
+
+            ]);
+            $users->removeRole('guest');
+            $users->assignRole($request->status);
+        return redirect()->route('user.guest')->with('info', 'User Responder berhasil di edit');
+
         }
-
-
-        // if($users->roleName=='Murid')
-        // {
-
-        //     return redirect()->route('user.murid')->with('info', 'User has been edited');
-        // }
-        // if($users->roleName=='Guru')
-        // {
-        //     return redirect()->route('user.guru')->with('info', 'User has been edited');
-        // }
 
     }
 
@@ -147,7 +182,7 @@ class UserController extends Controller
     {
         // $user = User::find($id);
         $user->update([
-            'password' => Hash::make($request['password']),
+            'password' => Hash::make(12345678),
         ]);
         return back()->with('info', 'Password berhasil direset');
     }
